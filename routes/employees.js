@@ -22,7 +22,7 @@ router.get('/:id', async (req, res) => {
     console.log("getById : http://localhost:3000/employees/1");
 
     //verify employee existance searching him by his id
-    const employeeExists = employeeDAO.getEmployeeById(parseInt(req.params.id)); //false ou employee
+    const employeeExists = await employeeDAO.getEmployeeById(parseInt(req.params.id)); //false ou employee
     if(!employeeExists) {
       res.status(404).send("Cet utilisateur n'existe pas"); 
       return;

@@ -33,7 +33,7 @@ class EmployeeDAO{
       throw new Error('No employees were found');
     }
     console.log("results is: " + JSON.stringify(result[0]));
-    return JSON.stringify(result[0]);
+    return result[0];
   }
 
 
@@ -49,7 +49,7 @@ class EmployeeDAO{
         throw new Error('There is no employee with that id ');
       }
       console.log("o result[0][0] no return é: " + JSON.stringify(result[0][0]));
-      return JSON.stringify(result[0][0]);
+      return result[0][0];
     
     }
 
