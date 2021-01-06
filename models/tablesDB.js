@@ -1,6 +1,6 @@
 function createTableEmployees(){
 
-    let employeesTable = "CREATE TABLE `employees` ("  +
+    let employeesTable = "CREATE TABLE `employees22222` ("  +
         "`id` INT(11) NOT NULL AUTO_INCREMENT," +
         "`joinDate` VARCHAR(50) NULL," +
         "`firstName` VARCHAR(50) NOT NULL," +

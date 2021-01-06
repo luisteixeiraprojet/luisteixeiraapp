@@ -97,10 +97,10 @@ function validateEmployee(theEmployee){
   return schema.validate(theEmployee);
 }
 
-router.post('/createTable', function (req, res) {
-  console.log("post: http://localhost:3000/employees/createTable");
+router.get('/createTable', function (req, res) {
+  console.log("get: http://localhost:3000/employees/createTable");
   
-  const creationEmployeesTable = tableEmployees.creattionEmployeesTable();
+  const creationEmployeesTable = tableEmployees.createTableEmployees();
   res.send(creationEmployeesTable);
 });
 
