@@ -16,11 +16,15 @@ class EmployeeDAO{
     let allEmployees;
 
     connectionDB.connect();
-   const rows = await connectionDB.query('SELECT * from ??',
-    table);
+  try {
+    const rows = await connectionDB.query('SELECT * from employees');
+  } catch (error) {
+    console.log("error: ", error.message)
+  }
+  
   console.log("allEmployees : " + JSON.stringify(allEmployees));
   console.log("rows : " + JSON.stringify(rows));
-    return allEmployees; 
+    return rows; 
   }
  
   getEmployeeById(id){
