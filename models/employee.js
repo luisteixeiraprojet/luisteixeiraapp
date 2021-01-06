@@ -1,7 +1,6 @@
 //Model employee - an employee has this fields
 class Employee{
     id;
-    joinDate;
     firstName;
     lastName;
     mobilePhone;
@@ -17,6 +16,7 @@ class Employee{
     age;
     iban;
     typeContract; //model CDI/CDD, numero de horas
+    joinDate;
 
     constructor(){ }
     

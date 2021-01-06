@@ -23,19 +23,10 @@ class EmployeeDAO{
   createEmployee(employeeObject){
     //add to the fake db of employees
     //let id = fakeEmployees.length +1;
-    
-
-   connectionDB.query('INSERT INTO employees (firstName, lastName, mobilePhone) VALUES (?,?,?)',
-     [employeeObject.firstName, employeeObject.lastName, employeeObject.mobilePhone],
-     function (error, results, fields) {
-      if (error) throw error;
-      
-      console.log("Employee created with the id: " + results.insertId)
-    });
-
     const newEmployee = new Employee();
+
    // newEmployee.id = id;
-    newEmployee.joinDate         = employeeObject.joinDate;
+   
     newEmployee.firstName        = employeeObject.firstName;
     newEmployee.lastName         = employeeObject.lastName;
     newEmployee.mobilePhone      = employeeObject.mobilePhone;
@@ -51,12 +42,31 @@ class EmployeeDAO{
     newEmployee.age              = employeeObject.age;
     newEmployee.iban             = employeeObject.iban;
     newEmployee.typeContract     = employeeObject.typeContract;
+    newEmployee.joinDate         = employeeObject.joinDate;
   
-    console.log("sobre o novo employee " + JSON.stringify(newEmployee));
+    //query
+    const allColumns = "firstName, lastName," +
+                       "mobilePhone,homePhone, email," +
+                       "address, addressComplement, zipCode" +
+                       "nationality, identityNumber, socialNumber" +
+                       "birthdayDate, age, iban, typeContract, joinDate";
 
-
-    fakeEmployees.push(newEmployee);   
-    return fakeEmployees; 
+    const allValues =   [newEmployee.firstName,newEmployee.lastName, 
+                        newEmployee.mobilePhone,newEmployee.homePhone,newEmployee.email,
+                        newEmployee.address, newEmployee.adressComplement,newEmployee.zipCode,
+                        newEmployee.nationality, newEmployee.identityNumber,newEmployee.socialNumber,
+                        newEmployee.birthdayDate, newEmployee.age,newEmployee.iban, newEmployee.typeContract, newEmployee.joinDate]               
+  
+   connectionDB.query('INSERT INTO employees ( ' + allColumns + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+   allValues,
+   function (error, results, fields) {
+    if (error) throw error;
+    
+    console.log("Employee created with the id: " + results.insertId)
+    newEmployee = results.id;
+  });
+    //fakeEmployees.push(newEmployee);   
+    return newEmployee; 
   }
 
   updateEmployee(id, bodyEmployee){
