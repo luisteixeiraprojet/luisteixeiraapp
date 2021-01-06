@@ -4,6 +4,7 @@
 const fakeEmployees = require('../models/employeesFakeDB'); //all the content of employeeFakeDB is inside this variable
 const Employee = require('../models/employee');
 const employees = require('../models/employeesFakeDB');
+const connectionDB = require('../models/connectionDB');
 
 
 class EmployeeDAO{
@@ -21,7 +22,16 @@ class EmployeeDAO{
 
   createEmployee(employeeObject){
     //add to the fake db of employees
-    let id = fakeEmployees.length +1;
+    //let id = fakeEmployees.length +1;
+    
+
+   connectionDB.query('INSERT INTO employees (firstName, lastName, mobilePhone) VALUES (?,?,?)',
+     [employeeObject.firstName, employeeObject.lastName, employeeObject.mobilePhone],
+     function (error, results, fields) {
+      if (error) throw error;
+      
+      console.log("Employee created with the id: " + result.insertId)
+    });
 
     const newEmployee = new Employee();
     newEmployee.id = id;
@@ -43,7 +53,8 @@ class EmployeeDAO{
     newEmployee.typeContract     = employeeObject.typeContract;
   
     console.log("sobre o novo employee " + JSON.stringify(newEmployee));
-    
+
+
     fakeEmployees.push(newEmployee);   
     return fakeEmployees; 
   }

@@ -1,9 +1,11 @@
+//Import other Modules
+const connectionDB = require('../models/connectionDB');
 
 
-
+//CREATE TABLE EMPLOYEES
 function createTableEmployees(){
 
-    let employeesTable = "CREATE TABLE `employees` ("  +
+    let employeesTable = "CREATE TABLE `employees22222` ("  +
         "`id` INT(11) NOT NULL AUTO_INCREMENT," +
         "`joinDate` VARCHAR(50) NULL," +
         "`firstName` VARCHAR(50) NOT NULL," +
@@ -25,18 +27,13 @@ function createTableEmployees(){
    " );"
 
 //conexao DB
-var mysql = require('mysql');
-var connection = mysql.createConnection(process.env.JAWSDB_URL);
 
-connection.connect();
-
-connection.query(employeesTable, function(err, rows, fields) {
+connectionDB.connect();
+connectionDB.query(employeesTable, function(err, rows, fields) {
   if (err) throw err;
-
   console.log('The solution is: ', rows[0].solution);
 });
-
-connection.end();
+connectionDB.end();
 }
 
 //export to be use par other modules

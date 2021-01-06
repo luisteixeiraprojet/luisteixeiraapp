@@ -7,6 +7,7 @@ const router = express.Router(); //the router that will be used in app.js
 const employeeDAO = require('../controlleur/employeeDataFunctions');
 const tableEmployees = require('../models/tablesDB');
 
+
 //Create table
 router.get('/createTable', function (req, res) {
   console.log("get: http://localhost:3000/employees/createTable");
