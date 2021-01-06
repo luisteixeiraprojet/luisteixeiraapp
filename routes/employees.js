@@ -32,10 +32,11 @@ router.get('/:id', (req, res) => {
 
  
 //READ
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     console.log("get: http://localhost:3000/employees");
     //get all employees
-    const allEmployees = employeeDAO.getAllEmployees();
+    const allEmployees = await employeeDAO.getAllEmployees();
+    console.log('em all employees tem funcçao getall com: ' + allEmployees)
     res.send(allEmployees);
     //Add error sent in case of bad connection to the DB
   });
