@@ -56,7 +56,7 @@ class EmployeeDAO{
                         newEmployee.address, newEmployee.adressComplement,newEmployee.zipCode,
                         newEmployee.nationality, newEmployee.identityNumber,newEmployee.socialNumber,
                         newEmployee.birthdayDate, newEmployee.age,newEmployee.iban, newEmployee.typeContract, newEmployee.joinDate]               
-  
+/*
 connectionDB.query('INSERT INTO employees (firstName, lastName, mobilePhone, homePhone, email, address, addressComplement, zipCode, nationality, identityNumber, socialNumber,birthdayDate, age, iban, typeContract, joinDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
   [newEmployee.firstName,newEmployee.lastName, 
     newEmployee.mobilePhone,newEmployee.homePhone,newEmployee.email,
@@ -72,7 +72,7 @@ connectionDB.query('INSERT INTO employees (firstName, lastName, mobilePhone, hom
   });
     fakeEmployees.push(newEmployee);   
     return newEmployee; 
-  }
+  }*/
       
 
   /* connectionDB.query('INSERT INTO employees ( ' + allColumns + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
