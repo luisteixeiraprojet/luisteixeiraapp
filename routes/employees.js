@@ -18,7 +18,7 @@ router.get('/createTable', function (req, res) {
 
 //CRUD Employees // API - interface
 //get employee by id 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     console.log("getById : http://localhost:3000/employees/1");
 
     //verify employee existance searching him by his id
@@ -31,12 +31,12 @@ router.get('/:id', (req, res) => {
   });
 
  
-//READ
+//READ - get all
+//async because there's a promisse
 router.get('/', async (req, res) => {
     console.log("get: http://localhost:3000/employees");
     //get all employees
     const allEmployees = await employeeDAO.getAllEmployees();
-    console.log('em all employees tem funcçao getall com: ' + allEmployees)
     res.send(allEmployees);
     //Add error sent in case of bad connection to the DB
   });

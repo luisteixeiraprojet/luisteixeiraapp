@@ -37,15 +37,24 @@ class EmployeeDAO{
   }
 
 
-/*
-
-  getEmployeeById(id){
+  async getEmployeeById(id){
     //search it in DB
-    const employeeById = fakeEmployees.find(eachEmployee => eachEmployee.id === id); 
-    if(!employeeById) return false;
-    return employeeById;
-  }
+    //const employeeById = fakeEmployees.find(eachEmployee => eachEmployee.id === id); 
+    //if(!employeeById) return false;
+    //return employeeById;
 
+      const result = await pool.query('SELECT * from employees WHERE id = ?', [id]);
+      console.log("result tem a promisse com a query ById" + result);
+      if (result[0].length < 1) {
+        throw new Error('There is no employee with that id ');
+      }
+      console.log("o result[0][0] no return é: " + result[0][0]);
+      return result[0][0];
+    
+    }
+
+  }
+/*
   createEmployee(employeeObject){
     //add to the fake db of employees
     //let id = fakeEmployees.length +1;
