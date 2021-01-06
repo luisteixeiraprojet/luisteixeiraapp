@@ -9,7 +9,7 @@ const connectionDB = require('../models/connectionDB');
 
 class EmployeeDAO{
 
-  getAllEmployees(){
+  async getAllEmployees(){
 
     let table = ['employees'];
 
