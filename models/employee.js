@@ -24,4 +24,5 @@ class Employee{
 
 }
 
+//export so other modules can access it
 module.exports = Employee;

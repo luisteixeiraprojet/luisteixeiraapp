@@ -35,3 +35,6 @@ connection.query(employeesTable, function(err, rows, fields) {
 
 connection.end();
 }
+
+//export to be use par other modules
+modules.exports = createTableEmployees;
