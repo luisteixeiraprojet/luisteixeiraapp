@@ -8,7 +8,7 @@ const connectionDB = require('../models/connectionDB');
 
 
 class EmployeeDAO{
-
+/*
   async getAllEmployees(){
 
     let table = ['employees'];
@@ -25,8 +25,20 @@ class EmployeeDAO{
   console.log("allEmployees : " + JSON.stringify(allEmployees));
   console.log("rows : " + JSON.stringify(rows));
     return rows; 
+  } */
+  async getAllEmployees() {
+
+    const result = await pool.query('SELECT * from employees');
+    if (result[0].length < 1) {
+      throw new Error('No employees were found');
+    }
+    console.log("results is: " + JSON.stringify(result));
+    return result[0];
   }
- 
+
+
+
+
   getEmployeeById(id){
     //search it in DB
     const employeeById = fakeEmployees.find(eachEmployee => eachEmployee.id === id); 

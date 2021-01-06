@@ -28,12 +28,12 @@ function createTableEmployees(){
 
 //conexao DB
 
-connectionDB.connect();
-connectionDB.query(employeesTable, function(err, rows, fields) {
+
+pool.query(employeesTable, function(err, rows, fields) {
   if (err) throw err;
   console.log('The solution is: ', rows[0].solution);
 });
-connectionDB.end();
+
 }
 
 //export to be use par other modules
