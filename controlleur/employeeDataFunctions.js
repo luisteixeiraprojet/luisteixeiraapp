@@ -32,8 +32,8 @@ class EmployeeDAO{
     if (result[0].length < 1) {
       throw new Error('No employees were found');
     }
-    console.log("results is: " + JSON.stringify(result));
-    return result[0];
+    console.log("results is: " + JSON.stringify(result[0]));
+    return JSON.stringify(result[0]);
   }
 
 
