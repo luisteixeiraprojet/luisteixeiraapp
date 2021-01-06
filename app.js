@@ -16,9 +16,7 @@ app.get('/', (req, res) => {
   //get all employees
  
   res.send("OK");
-
 });
-
 
 //conexao DB
 var mysql = require('mysql');

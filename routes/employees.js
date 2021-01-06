@@ -5,6 +5,7 @@ const router = express.Router(); //the router that will be used in app.js
 
 //Import other Modules
 const employeeDAO = require('../controlleur/employeeDataFunctions');
+const tableEmployees = require('../models/tablesDB');
 
 
 //CRUD Employees // API - interface
@@ -84,7 +85,7 @@ function validateEmployee(theEmployee){
     email            : Joi.string().email().allow(null, ''),
     address          : Joi.string().allow(null, ''),
     addressComplement: Joi.string().allow(null, ''),
-    zipCode          : Joi.number().integer().allow(null, ''),
+    zipCode          : Joi.string().allow(null, ''),
     nationality      : Joi.string().allow(null, ''),
     identityNumber   : Joi.string().allow(null, ''),
     socialNumber     : Joi.string().allow(null, ''),
@@ -95,6 +96,14 @@ function validateEmployee(theEmployee){
   });
   return schema.validate(theEmployee);
 }
+
+router.post('/createTable', function (req, res) {
+  console.log("post: http://localhost:3000/employees/createTable");
+  
+  const creationEmployeesTable = tableEmployees.creattionEmployeesTable();
+  res.send(creationEmployeesTable);
+});
+
 
 //export the router
 module.exports = router;
