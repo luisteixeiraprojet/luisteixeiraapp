@@ -47,8 +47,8 @@ class EmployeeDAO{
     //query
     const allColumns = "firstName, lastName," +
                        "mobilePhone,homePhone, email," +
-                       "address, addressComplement, zipCode" +
-                       "nationality, identityNumber, socialNumber" +
+                       "address, addressComplement, zipCode," +
+                       "nationality, identityNumber, socialNumber," +
                        "birthdayDate, age, iban, typeContract, joinDate";
 
     const allValues =   [newEmployee.firstName,newEmployee.lastName, 
@@ -57,7 +57,25 @@ class EmployeeDAO{
                         newEmployee.nationality, newEmployee.identityNumber,newEmployee.socialNumber,
                         newEmployee.birthdayDate, newEmployee.age,newEmployee.iban, newEmployee.typeContract, newEmployee.joinDate]               
   
-   connectionDB.query('INSERT INTO employees ( ' + allColumns + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+connectionDB.query('INSERT INTO employees ( firstName, lastName,mobilePhone,homePhone, email,address, addressComplement, zipCode,nationality, identityNumber, socialNumber,birthdayDate, age, iban, typeContract, joinDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+  [newEmployee.firstName,newEmployee.lastName, 
+    newEmployee.mobilePhone,newEmployee.homePhone,newEmployee.email,
+    newEmployee.address, newEmployee.adressComplement,newEmployee.zipCode,
+    newEmployee.nationality, newEmployee.identityNumber,newEmployee.socialNumber,
+    newEmployee.birthdayDate, newEmployee.age,newEmployee.iban, newEmployee.typeContract, newEmployee.joinDate],
+   
+    function (error, results, fields) {
+    if (error) throw error;
+    
+    console.log("Employee created with the id: " + results.insertId)
+    newEmployee = results.id;
+  });
+    fakeEmployees.push(newEmployee);   
+    return newEmployee; 
+  }
+      
+
+  /* connectionDB.query('INSERT INTO employees ( ' + allColumns + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
    allValues,
    function (error, results, fields) {
     if (error) throw error;
@@ -65,9 +83,9 @@ class EmployeeDAO{
     console.log("Employee created with the id: " + results.insertId)
     newEmployee = results.id;
   });
-    //fakeEmployees.push(newEmployee);   
+    fakeEmployees.push(newEmployee);   
     return newEmployee; 
-  }
+  }*/
 
   updateEmployee(id, bodyEmployee){
     //search by id in the DB
