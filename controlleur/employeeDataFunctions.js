@@ -4,7 +4,7 @@
 const fakeEmployees = require('../models/employeesFakeDB'); //all the content of employeeFakeDB is inside this variable
 const Employee = require('../models/employee');
 const employees = require('../models/employeesFakeDB');
-const connectionDB = require('../models/connectionDB');
+const poolConnectDB = require('../models/connectionDB');
 
 
 class EmployeeDAO{
@@ -28,7 +28,7 @@ class EmployeeDAO{
   } */
   async getAllEmployees() {
 
-    const result = await pool.query('SELECT * from employees');
+    const result = await poolConnectDB.query('SELECT * from employees');
     if (result[0].length < 1) {
       throw new Error('No employees were found');
     }
