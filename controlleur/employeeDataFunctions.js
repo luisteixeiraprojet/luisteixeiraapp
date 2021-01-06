@@ -37,7 +37,7 @@ class EmployeeDAO{
   }
 
 
-
+/*
 
   getEmployeeById(id){
     //search it in DB
@@ -121,7 +121,7 @@ class EmployeeDAO{
     const indexEmployeeToDelete = fakeEmployees.indexOf(employeeToDelete);
     fakeEmployees.splice(indexEmployeeToDelete, 1);
     return fakeEmployees;
-  }
+  }*/
 
 }
 
