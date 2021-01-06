@@ -10,7 +10,27 @@ const connectionDB = require('../models/connectionDB');
 class EmployeeDAO{
 
   getAllEmployees(){
-    return fakeEmployees;
+
+    let table = ['employees'];
+
+    let allEmployees;
+
+    connectionDB.connect();
+    connectionDB.query('SELECT * from ??',
+    table,
+    function (error, results, fields) {
+    if (error) throw error;
+
+    allEmployees = results;
+    
+    connectionDB.end();
+    console.log("o nome de todos os employees: " + results);
+  });
+       
+    return allEmployees; 
+
+
+   
   }
  
   getEmployeeById(id){
