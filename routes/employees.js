@@ -11,7 +11,7 @@ const tableEmployees = require('../models/tablesDB');
 router.get('/createTable', function (req, res) {
   console.log("get: http://localhost:3000/employees/createTable");
   
-  const creationEmployeesTable = tableEmployees.createTableEmployees();
+  const creationEmployeesTable = tableEmployees();
   res.send(creationEmployeesTable);
 });
 
