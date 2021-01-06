@@ -1,3 +1,6 @@
+
+
+
 function createTableEmployees(){
 
     let employeesTable = "CREATE TABLE `employees` ("  +
