@@ -75,7 +75,7 @@ connectionDB.query('INSERT INTO employees (firstName, lastName, mobilePhone, hom
   }*/
       
 
-  /* connectionDB.query('INSERT INTO employees ( ' + allColumns + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+  /connectionDB.query('INSERT INTO employees ( ' + allColumns + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
    allValues,
    function (error, results, fields) {
     if (error) throw error;
@@ -85,7 +85,7 @@ connectionDB.query('INSERT INTO employees (firstName, lastName, mobilePhone, hom
   });
     fakeEmployees.push(newEmployee);   
     return newEmployee; 
-  }*/
+  }
 
   updateEmployee(id, bodyEmployee){
     //search by id in the DB
