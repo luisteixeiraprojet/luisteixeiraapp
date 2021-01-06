@@ -48,8 +48,8 @@ class EmployeeDAO{
       if (result[0].length < 1) {
         throw new Error('There is no employee with that id ');
       }
-      console.log("o result[0][0] no return é: " + result[0][0]);
-      return result[0][0];
+      console.log("o result[0][0] no return é: " + JSON.stringify(result[0][0]));
+      return JSON.stringify(result[0][0]);
     
     }
 
