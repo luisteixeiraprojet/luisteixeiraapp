@@ -16,7 +16,7 @@ class EmployeeDAO{
     let allEmployees;
 
     connectionDB.connect();
-    connectionDB.query('SELECT * from ??',
+   const rows = await connectionDB.query('SELECT * from ??',
     table,
     function (error, results, fields) {
     if (error) throw error;
@@ -26,11 +26,9 @@ class EmployeeDAO{
     connectionDB.end();
     console.log("o nome de todos os employees: " + JSON.stringify(results));
   });
-       
+  console.log("allEmployees : " + JSON.stringify(allEmployees));
+  console.log("rows : " + JSON.stringify(rows));
     return allEmployees; 
-
-
-   
   }
  
   getEmployeeById(id){
