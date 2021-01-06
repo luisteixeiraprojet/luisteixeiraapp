@@ -7,6 +7,13 @@ const router = express.Router(); //the router that will be used in app.js
 const employeeDAO = require('../controlleur/employeeDataFunctions');
 const tableEmployees = require('../models/tablesDB');
 
+//Create table
+router.get('/createTable', function (req, res) {
+  console.log("get: http://localhost:3000/employees/createTable");
+  
+  const creationEmployeesTable = tableEmployees.createTableEmployees();
+  res.send(creationEmployeesTable);
+});
 
 //CRUD Employees // API - interface
 //get employee by id 
@@ -74,6 +81,9 @@ router.delete('/:id', function (req, res) {
     res.send(deletedEmployee);
 });
 
+
+
+
 //validate inputs employee - used for create and update employees
 function validateEmployee(theEmployee){
   const schema = Joi.object({
@@ -96,13 +106,6 @@ function validateEmployee(theEmployee){
   });
   return schema.validate(theEmployee);
 }
-
-router.get('/createTable', function (req, res) {
-  console.log("get: http://localhost:3000/employees/createTable");
-  
-  const creationEmployeesTable = tableEmployees.createTableEmployees();
-  res.send(creationEmployeesTable);
-});
 
 
 //export the router
