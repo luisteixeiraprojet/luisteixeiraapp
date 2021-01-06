@@ -15,7 +15,7 @@ function createTableEmployees(){
         "`identityNumber` VARCHAR(50) NULL," +
         "`socialNumber` VARCHAR(50) NULL," +
         "`birthdayDate` VARCHAR(50) NULL," +
-        "`age ` VARCHAR(50) NULL," +
+        "`age` VARCHAR(50) NULL," +
         "`iban` VARCHAR(50) NULL," +
         "`typeContract` VARCHAR(50) NULL," +
         "PRIMARY KEY (`id`) USING BTREE"  +
