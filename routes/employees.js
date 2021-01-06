@@ -63,7 +63,7 @@ router.put('/:id',  (req, res) => {
       return;
     } 
     
-    // 2. verify employee existance searching him by his id
+    // 2. DB search employee by his id
     const employeeToChange = employeeDAO.updateEmployee(parseInt(req.params.id), req.body); //false ou employee
     if(!employeeToChange) {
       res.status(404).send("Cet utilisateur n'existe pas");
