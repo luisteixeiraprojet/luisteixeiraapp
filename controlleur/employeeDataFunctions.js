@@ -30,11 +30,11 @@ class EmployeeDAO{
      function (error, results, fields) {
       if (error) throw error;
       
-      console.log("Employee created with the id: " + result.insertId)
+      console.log("Employee created with the id: " + results.insertId)
     });
 
     const newEmployee = new Employee();
-    newEmployee.id = id;
+   // newEmployee.id = id;
     newEmployee.joinDate         = employeeObject.joinDate;
     newEmployee.firstName        = employeeObject.firstName;
     newEmployee.lastName         = employeeObject.lastName;
