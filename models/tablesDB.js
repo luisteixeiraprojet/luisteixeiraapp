@@ -37,4 +37,4 @@ connection.end();
 }
 
 //export to be use par other modules
-modules.exports = createTableEmployees;
+module.exports = createTableEmployees;
