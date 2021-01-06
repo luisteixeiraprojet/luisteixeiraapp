@@ -130,9 +130,9 @@ class EmployeeDAO{
     const indexEmployeeToDelete = fakeEmployees.indexOf(employeeToDelete);
     fakeEmployees.splice(indexEmployeeToDelete, 1);
     return fakeEmployees;
-  }*/
+  }
 
-}
+}*/
 
 //export to become accessible by other modules
 module.exports = new EmployeeDAO(); 
