@@ -24,7 +24,7 @@ class EmployeeDAO{
     allEmployees = results;
     
     connectionDB.end();
-    console.log("o nome de todos os employees: " + results);
+    console.log("o nome de todos os employees: " + JSON.stringify(results)
   });
        
     return allEmployees; 
