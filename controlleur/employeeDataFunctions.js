@@ -81,6 +81,7 @@ class EmployeeDAO{
 //_________________________________________________________________
   async updateEmployee(id, bodyEmployee){
 
+      console.log("o id passado é " + id);
       //search by id in the DB
       const updateThisEmployee = this.getEmployeeById(id); 
       console.log("Pelo id dado o employee a fazer update é: " + JSON.stringify(updateThisEmployee));
