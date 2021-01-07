@@ -89,7 +89,6 @@ class EmployeeDAO{
                         newEmployee.nationality, newEmployee.identityNumber,newEmployee.socialNumber,
                         newEmployee.birthdayDate, newEmployee.age,newEmployee.iban, newEmployee.typeContract, newEmployee.joinDate];          
 
-    
     await poolConnectDB.query('INSERT INTO employees ( ' + demandedInfos + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
     newEmployeeInfos,
     function (error, results, fields) {
@@ -99,7 +98,8 @@ class EmployeeDAO{
     newEmployee.id = results.id;
  
   });
-    fakeEmployees.push(newEmployee);   
+    //fakeEmployees.push(newEmployee);   
+    console.log("O novo empregado é: " + newEmployee);
     return newEmployee; 
 
   }
