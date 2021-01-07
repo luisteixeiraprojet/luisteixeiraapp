@@ -86,16 +86,16 @@ class EmployeeDAO{
       console.log("Pelo id dado o employee a fazer update é: " + JSON.stringify(updateThisEmployee));
       if(!updateThisEmployee) return false;
 
+      console.log("o nome antes da query é: " + bodyEmployee.firstName);
+
       //variables to use
       const demandedInfos = "firstName, lastName," +
                             "mobilePhone,homePhone, email," +
                             "address, addressComplement, zipCode," +
                             "nationality, identityNumber, socialNumber," +
                             "birthdayDate, age, iban, typeContract, joinDate";
-
-
       //update
-      await poolConnectDB.query('UPDATE employees SET firstName = "update à mao" WHERE id = ' + id);
+      await poolConnectDB.query('UPDATE employees SET firstname = '  + bodyEmployee.firstName + ' WHERE id = ' + id);
       [],
       function (error, results, fields) {
       if (error) throw error;
