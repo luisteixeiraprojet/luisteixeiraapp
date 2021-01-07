@@ -83,7 +83,13 @@ class EmployeeDAO{
 
       console.log("o id passado é " + id);
       //search by id in the DB
-      const updateThisEmployee = this.getEmployeeById(id); 
+      try {
+        const updateThisEmployee = await this.getEmployeeById(id); 
+      } catch (error) {
+        console.log("Could not find this user by id:" + id);
+        console.log("erro: " + error.message);
+      }
+      
       console.log("Pelo id dado o employee a fazer update é: " + JSON.stringify(updateThisEmployee));
       if(!updateThisEmployee) return false;
 
