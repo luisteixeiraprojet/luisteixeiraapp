@@ -95,14 +95,15 @@ class EmployeeDAO{
                             "nationality, identityNumber, socialNumber," +
                             "birthdayDate, age, iban, typeContract, joinDate";
       //update
-      await poolConnectDB.query('UPDATE employees SET firstName = '  + bodyEmployee.firstName + ' WHERE id = ' + id);
+      let firstName = bodyEmployee.firstName;
+      await poolConnectDB.query('UPDATE employees SET firstName = '  + firstName + ' WHERE id = ' + id);
       [],
       function (error, results, fields) {
       if (error) throw error;
-      console.log("Os campos updated sao: " + results[0])
+      console.log("os campos que foram updated sao:  " + results.affectedRows);
     }
-    console.log("o employee a update é: " + updateThisEmployee.firstName);
-    return updateThisEmployee
+    console.log("o employee a update é : " + updateThisEmployee.firstName + ", id: " + updateThisEmployee.id);
+    return updateThisEmployee;
   };
 
     
