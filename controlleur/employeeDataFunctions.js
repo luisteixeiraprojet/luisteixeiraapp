@@ -52,7 +52,7 @@ class EmployeeDAO{
     
     }
 
-  }
+ 
   createEmployee(employeeObject){
     //add to the fake db of employees
     //let id = fakeEmployees.length +1;
@@ -103,7 +103,7 @@ class EmployeeDAO{
     return newEmployee; 
 
   }
-
+}
   /*
   updateEmployee(id, bodyEmployee){
     //search by id in the DB
