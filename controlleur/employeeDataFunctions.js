@@ -8,26 +8,7 @@ const poolConnectDB = require('../models/connectionDB');
 
 
 class EmployeeDAO{
-/*
-  async getAllEmployees(){
 
-    let table = ['employees'];
-
-    let allEmployees;
-
-    connectionDB.connect();
-  try {
-    const rows = await connectionDB.query('SELECT * from employees');
-  } catch (error) {
-    console.log("error: ", error.message)
-  }
-  
-  console.log("allEmployees : " + JSON.stringify(allEmployees));
-  console.log("rows : " + JSON.stringify(rows));
-    return rows; 
-  } */
-
-//_________________________________________________________________________
   async getAllEmployees() {
 
     const allEmployees = await poolConnectDB.query('SELECT * from employees');
@@ -36,7 +17,7 @@ class EmployeeDAO{
     }
     console.log("results is: " + JSON.stringify(allEmployees[0]));
     return allEmployees[0];
-  }
+  };
 
 //__________________________________________________________________________
   async getEmployeeById(id){
@@ -47,7 +28,7 @@ class EmployeeDAO{
         throw new Error('There is no employee with that id ');
       }
       return employeeById[0][0];
-    }
+    };
 
 //___________________________________________________________________________
   async createEmployee(employeeObject){
@@ -90,16 +71,12 @@ class EmployeeDAO{
     newEmployeeInfos,
     function (error, results, fields) {
     if (error) throw error;
-    
-    console.log("Employee created with the id: " + results.insertId)
-    newEmployee.id = results.id;
- 
-  });
+  })
     //fakeEmployees.push(newEmployee);   
     console.log("O novo empregado é: " + newEmployee);
     return newEmployee; 
 
-  }
+  };
 
 //_________________________________________________________________
   async updateEmployee(id, bodyEmployee){
@@ -120,19 +97,23 @@ class EmployeeDAO{
       let infosToUpdate = Object.keys(bodyEmployee).forEach(key => {
       if(bodyEmployee[key] != updateThisEmployee[key]){
         updateThisEmployee[key] = bodyEmployee[key];
-                        
+      }           
+    });
+
       //update
-      await poolConnectDB.query('UPDATE employees SET ?? = ' + infosToUpdate + '  WHERE id = ?' )
+      await poolConnectDB.query('UPDATE employees SET ?? = ' + infosToUpdate + '  WHERE id = ?')
       [demandedInfos,updateThisEmployee],
       function (error, results, fields) {
       if (error) throw error;
-      
       console.log("Os campos updated sao: " + results[0])
-     
     }
     console.log("o employee a update é: " + updateThisEmployee.firstName);
-  }
+    return updateThisEmployee
+  };
 
+    
+
+      
 /*
   updateEmployee(id, bodyEmployee){
     //search by id in the DB
@@ -151,7 +132,7 @@ class EmployeeDAO{
   }*/
 
 //_________________________________________________________________
-  async deleteEmployee(id) {
+  async deleteEmployee(id){
 
      //search by id in the DB
      const deleteThisEmployee = this.getEmployeeById(id); 
@@ -168,13 +149,7 @@ class EmployeeDAO{
         //fakeEmployees.push(newEmployee);   
         console.log("O empregado apagado é : " + deleteThisEmployee);
         return deleteThisEmployee; 
-  };
-
-}
-
+  }
+} 
 //export to become accessible by other modules
 module.exports = new EmployeeDAO(); 
-
-
-
-      
