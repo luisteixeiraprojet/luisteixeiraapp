@@ -43,13 +43,10 @@ class EmployeeDAO{
     
     //search it in DB
       const employeeById = await poolConnectDB.query('SELECT * from employees WHERE id = ?', [id]);
-      console.log("result tem a promisse com a query ById" + employeeById);
       if (employeeById[0].length < 1) {
         throw new Error('There is no employee with that id ');
       }
-      console.log("o result[0][0] no return é: " + JSON.stringify(employeeById[0][0]));
       return employeeById[0][0];
-    
     }
 
 //___________________________________________________________________________
@@ -103,23 +100,47 @@ class EmployeeDAO{
     return newEmployee; 
 
   }
-}
-  /*
-  updateEmployee(id, bodyEmployee){
+
+/*
+  async updateEmployee(id, bodyEmployee){
     //search by id in the DB
-    const theEmployee = this.getEmployeeById(id); 
-    if(!theEmployee) return false;
+    const updateThisEmployee = this.getEmployeeById(id); 
+    console.log("Pelo id dado o employee a fazer update é: " + updateThisEmployee);
+    if(!updateThisEmployee) return false;
 
     //loop all the updated properties of the newObject, compare with others already existents and update
     Object.keys(bodyEmployee).forEach(key => {
-      if(bodyEmployee[key] != theEmployee[key]){
-        theEmployee[key] = bodyEmployee[key];
+      if(bodyEmployee[key] != updateThisEmployee[key]){
+        updateThisEmployee[key] = bodyEmployee[key];
       }
     });
 
     return fakeEmployees;
-  }
+  }*/
 
+  async deleteEmployee(id) {
+
+     //search by id in the DB
+     const deleteThisEmployee = this.getEmployeeById(id); 
+     console.log("Pelo id dado o employee a fazer update é: " + deleteThisEmployee);
+     if(!deleteThisEmployee) return false;
+
+    let employeeId = [id];
+    await pool.query('DELETE FROM employees WHERE id = ?',
+      employeeId,
+      function (error, results, fields) {
+        if (error) throw error;
+        console.log("Employee p apagar tem id: " + employeeId);
+      });
+        //fakeEmployees.push(newEmployee);   
+        console.log("O empregado apagado é : " + deleteThisEmployee);
+        return deleteThisEmployee; 
+    
+    );
+  
+  }
+ 
+  /*
   deleteEmployee(id){
     //search it in DB
     const employeeToDelete = fakeEmployees.find(eachEmployee => eachEmployee.id === id); 
@@ -129,9 +150,9 @@ class EmployeeDAO{
     const indexEmployeeToDelete = fakeEmployees.indexOf(employeeToDelete);
     fakeEmployees.splice(indexEmployeeToDelete, 1);
     return fakeEmployees;
-  }
+  }*/
 
-}*/
+}
 
 //export to become accessible by other modules
 module.exports = new EmployeeDAO(); 

@@ -74,12 +74,12 @@ router.put('/:id',  (req, res) => {
   })
 
 //DELETE
-router.delete('/:id', function (req, res) {
+router.delete('/:id', async function (req, res) {
     console.log("delete: http://localhost:3000/employees/1");
     //Id to search it in DB
     const id = parseInt(req.params.id);
     //delete
-    const deletedEmployee = employeeDAO.deleteEmployee(id);
+    const deletedEmployee = await employeeDAO.deleteEmployee(id);
     res.send(deletedEmployee);
 });
 
