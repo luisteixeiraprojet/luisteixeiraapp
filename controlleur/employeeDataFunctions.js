@@ -93,16 +93,10 @@ class EmployeeDAO{
                             "nationality, identityNumber, socialNumber," +
                             "birthdayDate, age, iban, typeContract, joinDate";
 
-      //loop all the updated properties of the newObject, compare with others already existents and update
-      let infosToUpdate = Object.keys(bodyEmployee).forEach(key => {
-      if(bodyEmployee[key] != updateThisEmployee[key]){
-        updateThisEmployee[key] = bodyEmployee[key];
-      }           
-    });
 
       //update
-      await poolConnectDB.query('UPDATE employees SET ?? = ' + infosToUpdate + '  WHERE id = ?')
-      [demandedInfos,updateThisEmployee],
+      await poolConnectDB.query('UPDATE employees SET firstName = ' + bodyEmployee.firstName + '  WHERE id = ' + id);
+      [],
       function (error, results, fields) {
       if (error) throw error;
       console.log("Os campos updated sao: " + results[0])
