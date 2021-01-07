@@ -126,7 +126,7 @@ class EmployeeDAO{
      if(!deleteThisEmployee) return false;
 
     let employeeId = [id];
-    await pool.query('DELETE FROM employees WHERE id = ?',
+    await poolConnectDB.query('DELETE FROM employees WHERE id = ?',
       employeeId,
       function (error, results, fields) {
         if (error) throw error;
