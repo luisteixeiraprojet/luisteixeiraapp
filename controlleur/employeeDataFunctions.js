@@ -135,10 +135,7 @@ class EmployeeDAO{
         //fakeEmployees.push(newEmployee);   
         console.log("O empregado apagado é : " + deleteThisEmployee);
         return deleteThisEmployee; 
-    
-    );
-  
-  }
+  };
  
   /*
   deleteEmployee(id){
