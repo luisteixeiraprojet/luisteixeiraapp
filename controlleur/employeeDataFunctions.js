@@ -95,7 +95,7 @@ class EmployeeDAO{
                             "nationality, identityNumber, socialNumber," +
                             "birthdayDate, age, iban, typeContract, joinDate";
       //update
-      await poolConnectDB.query('UPDATE employees SET firstname = '  + bodyEmployee.firstName + ' WHERE id = ' + id);
+      await poolConnectDB.query('UPDATE employees SET firstName = '  + bodyEmployee.firstName + ' WHERE id = ' + id);
       [],
       function (error, results, fields) {
       if (error) throw error;
