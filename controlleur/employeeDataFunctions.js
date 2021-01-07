@@ -83,7 +83,7 @@ class EmployeeDAO{
 
       //search by id in the DB
       const updateThisEmployee = this.getEmployeeById(id); 
-      console.log("Pelo id dado o employee a fazer update é: " + updateThisEmployee);
+      console.log("Pelo id dado o employee a fazer update é: " + JSON.stringify(updateThisEmployee));
       if(!updateThisEmployee) return false;
 
       //variables to use
@@ -95,7 +95,7 @@ class EmployeeDAO{
 
 
       //update
-      await poolConnectDB.query('UPDATE employees SET firstName = ' + bodyEmployee.firstName + '  WHERE id = ' + id);
+      await poolConnectDB.query('UPDATE employees SET firstName = "update à mao" WHERE id = ' + id);
       [],
       function (error, results, fields) {
       if (error) throw error;
