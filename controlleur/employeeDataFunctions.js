@@ -96,12 +96,14 @@ class EmployeeDAO{
                             "birthdayDate, age, iban, typeContract, joinDate";
       //update
       let firstName = bodyEmployee.firstName;
-      await poolConnectDB.query('UPDATE employees SET firstName = '  + firstName + ' WHERE id = ' + id);
-      [],
-      function (error, results, fields) {
-      if (error) throw error;
-      console.log("os campos que foram updated sao:  " + results.affectedRows);
-    }
+      try {
+        let updatedEmployee = await poolConnectDB.query('UPDATE employees SET firstName = '  + firstName + ' WHERE id = ' + id);
+        console.log("o updatedEmployee " + JSON.stringify(updatedEmployee));
+      } catch (error) {
+        return error.message;
+      }
+      
+    
     console.log("o employee a update é : " + updateThisEmployee.firstName + ", id: " + updateThisEmployee.id);
     return updateThisEmployee;
   };
