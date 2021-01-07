@@ -55,7 +55,7 @@ router.post('/', async function (req, res) {
   });
 
 //UPDATE
-router.put('/:id',  (req, res) => {
+router.put('/:id', async (req, res) => {
     console.log("put: http://localhost:3000/employees/" + parseInt(req.params.id));
  //1. validate changed inputs
    const {error} = validateEmployee(req.body); //deconstructure to get error
@@ -65,7 +65,7 @@ router.put('/:id',  (req, res) => {
     } 
     
     // 2. DB search employee by his id
-    const employeeToChange = employeeDAO.updateEmployee(parseInt(req.params.id), req.body); //false ou employee
+    const employeeToChange = await employeeDAO.updateEmployee(parseInt(req.params.id), req.body); //false ou employee
     if(!employeeToChange) {
       res.status(404).send("Cet utilisateur n'existe pas");
     return;
@@ -73,14 +73,14 @@ router.put('/:id',  (req, res) => {
     res.send(employeeToChange);
   })
 
-//DELETE
+//DELETE 
 router.delete('/:id', async function (req, res) {
     console.log("delete: http://localhost:3000/employees/1");
     //Id to search it in DB
     const id = parseInt(req.params.id);
     //delete
     const deletedEmployee = await employeeDAO.deleteEmployee(id);
-    res.send(deletedEmployee);
+    res.send(deletedEmployee); //maybe return the list without the one deleted?
 });
 
 //validate inputs employee - used for create and update employees

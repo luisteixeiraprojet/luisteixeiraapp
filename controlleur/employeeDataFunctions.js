@@ -101,8 +101,40 @@ class EmployeeDAO{
 
   }
 
-/*
+//_________________________________________________________________
   async updateEmployee(id, bodyEmployee){
+
+      //search by id in the DB
+      const updateThisEmployee = this.getEmployeeById(id); 
+      console.log("Pelo id dado o employee a fazer update é: " + updateThisEmployee);
+      if(!updateThisEmployee) return false;
+
+      //variables to use
+      const demandedInfos = "firstName, lastName," +
+                            "mobilePhone,homePhone, email," +
+                            "address, addressComplement, zipCode," +
+                            "nationality, identityNumber, socialNumber," +
+                            "birthdayDate, age, iban, typeContract, joinDate";
+
+      //loop all the updated properties of the newObject, compare with others already existents and update
+      let infosToUpdate = Object.keys(bodyEmployee).forEach(key => {
+      if(bodyEmployee[key] != updateThisEmployee[key]){
+        updateThisEmployee[key] = bodyEmployee[key];
+                        
+      //update
+      await poolConnectDB.query('UPDATE employees SET ?? = ' + infosToUpdate + '  WHERE id = ?' )
+      [demandedInfos,updateThisEmployee],
+      function (error, results, fields) {
+      if (error) throw error;
+      
+      console.log("Os campos updated sao: " + results[0])
+     
+    }
+    console.log("o employee a update é: " + updateThisEmployee.firstName);
+  }
+
+/*
+  updateEmployee(id, bodyEmployee){
     //search by id in the DB
     const updateThisEmployee = this.getEmployeeById(id); 
     console.log("Pelo id dado o employee a fazer update é: " + updateThisEmployee);
@@ -118,6 +150,7 @@ class EmployeeDAO{
     return fakeEmployees;
   }*/
 
+//_________________________________________________________________
   async deleteEmployee(id) {
 
      //search by id in the DB
@@ -136,18 +169,6 @@ class EmployeeDAO{
         console.log("O empregado apagado é : " + deleteThisEmployee);
         return deleteThisEmployee; 
   };
- 
-  /*
-  deleteEmployee(id){
-    //search it in DB
-    const employeeToDelete = fakeEmployees.find(eachEmployee => eachEmployee.id === id); 
-    if(!employeeToDelete) return false;
-    
-    //delete
-    const indexEmployeeToDelete = fakeEmployees.indexOf(employeeToDelete);
-    fakeEmployees.splice(indexEmployeeToDelete, 1);
-    return fakeEmployees;
-  }*/
 
 }
 
