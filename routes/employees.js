@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
   });
 
 //CREATE
-router.post('/', function (req, res) {
+router.post('/', async function (req, res) {
     console.log("post: http://localhost:3000/employees");
     //validate inputs (JOi)
     const {error} = validateEmployee(req.body); //desconstructure to get error
@@ -50,7 +50,7 @@ router.post('/', function (req, res) {
     res.status(400).send(error.details[0].message);
     return;
     } 
-    const createdEmployee = employeeDAO.createEmployee(req.body);
+    const createdEmployee = await employeeDAO.createEmployee(req.body);
     res.send(createdEmployee);
   });
 
@@ -82,9 +82,6 @@ router.delete('/:id', function (req, res) {
     const deletedEmployee = employeeDAO.deleteEmployee(id);
     res.send(deletedEmployee);
 });
-
-
-
 
 //validate inputs employee - used for create and update employees
 function validateEmployee(theEmployee){

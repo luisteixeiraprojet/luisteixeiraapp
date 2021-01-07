@@ -26,35 +26,33 @@ class EmployeeDAO{
   console.log("rows : " + JSON.stringify(rows));
     return rows; 
   } */
+
+//_________________________________________________________________________
   async getAllEmployees() {
 
-    const result = await poolConnectDB.query('SELECT * from employees');
-    if (result[0].length < 1) {
+    const allEmployees = await poolConnectDB.query('SELECT * from employees');
+    if (allEmployees[0].length < 1) {
       throw new Error('No employees were found');
     }
-    console.log("results is: " + JSON.stringify(result[0]));
-    return result[0];
+    console.log("results is: " + JSON.stringify(allEmployees[0]));
+    return allEmployees[0];
   }
 
-
+//__________________________________________________________________________
   async getEmployeeById(id){
+    
     //search it in DB
-    //const employeeById = fakeEmployees.find(eachEmployee => eachEmployee.id === id); 
-    //if(!employeeById) return false;
-    //return employeeById;
-
-      const result = await poolConnectDB.query('SELECT * from employees WHERE id = ?', [id]);
-      console.log("result tem a promisse com a query ById" + result);
-      if (result[0].length < 1) {
+      const employeeById = await poolConnectDB.query('SELECT * from employees WHERE id = ?', [id]);
+      console.log("result tem a promisse com a query ById" + employeeById);
+      if (employeeById[0].length < 1) {
         throw new Error('There is no employee with that id ');
       }
-      console.log("o result[0][0] no return é: " + JSON.stringify(result[0][0]));
-      return result[0][0];
+      console.log("o result[0][0] no return é: " + JSON.stringify(employeeById[0][0]));
+      return employeeById[0][0];
     
     }
 
   }
-/*
   createEmployee(employeeObject){
     //add to the fake db of employees
     //let id = fakeEmployees.length +1;
@@ -79,33 +77,34 @@ class EmployeeDAO{
     newEmployee.joinDate         = employeeObject.joinDate;
   
     //query
-    const allColumns = "firstName, lastName," +
+    const demandedInfos = "firstName, lastName," +
                        "mobilePhone,homePhone, email," +
                        "address, addressComplement, zipCode," +
                        "nationality, identityNumber, socialNumber," +
                        "birthdayDate, age, iban, typeContract, joinDate";
 
-    const allValues =   [newEmployee.firstName,newEmployee.lastName, 
+    const newEmployeeInfos = [newEmployee.firstName,newEmployee.lastName, 
                         newEmployee.mobilePhone,newEmployee.homePhone,newEmployee.email,
                         newEmployee.address, newEmployee.adressComplement,newEmployee.zipCode,
                         newEmployee.nationality, newEmployee.identityNumber,newEmployee.socialNumber,
                         newEmployee.birthdayDate, newEmployee.age,newEmployee.iban, newEmployee.typeContract, newEmployee.joinDate];          
 
-    connectionDB.connect();
-    connectionDB.query('INSERT INTO employees ( ' + allColumns + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-    allValues,
+    
+    await poolConnectDB.query('INSERT INTO employees ( ' + demandedInfos + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+    newEmployeeInfos,
     function (error, results, fields) {
     if (error) throw error;
     
     console.log("Employee created with the id: " + results.insertId)
     newEmployee.id = results.id;
-    connectionDB.end();
+ 
   });
     fakeEmployees.push(newEmployee);   
     return newEmployee; 
 
   }
 
+  /*
   updateEmployee(id, bodyEmployee){
     //search by id in the DB
     const theEmployee = this.getEmployeeById(id); 
