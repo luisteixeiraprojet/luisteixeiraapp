@@ -5,16 +5,6 @@ const router = express.Router(); //the router that will be used in app.js
 
 //Import other Modules
 const employeeDAO = require('../controlleur/employeeDataFunctions');
-const tableEmployees = require('../models/tablesDB');
-
-
-//Create table
-router.get('/createTable', function (req, res) {
-  console.log("get: http://localhost:3000/employees/createTable");
-  
-  const creationEmployeesTable = tableEmployees();
-  res.send(creationEmployeesTable);
-});
 
 //CRUD Employees // API - interface
 //get employee by id 
@@ -27,7 +17,7 @@ router.get('/:id', async (req, res) => {
       res.status(404).send("Cet utilisateur n'existe pas"); 
       return;
     }  
-    res.send(employeeExists);
+    res.send(employeeExists.safeUserDetailed());
   });
 
  
@@ -38,7 +28,7 @@ router.get('/', async (req, res) => {
     //get all employees
     const allEmployees = await employeeDAO.getAllEmployees();
     res.send(allEmployees);
-    //Add error sent in case of bad connection to the DB
+    //Add error sent in case of bad connection to the DB??
   });
 
 //CREATE
@@ -65,7 +55,15 @@ router.put('/:id', async (req, res) => {
     } 
     
     // 2. DB search employee by his id
-    const employeeToChange = await employeeDAO.updateEmployee(parseInt(req.params.id), req.body); //false ou employee
+    let employeeToChange;
+    try {
+      employeeToChange = await employeeDAO.updateEmployee(parseInt(req.params.id), req.body); //false ou employee
+    
+    } catch (error) {
+      return error.message;
+    }
+
+   
     if(!employeeToChange) {
       res.status(404).send("Cet utilisateur n'existe pas");
     return;
@@ -86,7 +84,6 @@ router.delete('/:id', async function (req, res) {
 //validate inputs employee - used for create and update employees
 function validateEmployee(theEmployee){
   const schema = Joi.object({
-    joinDate         : Joi.string().isoDate(),
     firstName        : Joi.string().min(2).required(),
     lastName         : Joi.string().min(2).required(),
     mobilePhone      : Joi.string().min(9).max(18).required(),
@@ -98,10 +95,15 @@ function validateEmployee(theEmployee){
     nationality      : Joi.string().allow(null, ''),
     identityNumber   : Joi.string().allow(null, ''),
     socialNumber     : Joi.string().allow(null, ''),
-    birthdayDate     : Joi.string().isoDate().allow(null, ''),
-    age              : Joi.string().max(2).allow(null, ''),
+    birthdayDate     : Joi.date().iso().allow(null, ''),
+    age              : Joi.number().allow(null, ''),
     iban             : Joi.string().allow(null, ''),
-    typeContract     : Joi.string().allow(null, '')
+    typeContract     : Joi.string().allow(null, ''),
+    joinDate         : Joi.date().iso().allow(null, ''),
+    hourlyPrice      : Joi.number().allow(null, ''),
+    userName         : Joi.string().allow(null, ''),
+    password         : Joi.string().allow(null, ''),
+    sessionId        : Joi.string().allow(null, '')
   });
   return schema.validate(theEmployee);
 }

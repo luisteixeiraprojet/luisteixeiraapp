@@ -23,11 +23,15 @@ class EmployeeDAO{
   async getEmployeeById(id){
     
     //search it in DB
-      const employeeById = await poolConnectDB.query('SELECT * from employees WHERE id = ?', [id]);
-      if (employeeById[0].length < 1) {
+      const rowsDb = await poolConnectDB.query('SELECT * from employees WHERE Id_employee= ?', [id]); //all rows
+      if (rowsDb[0].length < 1) {
         throw new Error('There is no employee with that id ');
       }
-      return employeeById[0][0];
+      let employee = new Employee();
+      employee.fillEmployeeInfo(rowsDb[0][0]);
+      console.log("--------o employee depois de filled " + JSON.stringify(employee));
+      //console.log("Employee by id is : " + JSON.stringify(employee));
+      return employee;
     };
 
 //___________________________________________________________________________
@@ -53,27 +57,36 @@ class EmployeeDAO{
     newEmployee.iban             = employeeObject.iban;
     newEmployee.typeContract     = employeeObject.typeContract;
     newEmployee.joinDate         = employeeObject.joinDate;
+    newEmployee.hourlyPrice      = employeeObject.hourlyPrice;
+    newEmployee.userName         = employeeObject.userName;
+    newEmployee.password         = employeeObject.password;
+    newEmployee.sessionId        = employeeObject.sessionId;
   
     //query
     const demandedInfos = "firstName, lastName," +
                        "mobilePhone,homePhone, email," +
                        "address, addressComplement, zipCode," +
                        "nationality, identityNumber, socialNumber," +
-                       "birthdayDate, age, iban, typeContract, joinDate";
+                       "birthdayDate, age, iban, typeContract, joinDate," +
+                       "hourlyPrice, userName, password, sessionId";
 
     const newEmployeeInfos = [newEmployee.firstName,newEmployee.lastName, 
                         newEmployee.mobilePhone,newEmployee.homePhone,newEmployee.email,
                         newEmployee.address, newEmployee.adressComplement,newEmployee.zipCode,
                         newEmployee.nationality, newEmployee.identityNumber,newEmployee.socialNumber,
-                        newEmployee.birthdayDate, newEmployee.age,newEmployee.iban, newEmployee.typeContract, newEmployee.joinDate];          
-
-    await poolConnectDB.query('INSERT INTO employees ( ' + demandedInfos + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-    newEmployeeInfos,
-    function (error, results, fields) {
-    if (error) throw error;
-  })
+                        newEmployee.birthdayDate, newEmployee.age,newEmployee.iban, newEmployee.typeContract, newEmployee.joinDate, newEmployee.hourlyPrice, newEmployee.userName, newEmployee.password, newEmployee.sessionId];          
+    try {
+      await poolConnectDB.query('INSERT INTO employees ( ' + demandedInfos + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+    newEmployeeInfos);
+    } catch (error) {
+      console.log("deu erro: " + error );
+      return error.message;
+    }                 
+    
+    
     //fakeEmployees.push(newEmployee);   
     console.log("O novo empregado é: " + newEmployee);
+    newEmployee.id = employeeObject.id ;
     return newEmployee; 
 
   };
@@ -81,59 +94,59 @@ class EmployeeDAO{
 //_________________________________________________________________
   async updateEmployee(id, bodyEmployee){
 
-      console.log("o id passado é " + id);
+      console.log("o id passado é " + id)
       //search by id in the DB
+      let updateThisEmployee;
       try {
-        const updateThisEmployee = await this.getEmployeeById(id); 
+        updateThisEmployee = await this.getEmployeeById(id); //object Employee
+        console.log("----------------------" + updateThisEmployee.firstName + ' ' + updateThisEmployee.Id_employee);
       } catch (error) {
         console.log("Could not find this user by id:" + id);
         console.log("erro: " + error.message);
       }
-      
-      console.log("Pelo id dado o employee a fazer update é: " + JSON.stringify(updateThisEmployee));
+      console.log("Pelo id dado o employee a fazer update é: " + updateThisEmployee.firstName);
       if(!updateThisEmployee) return false;
 
-      console.log("o nome antes da query é: " + bodyEmployee.firstName);
+      //fill the object employee with the new info
+      updateThisEmployee.fillEmployeeInfo(bodyEmployee);
 
       //variables to use
-      const demandedInfos = "firstName, lastName," +
-                            "mobilePhone,homePhone, email," +
-                            "address, addressComplement, zipCode," +
-                            "nationality, identityNumber, socialNumber," +
-                            "birthdayDate, age, iban, typeContract, joinDate";
-      //update
-      let firstName = bodyEmployee.firstName;
-      try {
-        let updatedEmployee = await poolConnectDB.query('UPDATE employees SET firstName = '  + firstName + ' WHERE id = ' + id);
-        console.log("o updatedEmployee " + JSON.stringify(updatedEmployee));
+      const demandedInfos = 'firstName="?", lastName="?",' +
+                            'mobilePhone="?",homePhone="?", email="?",' +
+                            'address="?", addressComplement="?", zipCode="?",' +
+                            'nationality="?", identityNumber="?", socialNumber="?",'+
+                            'birthdayDate="?", age="?", iban="?", typeContract="?", joinDate="?", hourlyPrice="?", '+
+                            'userName="?", password="?", sessionId="?"'
+      //update 
+      let updateInfo;
+      try {                                   
+        updateInfo = await poolConnectDB.query('UPDATE employees SET ' + demandedInfos + ' WHERE Id_employee= ?',
+        [ updateThisEmployee.firstName,
+          updateThisEmployee.lastName,
+          updateThisEmployee.mobilePhone, 
+          updateThisEmployee.homePhone, 
+          updateThisEmployee.email,
+          updateThisEmployee.address,
+          updateThisEmployee.adressComplement,
+          updateThisEmployee.zipCode,
+          updateThisEmployee.nationality,
+          updateThisEmployee.identityNumber,
+          updateThisEmployee.socialNumber,
+          updateThisEmployee.birthdayDate,
+          updateThisEmployee.age,
+          updateThisEmployee.iban,
+          updateThisEmployee.typeContract,
+          updateThisEmployee.joinDate,
+          updateThisEmployee.hourlyPrice,
+          updateThisEmployee.userName,
+          updateThisEmployee.password,
+          updateThisEmployee.sessionId,
+          updateThisEmployee.Id_employee]);
       } catch (error) {
         return error.message;
       }
-      
-    
-    console.log("o employee a update é : " + updateThisEmployee.firstName + ", id: " + updateThisEmployee.id);
     return updateThisEmployee;
   };
-
-    
-
-      
-/*
-  updateEmployee(id, bodyEmployee){
-    //search by id in the DB
-    const updateThisEmployee = this.getEmployeeById(id); 
-    console.log("Pelo id dado o employee a fazer update é: " + updateThisEmployee);
-    if(!updateThisEmployee) return false;
-
-    //loop all the updated properties of the newObject, compare with others already existents and update
-    Object.keys(bodyEmployee).forEach(key => {
-      if(bodyEmployee[key] != updateThisEmployee[key]){
-        updateThisEmployee[key] = bodyEmployee[key];
-      }
-    });
-
-    return fakeEmployees;
-  }*/
 
 //_________________________________________________________________
   async deleteEmployee(id){
@@ -144,7 +157,7 @@ class EmployeeDAO{
      if(!deleteThisEmployee) return false;
 
     let employeeId = [id];
-    await poolConnectDB.query('DELETE FROM employees WHERE id = ?',
+    await poolConnectDB.query('DELETE FROM employees WHERE Id_employee= ?',
       employeeId,
       function (error, results, fields) {
         if (error) throw error;
