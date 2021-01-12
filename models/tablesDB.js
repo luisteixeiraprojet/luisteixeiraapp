@@ -9,7 +9,7 @@ class Table{
 async createTables(){
  console.log("dentro da create all tables");
 
-    let employeesTable = `  CREATE TABLE employees(
+    let employeeTable = `  CREATE TABLE employee(
       Id_employee INT AUTO_INCREMENT NOT NULL,
       firstName VARCHAR(50) NOT NULL,
       lastName VARCHAR(50) NOT NULL,
@@ -45,7 +45,7 @@ async createTables(){
       statusDate DATETIME,
       Id_employee INT NOT NULL,
       PRIMARY KEY(Id_absence),
-      FOREIGN KEY(Id_employee) REFERENCES employees(Id_employee)
+      FOREIGN KEY(Id_employee) REFERENCES employee(Id_employee)
    );  `
    
    let activityTable = `CREATE TABLE activity(
@@ -66,16 +66,16 @@ async createTables(){
       PRIMARY KEY(Id_material)
    ); `
    
-   let workingHoursTable = `CREATE TABLE workingHours(
-      Id_workingHours INT AUTO_INCREMENT NOT NULL,
+   let timeSheet = `CREATE TABLE timeSheet(
+      Id_timeSheet INT AUTO_INCREMENT NOT NULL,
       startAt DATETIME NOT NULL,
       finishAt DATETIME NOT NULL,
       priceHour decimal(15,2) NOT NULL,
       Id_activity INT,
       Id_employee INT NOT NULL,
-      PRIMARY KEY(Id_workingHours),
+      PRIMARY KEY(Id_timeSheet),
       FOREIGN KEY(Id_activity) REFERENCES activity(Id_activity),
-      FOREIGN KEY(Id_employee) REFERENCES employees(Id_employee)
+      FOREIGN KEY(Id_employee) REFERENCES employee(Id_employee)
    ); `
    
    let materialUsedInActivity = `CREATE TABLE materialUsedInActivity(
@@ -89,11 +89,11 @@ async createTables(){
     
   //conexao DB
   try {
-    await connectionDB.query(employeesTable);
+    await connectionDB.query(employeeTable);
     await connectionDB.query(absenceTable);
     await connectionDB.query(activityTable);
     await connectionDB.query(materialTable);
-    await connectionDB.query(workingHoursTable);
+    await connectionDB.query(timeSheet);
     await connectionDB.query(materialUsedInActivity);
     
     return ("depois da connexion");
@@ -105,7 +105,7 @@ async createTables(){
 
 deleteAllTables(){
   let deleteTables = 
-  "DROP TABLE IF EXISTS material, materialUsedInActivity, activity, workingHours, absence,employees";
+  "DROP TABLE IF EXISTS material, materialUsedInActivity, activity, timeSheet, absence,employee";
 
   /* or like this: 
   "SET foreign_key_checks = 0;"+

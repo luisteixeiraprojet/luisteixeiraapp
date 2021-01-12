@@ -61,6 +61,7 @@ class Employee{
       cleanedUserDetails.typeContract= this.typeContract; 
       cleanedUserDetails.joinDate= this.joinDate;
       cleanedUserDetails.hourlyPrice= this.hourlyPrice;
+      return cleanedUserDetails;
     }
 
 }
