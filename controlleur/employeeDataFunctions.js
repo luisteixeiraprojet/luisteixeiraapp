@@ -11,8 +11,10 @@ const poolConnectDB = require('../models/connectionDB');
 class EmployeeDAO{
 
   async getAllEmployees() {
-    const queryResult = await poolConnectDB.query('SELECT * from employee');
-
+    try {
+      console.log("inicio da funçao;")
+      const queryResult = await poolConnectDB.query('SELECT * from employee');
+      console.log("dentro de getAll query request é: "+ queryResult)
     let safeUserDetails = [];
 
     const rowsDB = queryResult[0];
@@ -28,6 +30,11 @@ class EmployeeDAO{
     });
 
     return safeUserDetails;
+      
+    } catch (error) {
+      return ("getAllEmployees " + error.message);
+    }
+   
   };
 
 //__________________________________________________________________________
@@ -51,6 +58,7 @@ class EmployeeDAO{
     //add to the fake db 
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
+    let queryResult;
 
    // newEmployee.id = id;
     newEmployee.firstName        = employeeObject.firstName;
@@ -88,14 +96,16 @@ class EmployeeDAO{
                         newEmployee.nationality, newEmployee.identityNumber,newEmployee.socialNumber,
                         newEmployee.birthdayDate, newEmployee.age,newEmployee.iban, newEmployee.typeContract, newEmployee.joinDate, newEmployee.hourlyPrice, newEmployee.userName, newEmployee.password, newEmployee.sessionId];          
     try {
-      await poolConnectDB.query('INSERT INTO employee ( ' + demandedInfos + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+    queryResult = await poolConnectDB.query('INSERT INTO employee ( ' + demandedInfos + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
     newEmployeeInfos);
+     // console.log(x[0].insertId);
     } catch (error) {
       console.log("deu erro: " + error );
       return error.message;
-    }                 
-    newEmployee.id = employeeObject.id ;
-    return newEmployee; 
+    };
+    newEmployee.Id_employee = queryResult[0].insertId ;
+    console.log("New employee all info: " + JSON.stringify(newEmployee));
+    return newEmployee.safeUserDetailed(); 
   };
 
 //_________________________________________________________________
