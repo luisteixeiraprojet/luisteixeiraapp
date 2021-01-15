@@ -178,6 +178,8 @@ class EmployeeDAO{
       function (error, results, fields) {
         if (error) throw error;
       });
+      console.log("funcao delete de api recebeu id : " + employeeId);
+      console.log("depois de apagar retornara: " + deleteThisEmployee);
         return deleteThisEmployee; 
   }
 } 
