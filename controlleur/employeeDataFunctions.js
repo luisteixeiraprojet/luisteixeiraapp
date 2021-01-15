@@ -165,6 +165,7 @@ class EmployeeDAO{
 
 //_________________________________________________________________
   async deleteEmployee(id){
+    let queryResult;
 
      //search by id in the DB
      const deleteThisEmployee = this.getEmployeeById(id); 
@@ -173,14 +174,15 @@ class EmployeeDAO{
      console.log("dentro da api delete empregados e o id é:" + id)
 
     let employeeId = [id];
-    await poolConnectDB.query('DELETE FROM employee WHERE Id_employee= ?',
+    queryResult = await poolConnectDB.query('DELETE FROM employee WHERE Id_employee= ?',
       employeeId,
       function (error, results, fields) {
         if (error) throw error;
       });
+      console.log("query de delete é esta: " + queryResult , JSON.stringify(queryResult));
       console.log("funcao delete de api recebeu id : " + employeeId);
       console.log("depois de apagar retornara: " + deleteThisEmployee);
-        return deleteThisEmployee; 
+      return deleteThisEmployee; 
   }
 } 
 
