@@ -75,9 +75,9 @@ router.put('/:id', async (req, res) => {
 
 //DELETE 
 router.delete('/:id', async function (req, res) {
-    console.log("delete: http://localhost:3000/employees/1");
     //Id to search it in DB
     const id = parseInt(req.params.id);
+    console.log("delete: http://localhost:3000/employees/" + id);
     //delete
     const deletedEmployee = await employeeDAO.deleteEmployee(id);
     res.send(deletedEmployee); //maybe return the list without the one deleted?

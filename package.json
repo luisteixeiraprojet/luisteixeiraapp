@@ -13,6 +13,7 @@
   "author": "Ana MIRANDA",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "*",
     "joi": "*",
     "mysql": "^2.18.1",
