@@ -41,6 +41,8 @@ class EmployeeDAO{
       let employee = new Employee();
       employee.fillEmployeeInfo(rowsDb[0][0]);
 
+      console.log("chamada funçao no servico byId");
+
       return employee;
     };
 
@@ -157,6 +159,8 @@ class EmployeeDAO{
      //search by id in the DB
      const deleteThisEmployee = this.getEmployeeById(id); 
      if(!deleteThisEmployee) return false;
+
+     console.log("dentro da api delete empregados e o id é:" + id)
 
     let employeeId = [id];
     await poolConnectDB.query('DELETE FROM employee WHERE Id_employee= ?',
