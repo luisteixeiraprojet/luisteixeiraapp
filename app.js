@@ -1,18 +1,9 @@
 const express = require('express');
-const cors = require('cors')
+const cors = require('cors');
 const app = express();
 
+//Cors Problem
 app.use(cors());
-
-/*
-//to CORS Problem resolution - ANgular HTTP Service
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", '*');
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,HEAD,POST,DELETE,OPTIONS');
-  res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json,text/plain');
-  next();
-});*/
 
 
 //Modules

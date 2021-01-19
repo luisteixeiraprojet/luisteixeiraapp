@@ -38,10 +38,13 @@ router.post('/', async function (req, res) {
     console.log("post: http://localhost:3000/employees");
     //validate inputs (JOi)
     const {error} = validateEmployee(req.body); //desconstructure to get error
+    
     if(error){
+      console.log("dentro if  do erro");
     res.status(400).send(error.details[0].message);
     return;
     } 
+    console.log("Validacao sem erro");
     const createdEmployee = await employeeDAO.createEmployee(req.body);
     res.send(createdEmployee);
   });
