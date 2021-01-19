@@ -40,12 +40,13 @@ router.post('/', async function (req, res) {
     const {error} = validateEmployee(req.body); //desconstructure to get error
     
     if(error){
-      console.log("dentro if  do erro");
+      console.log("dentro if do erro");
     res.status(400).send(error.details[0].message);
     return;
     } 
     console.log("Validacao sem erro");
     const createdEmployee = await employeeDAO.createEmployee(req.body);
+    console.log("o empregado criado é: createdEmployee " + JSON.stringify(createdEmployee));
     res.send(createdEmployee);
   });
 
