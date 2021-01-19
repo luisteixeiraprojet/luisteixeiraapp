@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
 
 //CREATE
 router.post('/', async function (req, res) {
-    console.log("post: http://localhost:3000/employees");
+    console.log("post no servidor: http://localhost:3000/employees");
     //validate inputs (JOi)
     const {error} = validateEmployee(req.body); //desconstructure to get error
     
