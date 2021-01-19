@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
     const allEmployees = await employeeDAO.getAllEmployees();
     res.send(allEmployees);
     //Add error sent in case of bad connection to the DB??
-  });
+  });  
 
 //CREATE
 router.post('/', async function (req, res) {
