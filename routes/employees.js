@@ -50,11 +50,12 @@ router.post('/', async function (req, res) {
 
 //UPDATE
 router.put('/formUpdate/:id', async (req, res) => {
-  console.log("dentro da funçao UPDATE de routes employees chamada pelo employee.Service");
-    console.log("put: http://localhost:3000/employees//formUpdate/" + parseInt(req.params.id));
+  console.log("UPDATE de routes employees chamada pelo employee.Service");
+    console.log("UPDATE de routes employees put: http://localhost:3000/employees//formUpdate/" + parseInt(req.params.id));
  //1. validate changed inputs
    const {error} = validateEmployee(req.body); //deconstructure to get error
     if(error) {
+      console.log("UPDATE servidor employees route: deu erro dentro");
       res.status(400).send(error.details[0].message);
       return;
     } 
@@ -65,6 +66,7 @@ router.put('/formUpdate/:id', async (req, res) => {
       employeeToChange = await employeeDAO.updateEmployee(parseInt(req.params.id), req.body); //false ou employee
     
     } catch (error) {
+      console.log("UPDATE routes employees : erro no searchById ")
       return error.message;
     }
   
@@ -72,6 +74,7 @@ router.put('/formUpdate/:id', async (req, res) => {
       res.status(404).send("Cet utilisateur n'existe pas");
     return;
   }
+    console.log("o employeeToChange e: " + JSON.stringify(employeeToChange));
     res.send(employeeToChange);
   })
 
