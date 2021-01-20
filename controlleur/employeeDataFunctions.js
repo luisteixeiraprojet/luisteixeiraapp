@@ -42,13 +42,14 @@ class EmployeeDAO{
     
     //search it in DB
       const rowsDb = await poolConnectDB.query('SELECT * from employee WHERE Id_employee= ?', [id]); //all rows
+
       if (rowsDb[0].length < 1) {
         throw new Error('There is no employee with that id ');
       }
       let employee = new Employee();
       employee.fillEmployeeInfo(rowsDb[0][0]);
 
-      console.log("chamada funçao no servico byId");
+      console.log("chamada funçao no servico byId e o employee é: " , employee);
 
       return employee;
     };
