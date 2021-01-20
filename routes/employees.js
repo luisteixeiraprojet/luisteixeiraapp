@@ -50,7 +50,8 @@ router.post('/', async function (req, res) {
 
 //UPDATE
 router.put('/formUpdate/:id', async (req, res) => {
-    console.log("put: http://localhost:3000/employees/" + parseInt(req.params.id));
+  console.log("dentro da funçao UPDATE de routes employees chamada pelo employee.Service");
+    console.log("put: http://localhost:3000/employees//formUpdate/" + parseInt(req.params.id));
  //1. validate changed inputs
    const {error} = validateEmployee(req.body); //deconstructure to get error
     if(error) {
@@ -66,7 +67,6 @@ router.put('/formUpdate/:id', async (req, res) => {
     } catch (error) {
       return error.message;
     }
-
   
     if(!employeeToChange) {
       res.status(404).send("Cet utilisateur n'existe pas");

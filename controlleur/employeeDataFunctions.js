@@ -110,7 +110,8 @@ class EmployeeDAO{
 
 //_________________________________________________________________
   async updateEmployee(id, bodyEmployee){
-
+      console.log("UPDATE servidor funcaço update de employeeDataFunction ");
+      console.log("UPdate servidor dentro da funçao update de employeeDataFunction tem o id e o bodyEmployee e ", id, JSON.stringify(bodyEmployee));
       //search by id in the DB
       let updateThisEmployee;
       try {
