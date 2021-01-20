@@ -130,10 +130,10 @@ class EmployeeDAO{
       //variables to use
       const demandedInfos = `firstName=?, lastName=?,` +
                             'mobilePhone=?,homePhone=?, email=?,' +
-                            'address="?", addressComplement="?", zipCode="?",' +
-                            'nationality="?", identityNumber="?", socialNumber="?",'+
-                            'birthdayDate="?", age="?", iban="?", typeContract="?", joinDate="?", hourlyPrice="?", '+
-                            'userName="?", password="?", sessionId="?"'
+                            'address=?, addressComplement=?, zipCode=?,' +
+                            'nationality=?, identityNumber=?, socialNumber=?,'+
+                            'birthdayDate=?, age=?, iban=?, typeContract=?, joinDate=?, hourlyPrice=?, '+
+                            'userName=?, password=?, sessionId=?'
       //update 
       let updateInfo;
       try {                                   
