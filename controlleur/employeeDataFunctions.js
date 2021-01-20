@@ -128,7 +128,7 @@ class EmployeeDAO{
       updateThisEmployee.fillEmployeeInfo(bodyEmployee);
 
       //variables to use
-      const demandedInfos = 'firstName="?", lastName="?",' +
+      const demandedInfos = `firstName="?", lastName="?",` +
                             'mobilePhone="?",homePhone="?", email="?",' +
                             'address="?", addressComplement="?", zipCode="?",' +
                             'nationality="?", identityNumber="?", socialNumber="?",'+
