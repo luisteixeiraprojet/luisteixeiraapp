@@ -55,7 +55,7 @@ router.put('/formUpdate/:id', async (req, res) => {
  //1. validate changed inputs
    const {error} = validateEmployee(req.body); //deconstructure to get error
     if(error) {
-      console.log("UPDATE servidor employees route: deu erro dentro");
+      console.log("UPDATE servidor employees route: deu no VALIDATE " + error.details[0].message);
       res.status(400).send(error.details[0].message);
       return;
     } 
