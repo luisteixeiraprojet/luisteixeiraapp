@@ -40,18 +40,16 @@ router.post('/', async function (req, res) {
     const {error} = validateEmployee(req.body); //desconstructure to get error
     
     if(error){
-      console.log("dentro if do erro");
+     
     res.status(400).send(error.details[0].message);
     return;
     } 
-    console.log("Validacao sem erro");
     const createdEmployee = await employeeDAO.createEmployee(req.body);
-    console.log("o empregado criado é: createdEmployee " + JSON.stringify(createdEmployee));
     res.send(createdEmployee);
   });
 
 //UPDATE
-router.put('/:id', async (req, res) => {
+router.put('/formUpdate/:id', async (req, res) => {
     console.log("put: http://localhost:3000/employees/" + parseInt(req.params.id));
  //1. validate changed inputs
    const {error} = validateEmployee(req.body); //deconstructure to get error
@@ -69,7 +67,7 @@ router.put('/:id', async (req, res) => {
       return error.message;
     }
 
-   
+  
     if(!employeeToChange) {
       res.status(404).send("Cet utilisateur n'existe pas");
     return;

@@ -171,17 +171,15 @@ class EmployeeDAO{
      const deleteThisEmployee = this.getEmployeeById(id); 
      if(!deleteThisEmployee) return false;
 
-     console.log("dentro da api delete empregados e o id é:" + id)
-
     let employeeId = [id];
     queryResult = await poolConnectDB.query('DELETE FROM employee WHERE Id_employee= ?',
       employeeId,
       function (error, results, fields) {
         if (error) throw error;
       });
-      console.log("query de delete é esta: " + queryResult , JSON.stringify(queryResult));
-      console.log("funcao delete de api recebeu id : " + employeeId);
-      console.log("depois de apagar retornara: " + deleteThisEmployee);
+      //console.log("query de delete é esta: " + queryResult , JSON.stringify(queryResult));
+     // console.log("funcao delete de api recebeu id : " + employeeId);
+      //console.log("depois de apagar retornara: " + deleteThisEmployee);
       return deleteThisEmployee; 
   }
 } 
