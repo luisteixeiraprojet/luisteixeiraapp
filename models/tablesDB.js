@@ -122,7 +122,7 @@ deleteAllTables(){
 
 //alter datatype: from varchar to date
 changeDataType(){
-  let datatype = "ALTER TABLE employee ALTER COLUMN joinDate DATE";  
+  let datatype = "ALTER TABLE employee ALTER COLUMN joinDate SET DATA TYPE DATE";  
 
   try {
     connectionDB.query(datatype);
