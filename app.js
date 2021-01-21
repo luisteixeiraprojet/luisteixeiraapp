@@ -39,6 +39,12 @@ app.get('/deleteTables', function (req, res) {
   res.send(deleteTables);
 });
 
+//change data type from varchar to date
+app.get('changeDataType', function (req,res){
+  console.log("get: http://localhost:3000/changeDataType");
+  const changeDataType = allTables.changeDataType();
+  res.send(changeDataType);
+})
 
 
 //Port

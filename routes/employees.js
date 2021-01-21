@@ -59,17 +59,14 @@ router.put('/formUpdate/:id', async (req, res) => {
       res.status(400).send(error.details[0].message);
       return;
     } 
-    
     // 2. DB search employee by his id
     let employeeToChange;
     try {
       employeeToChange = await employeeDAO.updateEmployee(parseInt(req.params.id), req.body); //false ou employee
-    
     } catch (error) {
       console.log("UPDATE routes employees : erro no searchById ")
       return error.message;
     }
-  
     if(!employeeToChange) {
       res.status(404).send("Cet utilisateur n'existe pas");
     return;
