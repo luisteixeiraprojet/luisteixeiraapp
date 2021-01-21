@@ -125,7 +125,7 @@ changeDataType(){
   let datatype = "ALTER TABLE employee ALTER COLUMN joinDate DATE";  
 
   try {
-    connectionDB.query(changeDataType);
+    connectionDB.query(datatype);
   } catch (error) {
     console.log("deu erro na ligaçao");
     console.log(error.message);
