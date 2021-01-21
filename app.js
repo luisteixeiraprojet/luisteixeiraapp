@@ -40,7 +40,7 @@ app.get('/deleteTables', function (req, res) {
 });
 
 //change data type from varchar to date
-app.get('changeDataType', function (req,res){
+app.get('/changeDataType', function (req,res){
   console.log("get: http://localhost:3000/changeDataType");
   const changeDataType = allTables.changeDataType();
   res.send(changeDataType);
