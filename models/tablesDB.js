@@ -119,20 +119,6 @@ deleteAllTables(){
   }
   }
 
-
-//alter datatype: from varchar to date
-changeDataType(){
-  let datatype = "ALTER TABLE employee ALTER COLUMN joinDate SET DATA TYPE DATE";  
-
-  try {
-    connectionDB.query(datatype);
-  } catch (error) {
-    console.log("deu erro na ligaçao");
-    console.log(error.message);
-  }
-}
- 
-
 }
 //export to be use par other modules
 module.exports = new Table();
