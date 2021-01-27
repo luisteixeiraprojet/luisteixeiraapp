@@ -78,7 +78,7 @@ class EmployeeDAO{
     newEmployee.typeContract     = employeeObject.typeContract;
     newEmployee.joinDate         = employeeObject.joinDate;
     newEmployee.hourlyPrice      = employeeObject.hourlyPrice;
-    newEmployee.userName         = employeeObject.firstName + " " + employeeObject.lastName;
+    newEmployee.userName         = employeeObject.email;
     newEmployee.password         = employeeObject.password;
     newEmployee.sessionId        = employeeObject.sessionId;
   
@@ -156,7 +156,6 @@ class EmployeeDAO{
           updateThisEmployee.identityNumber,
           updateThisEmployee.socialNumber,
           updateThisEmployee.birthdayDate,
-          
           updateThisEmployee.iban,
           updateThisEmployee.typeContract,
           updateThisEmployee.joinDate,

@@ -92,7 +92,7 @@ function validateEmployee(theEmployee){
     lastName         : Joi.string().min(2).required(),
     mobilePhone      : Joi.string().min(9).max(18).required(),
     homePhone        : Joi.string().min(9).max(18).allow(null, ''),
-    email            : Joi.string().email().allow(null, ''),
+    email            : Joi.string().email().required(),
     address          : Joi.string().allow(null, ''),
     addressComplement: Joi.string().allow(null, ''),
     zipCode          : Joi.string().allow(null, ''),
