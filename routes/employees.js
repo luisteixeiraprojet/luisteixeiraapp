@@ -100,7 +100,6 @@ function validateEmployee(theEmployee){
     identityNumber   : Joi.string().allow(null, ''),
     socialNumber     : Joi.string().allow(null, ''),
     birthdayDate     : Joi.date().iso().allow(null, ''),
-    age              : Joi.number().allow(null, ''),
     iban             : Joi.string().allow(null, ''),
     typeContract     : Joi.string().allow(null, ''),
     joinDate         : Joi.date().iso().allow(null, ''),

@@ -13,7 +13,7 @@ class Employee{
     identityNumber;
     socialNumber;
     birthdayDate;
-    age;
+    
     iban;
     typeContract; //model CDI/CDD, numero de horas
     joinDate;
@@ -56,7 +56,7 @@ class Employee{
       cleanedUserDetails.identityNumber= this.identityNumber;
       cleanedUserDetails.socialNumber= this.socialNumber;
       cleanedUserDetails.birthdayDate= this.birthdayDate;
-      cleanedUserDetails.age= this.age;
+      
       cleanedUserDetails.iban= this.iban;
       cleanedUserDetails.typeContract= this.typeContract; 
       cleanedUserDetails.joinDate= this.joinDate;

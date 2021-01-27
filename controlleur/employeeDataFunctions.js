@@ -74,7 +74,7 @@ class EmployeeDAO{
     newEmployee.identityNumber   = employeeObject.identityNumber;
     newEmployee.socialNumber     = employeeObject.socialNumber;
     newEmployee.birthdayDate     = employeeObject.birthdayDate;
-    newEmployee.age              = employeeObject.age;
+    
     newEmployee.iban             = employeeObject.iban;
     newEmployee.typeContract     = employeeObject.typeContract;
     newEmployee.joinDate         = employeeObject.joinDate;
@@ -88,16 +88,16 @@ class EmployeeDAO{
                        "mobilePhone,homePhone, email," +
                        "address, addressComplement, zipCode," +
                        "nationality, identityNumber, socialNumber," +
-                       "birthdayDate, age, iban, typeContract, joinDate," +
+                       "birthdayDate, iban, typeContract, joinDate," +
                        "hourlyPrice, userName, password, sessionId";
 
     const newEmployeeInfos = [newEmployee.firstName,newEmployee.lastName, 
                         newEmployee.mobilePhone,newEmployee.homePhone,newEmployee.email,
                         newEmployee.address, newEmployee.adressComplement,newEmployee.zipCode,
                         newEmployee.nationality, newEmployee.identityNumber,newEmployee.socialNumber,
-                        newEmployee.birthdayDate, newEmployee.age,newEmployee.iban, newEmployee.typeContract, newEmployee.joinDate, newEmployee.hourlyPrice, newEmployee.userName, newEmployee.password, newEmployee.sessionId];          
+                        newEmployee.birthdayDate,newEmployee.iban, newEmployee.typeContract, newEmployee.joinDate, newEmployee.hourlyPrice, newEmployee.userName, newEmployee.password, newEmployee.sessionId];          
     try {
-    queryResult = await poolConnectDB.query('INSERT INTO employee ( ' + demandedInfos + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+    queryResult = await poolConnectDB.query('INSERT INTO employee ( ' + demandedInfos + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
     newEmployeeInfos);
      // console.log(x[0].insertId);
     } catch (error) {
@@ -132,7 +132,7 @@ class EmployeeDAO{
                             'mobilePhone=?,homePhone=?, email=?,' +
                             'address=?, addressComplement=?, zipCode=?,' +
                             'nationality=?, identityNumber=?, socialNumber=?,'+
-                            'birthdayDate=?, age=?, iban=?, typeContract=?, joinDate=?, hourlyPrice=?, '+
+                            'birthdayDate=?, iban=?, typeContract=?, joinDate=?, hourlyPrice=?, '+
                             'userName=?, password=?, sessionId=?'
       //update 
       let updateInfo;
@@ -150,7 +150,7 @@ class EmployeeDAO{
           updateThisEmployee.identityNumber,
           updateThisEmployee.socialNumber,
           updateThisEmployee.birthdayDate,
-          updateThisEmployee.age,
+          
           updateThisEmployee.iban,
           updateThisEmployee.typeContract,
           updateThisEmployee.joinDate,

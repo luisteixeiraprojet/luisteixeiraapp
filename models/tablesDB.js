@@ -23,7 +23,7 @@ async createTables(){
       identityNumber VARCHAR(50),
       socialNumber VARCHAR(50),
       birthdayDate DATE,
-      age INT,
+      
       iban VARCHAR(50),
       typeContract VARCHAR(50),
       joinDate VARCHAR(50),
@@ -101,7 +101,6 @@ async createTables(){
     console.log(error.message);
   }
 }
-
 
 deleteAllTables(){
   let deleteTables = 
