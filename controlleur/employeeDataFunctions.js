@@ -74,12 +74,11 @@ class EmployeeDAO{
     newEmployee.identityNumber   = employeeObject.identityNumber;
     newEmployee.socialNumber     = employeeObject.socialNumber;
     newEmployee.birthdayDate     = employeeObject.birthdayDate;
-    
     newEmployee.iban             = employeeObject.iban;
     newEmployee.typeContract     = employeeObject.typeContract;
     newEmployee.joinDate         = employeeObject.joinDate;
     newEmployee.hourlyPrice      = employeeObject.hourlyPrice;
-    newEmployee.userName         = employeeObject.userName;
+    newEmployee.userName         = employeeObject.firstName + " " + employeeObject.lastName;
     newEmployee.password         = employeeObject.password;
     newEmployee.sessionId        = employeeObject.sessionId;
   
@@ -100,13 +99,20 @@ class EmployeeDAO{
     queryResult = await poolConnectDB.query('INSERT INTO employee ( ' + demandedInfos + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
     newEmployeeInfos);
      // console.log(x[0].insertId);
+     console.log("--------- o userName é " + newEmployee.userName);
     } catch (error) {
       console.log("deu erro: " + error );
       return error.message;
     };
+
+    //create UserName automatically
+
+    //get the id from the DB 
     newEmployee.Id_employee = queryResult[0].insertId ;
     console.log("New employee all info: " + JSON.stringify(newEmployee));
     return newEmployee.safeUserDetailed(); 
+
+
   };
 
 //_________________________________________________________________
