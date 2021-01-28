@@ -52,6 +52,7 @@ class EmployeeDAO {
 
   //___________________________________________________________________________
   async createEmployee(employeeObject) {
+    console.log("-----------------------------------------------dentro da funçao Create ");
     //add to the fake db
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
@@ -127,7 +128,7 @@ class EmployeeDAO {
     }
 
     //get the id from the DB
-    newEmployee.Id_employee=  queryResult[0].insertId;
+    newEmployee.Id_employee=queryResult[0].insertId;
 
     console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
     console.log("-------------- ver se tem a pass" ,newEmployee);
