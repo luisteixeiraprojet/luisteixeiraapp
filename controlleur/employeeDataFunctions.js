@@ -67,7 +67,7 @@ class EmployeeDAO {
       return psw;
     }
   //___________________________________________________________________________
-  psw = generatePsw();
+
   async createEmployee(employeeObject) {
     console.log("-----------------------------------------------dentro da funçao Create ");
     console.log("logo no inicio da class psw = generatePsw() " + psw);
@@ -75,8 +75,9 @@ class EmployeeDAO {
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
     let queryResult;
+    let pass = this.generatePsw();
 
-    let employeePassword = this.psw;
+    let employeePassword = pass;
     console.log(" --------------- em create let employeePassword = this.psw; " + employeePassword);
 
     // newEmployee.id = id;
