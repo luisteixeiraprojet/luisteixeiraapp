@@ -70,12 +70,13 @@ class EmployeeDAO {
 
   async createEmployee(employeeObject) {
     console.log("-----------------------------------------------dentro da funçao Create ");
-    console.log("logo no inicio da class psw = generatePsw() " + psw);
+    
     //add to the fake db
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
     let queryResult;
     let pass = this.generatePsw();
+    console.log("------------------logo no inicio da let pass = this.generatePsw();" + pass);
 
     let employeePassword = pass;
     console.log(" --------------- em create let employeePassword = this.psw; " + employeePassword);
