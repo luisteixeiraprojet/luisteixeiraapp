@@ -127,6 +127,7 @@ class EmployeeDAO {
 
     //get the id from the DB
     newEmployee.Id_employee = queryResult[0].insertId;
+    console.log("-------o id deste no empregado é: " + newEmployee.Id_employee);
     console.log("------ antes de newEmployee.password = this.generatePsw(); ");
     let getPassword = this.generatePsw();
     console.log("--------------let getPassword = this.generatePsw();" + getPassword);
@@ -138,8 +139,9 @@ class EmployeeDAO {
         "INSERT INTO employee ( " +
         pswColumn
         +
-          ") VALUES (?)" + " WHERE Id_employee= " + newEmployee.Id_employee,
+          ") VALUES (?) WHERE Id_employee= ? ",
         thePassword,
+        [newEmployee.Id_employee]
         
       );
     } catch (error) {
