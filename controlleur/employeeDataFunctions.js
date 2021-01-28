@@ -58,6 +58,7 @@ class EmployeeDAO {
     let queryResult;
 
     let psw = generatePsw();
+    console.log(" --------------- psw é " + psw);
     let employeePassword = psw;
 
     // newEmployee.id = id;
