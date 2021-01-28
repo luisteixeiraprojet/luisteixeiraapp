@@ -56,7 +56,7 @@ class EmployeeDAO {
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
     let queryResult;
-   ;
+
 
     // newEmployee.id = id;
     newEmployee.firstName = employeeObject.firstName;
@@ -122,11 +122,14 @@ class EmployeeDAO {
       console.log("deu erro: " + error);
       return error.message;
     }
-  
-    //console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
+
+    //get the id from the DB
+    newEmployee.Id_employee=  queryResult[0].insertId;
+
+    console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
     return newEmployee.safeUserDetailed();
   }
-
+/*
   //create password when creating an employee
   generatePsw() {
     console.log("-----funcao generatePSW ");
@@ -138,7 +141,7 @@ class EmployeeDAO {
     }
     console.log("------ psw é: " + psw);
     return psw;
-  }
+  }*/
 
   //_________________________________________________________________
   async updateEmployee(id, bodyEmployee) {
