@@ -6,6 +6,9 @@ const Employee = require("../models/employee");
 const poolConnectDB = require("../models/connectionDB");
 
 class EmployeeDAO {
+
+  psw;
+  
   async getAllEmployees() {
     try {
       console.log("inicio da funçao;");
@@ -49,18 +52,32 @@ class EmployeeDAO {
 
     return employee;
   }
-
+  
+  //__________________________________________________________________________
+    //create password when creating an employee
+    generatePsw() {
+      console.log("-----funcao generatePSW ");
+        let length = 10,
+        characters ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let psw = "";
+      for (let i = 0, n = characters.length; i < length; ++i) {
+        psw += characters.charAt(Math.floor(Math.random() * n));
+      }
+      console.log("------ psw é: " + psw);
+      return psw;
+    }
   //___________________________________________________________________________
+  psw = generatePsw();
   async createEmployee(employeeObject) {
     console.log("-----------------------------------------------dentro da funçao Create ");
+    console.log("logo no inicio da class psw = generatePsw() " + psw);
     //add to the fake db
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
     let queryResult;
 
-    let psw = generatePsw();
-    console.log(" --------------- psw é " + psw);
-    let employeePassword = psw;
+    let employeePassword = this.psw;
+    console.log(" --------------- em create let employeePassword = this.psw; " + employeePassword);
 
     // newEmployee.id = id;
     newEmployee.firstName = employeeObject.firstName;
@@ -135,18 +152,7 @@ class EmployeeDAO {
     return newEmployee.safeUserDetailed();
   }
 
-  //create password when creating an employee
-  generatePsw() {
-    console.log("-----funcao generatePSW ");
-      let length = 10,
-      characters ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      let psw = "";
-    for (let i = 0, n = characters.length; i < length; ++i) {
-      psw += characters.charAt(Math.floor(Math.random() * n));
-    }
-    console.log("------ psw é: " + psw);
-    return psw;
-  }
+
 
   //_________________________________________________________________
   async updateEmployee(id, bodyEmployee) {
