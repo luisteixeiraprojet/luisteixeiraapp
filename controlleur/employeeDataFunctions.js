@@ -145,13 +145,10 @@ class EmployeeDAO {
 
     //get the id from the DB
     newEmployee.Id_employee=queryResult[0].insertId;
-
    // console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
    // console.log("-------------- ver se tem a pass" ,newEmployee);
     return newEmployee.safeUserDetailed();
   }
-
-
 
   //_________________________________________________________________
   async updateEmployee(id, bodyEmployee) {
