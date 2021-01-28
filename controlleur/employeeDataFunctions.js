@@ -135,9 +135,9 @@ class EmployeeDAO {
     console.log("-----funcao generatePSW ");
       let length = 10,
       characters ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      this.psw = "";
+      let psw = "";
     for (let i = 0, n = characters.length; i < length; ++i) {
-      this.psw += characters.charAt(Math.floor(Math.random() * n));
+      psw += characters.charAt(Math.floor(Math.random() * n));
     }
     console.log("------ psw é: " + psw);
     return psw;
