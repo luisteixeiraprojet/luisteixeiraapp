@@ -76,7 +76,7 @@ class EmployeeDAO {
     newEmployee.joinDate = employeeObject.joinDate;
     newEmployee.hourlyPrice = employeeObject.hourlyPrice;
     newEmployee.userName = employeeObject.email;
-    newEmployee.password = "cu";
+    newEmployee.password = employeeObject.password;
     newEmployee.sessionId = employeeObject.sessionId;
 
     //query
