@@ -88,7 +88,7 @@ class EmployeeDAO {
       "birthdayDate, iban, typeContract, joinDate," +
       "hourlyPrice, userName, password, sessionId";
 
-    const pswColumn = "password"
+    const pswColumn = "password";
 
     const newEmployeeInfos = [
       newEmployee.firstName,
@@ -128,21 +128,25 @@ class EmployeeDAO {
     //get the id from the DB
     newEmployee.Id_employee = queryResult[0].insertId;
     console.log("------ antes de newEmployee.password = this.generatePsw(); ");
-    newEmployee.password = this.generatePsw();
-    console.log("--------------newEmployee.password=this.generatePsw();" + newEmployee.password);
+    let getPassword = this.generatePsw();
+    console.log("--------------let getPassword = this.generatePsw();" + getPassword);
+    let thePassword = getPassword;
+    console.log("--------------newEmployee.password = getPassword;" + thePassword );
+    
     try {
       queryResult = await poolConnectDB.query(
         "INSERT INTO employee ( " +
         pswColumn
         +
           ") VALUES (?)",
-        newEmployee.password
+        thePassword
       );
     } catch (error) {
       console.log("deu erro: " + error);
       return error.message;
     }
-   // console.log("New employee all info: " + JSON.stringify(newEmployee));
+    console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
+    console.log("-----------New employee psw: " , newEmployee.password));
     return newEmployee.safeUserDetailed();
   }
 
