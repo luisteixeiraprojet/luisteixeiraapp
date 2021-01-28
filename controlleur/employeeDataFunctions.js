@@ -142,11 +142,11 @@ class EmployeeDAO {
         thePassword
       );
     } catch (error) {
-      console.log("deu erro: " + error);
+      console.log("deu erro: " + error.message);
       return error.message;
     }
     console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
-    console.log("-----------New employee psw: " , newEmployee.password));
+    console.log("-----------New employee psw: " , newEmployee.password);
     return newEmployee.safeUserDetailed();
   }
 
