@@ -125,7 +125,8 @@ class EmployeeDAO {
 
     //get the id from the DB
     newEmployee.Id_employee = queryResult[0].insertId;
-    this.generatePsw();
+    newEmployee.password=this.generatePsw();
+    console.log("--------------newEmployee.password=this.generatePsw();" + newEmployee.password);
    // console.log("New employee all info: " + JSON.stringify(newEmployee));
     return newEmployee.safeUserDetailed();
   }
