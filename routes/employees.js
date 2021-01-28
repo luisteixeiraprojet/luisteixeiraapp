@@ -40,7 +40,6 @@ router.post('/', async function (req, res) {
     const {error} = validateEmployee(req.body); //desconstructure to get error
     
     if(error){
-     
     res.status(400).send(error.details[0].message);
     return;
     } 
