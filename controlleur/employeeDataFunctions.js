@@ -56,7 +56,7 @@ class EmployeeDAO {
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
     let queryResult;
-    const pswColumn = "password";
+   ;
 
     // newEmployee.id = id;
     newEmployee.firstName = employeeObject.firstName;
@@ -76,7 +76,7 @@ class EmployeeDAO {
     newEmployee.joinDate = employeeObject.joinDate;
     newEmployee.hourlyPrice = employeeObject.hourlyPrice;
     newEmployee.userName = employeeObject.email;
-    newEmployee.password = employeeObject.password;
+    newEmployee.password = "cu";
     newEmployee.sessionId = employeeObject.sessionId;
 
     //query
@@ -87,8 +87,6 @@ class EmployeeDAO {
       "nationality, identityNumber, socialNumber," +
       "birthdayDate, iban, typeContract, joinDate," +
       "hourlyPrice, userName, password, sessionId";
-
-    
 
     const newEmployeeInfos = [
       newEmployee.firstName,
@@ -124,41 +122,8 @@ class EmployeeDAO {
       console.log("deu erro: " + error);
       return error.message;
     }
-
-    //get the id from the DB
-    newEmployee.Id_employee=  queryResult[0].insertId;
-     let getId = newEmployee.Id_employee;
-     let theId = getId;
-    console.log("-------o id deste no empregado é: " + newEmployee.Id_employee);
-    console.log("------ antes de newEmployee.password = this.generatePsw(); ");
-    let getPassword = this.generatePsw();
-    console.log("--------------let getPassword = this.generatePsw();" + getPassword);
-    let thePassword = getPassword;
-    console.log("--------------newEmployee.password = getPassword;" + thePassword );
-    
-    try {
-
-      queryResult = await poolConnectDB.query(
-        "UPDATE employee SET password = " + thePassword + " WHERE Id_employee= " + theId
-      );
-
-    
-      /*
-      queryResult = await poolConnectDB.query(
-        "INSERT INTO employee ( " +
-        pswColumn
-        +
-          ") VALUES (?) WHERE Id_employee= ? ",
-        thePassword,
-        [newEmployee.Id_employee]
-        
-      );*/
-    } catch (error) {
-      console.log("deu erro: " + error.message);
-      return error.message;
-    }
+  
     //console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
-    console.log("-----------New employee psw: " , newEmployee.password);
     return newEmployee.safeUserDetailed();
   }
 
