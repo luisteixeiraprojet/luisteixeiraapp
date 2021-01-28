@@ -126,7 +126,9 @@ class EmployeeDAO {
     }
 
     //get the id from the DB
-    newEmployee.Id_employee = queryResult[0].insertId;
+    newEmployee.Id_employee=  queryResult[0].insertId;
+     let getId = newEmployee.Id_employee;
+     let theId = getId;
     console.log("-------o id deste no empregado é: " + newEmployee.Id_employee);
     console.log("------ antes de newEmployee.password = this.generatePsw(); ");
     let getPassword = this.generatePsw();
@@ -135,6 +137,13 @@ class EmployeeDAO {
     console.log("--------------newEmployee.password = getPassword;" + thePassword );
     
     try {
+
+      queryResult = await poolConnectDB.query(
+        "UPDATE employee SET " + pswColumn + "=" + thePassword + " WHERE Id_employee= " + theId
+      );
+
+    
+      /*
       queryResult = await poolConnectDB.query(
         "INSERT INTO employee ( " +
         pswColumn
@@ -143,7 +152,7 @@ class EmployeeDAO {
         thePassword,
         [newEmployee.Id_employee]
         
-      );
+      );*/
     } catch (error) {
       console.log("deu erro: " + error.message);
       return error.message;
