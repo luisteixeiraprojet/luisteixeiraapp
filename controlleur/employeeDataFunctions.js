@@ -56,7 +56,7 @@ class EmployeeDAO {
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
     let queryResult;
-    let psw;
+    const pswColumn = "password";
 
     // newEmployee.id = id;
     newEmployee.firstName = employeeObject.firstName;
@@ -88,7 +88,7 @@ class EmployeeDAO {
       "birthdayDate, iban, typeContract, joinDate," +
       "hourlyPrice, userName, password, sessionId";
 
-    const pswColumn = "password";
+    
 
     const newEmployeeInfos = [
       newEmployee.firstName,
@@ -139,7 +139,7 @@ class EmployeeDAO {
     try {
 
       queryResult = await poolConnectDB.query(
-        "UPDATE employee SET " + pswColumn + "=" + thePassword + " WHERE Id_employee= " + theId
+        "UPDATE employee SET password = " + thePassword + " WHERE Id_employee= " + theId
       );
 
     
