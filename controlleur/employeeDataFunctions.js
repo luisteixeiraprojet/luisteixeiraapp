@@ -11,9 +11,8 @@ class EmployeeDAO {
   
   async getAllEmployees() {
     try {
-      console.log("inicio da funçao;");
       const queryResult = await poolConnectDB.query("SELECT * from employee");
-      console.log("dentro de getAll query request é: " + queryResult);
+     // console.log("dentro de getAll query request é: " + queryResult);
       let safeUserDetails = [];
 
       const rowsDB = queryResult[0];
@@ -22,7 +21,7 @@ class EmployeeDAO {
       }
 
       rowsDB.forEach((row) => {
-        console.log("A row : ", row);
+     //  console.log("A row : ", row);
         const employee = new Employee();
         employee.fillEmployeeInfo(row);
         safeUserDetails.push(employee.safeUserForList());
@@ -48,7 +47,7 @@ class EmployeeDAO {
     let employee = new Employee();
     employee.fillEmployeeInfo(rowsDb[0][0]);
 
-    console.log("chamada funçao no servico byId e o employee é: ", employee);
+   // console.log("chamada funçao no servico byId e o employee é: ", employee);
 
     return employee;
   }
@@ -56,30 +55,28 @@ class EmployeeDAO {
   //__________________________________________________________________________
     //create password when creating an employee
     generatePsw() {
-      console.log("-----funcao generatePSW ");
         let length = 10,
         characters ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         let psw = "";
       for (let i = 0, n = characters.length; i < length; ++i) {
         psw += characters.charAt(Math.floor(Math.random() * n));
       }
-      console.log("------ psw é: " + psw);
+     // console.log("------ psw é: " + psw);
       return psw;
     }
   //___________________________________________________________________________
 
   async createEmployee(employeeObject) {
-    console.log("-----------------------------------------------dentro da funçao Create ");
-    
+
     //add to the fake db
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
     let queryResult;
     let pass = this.generatePsw();
-    console.log("------------------logo no inicio da let pass = this.generatePsw();" + pass);
+    //console.log("------------------logo no inicio da let pass = this.generatePsw();" + pass);
 
     let employeePassword = pass;
-    console.log(" --------------- em create let employeePassword = this.psw; " + employeePassword);
+    //console.log(" --------------- em create let employeePassword = this.psw; " + employeePassword);
 
     // newEmployee.id = id;
     newEmployee.firstName = employeeObject.firstName;
@@ -149,8 +146,8 @@ class EmployeeDAO {
     //get the id from the DB
     newEmployee.Id_employee=queryResult[0].insertId;
 
-    console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
-    console.log("-------------- ver se tem a pass" ,newEmployee);
+   // console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
+   // console.log("-------------- ver se tem a pass" ,newEmployee);
     return newEmployee.safeUserDetailed();
   }
 
@@ -158,12 +155,8 @@ class EmployeeDAO {
 
   //_________________________________________________________________
   async updateEmployee(id, bodyEmployee) {
-    console.log("UPDATE servidor funcaço update de employeeDataFunction ");
-    console.log(
-      "UPdate servidor dentro da funçao update de employeeDataFunction tem o id e o bodyEmployee e ",
-      id,
-      JSON.stringify(bodyEmployee)
-    );
+    //console.log("UPDATE servidor funcaço update de employeeDataFunction ");
+    console.log("UPdate",id,JSON.stringify(bodyEmployee));
     //search by id in the DB
     let updateThisEmployee;
     try {
