@@ -138,14 +138,15 @@ class EmployeeDAO {
         "INSERT INTO employee ( " +
         pswColumn
         +
-          ") VALUES (?)",
-        thePassword
+          ") VALUES (?)" + " WHERE Id_employee= ?",
+        thePassword,
+        newEmployee.Id_employee
       );
     } catch (error) {
       console.log("deu erro: " + error.message);
       return error.message;
     }
-    console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
+    //console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
     console.log("-----------New employee psw: " , newEmployee.password);
     return newEmployee.safeUserDetailed();
   }
