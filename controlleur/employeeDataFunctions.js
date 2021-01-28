@@ -57,6 +57,8 @@ class EmployeeDAO {
     const newEmployee = new Employee();
     let queryResult;
 
+    let psw = generatePsw();
+    let employeePassword = psw;
 
     // newEmployee.id = id;
     newEmployee.firstName = employeeObject.firstName;
@@ -76,7 +78,7 @@ class EmployeeDAO {
     newEmployee.joinDate = employeeObject.joinDate;
     newEmployee.hourlyPrice = employeeObject.hourlyPrice;
     newEmployee.userName = employeeObject.email;
-    newEmployee.password = employeeObject.password;
+    newEmployee.password = employeePassword;
     newEmployee.sessionId = employeeObject.sessionId;
 
     //query
@@ -129,7 +131,7 @@ class EmployeeDAO {
     console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
     return newEmployee.safeUserDetailed();
   }
-/*
+
   //create password when creating an employee
   generatePsw() {
     console.log("-----funcao generatePSW ");
@@ -141,7 +143,7 @@ class EmployeeDAO {
     }
     console.log("------ psw é: " + psw);
     return psw;
-  }*/
+  }
 
   //_________________________________________________________________
   async updateEmployee(id, bodyEmployee) {
