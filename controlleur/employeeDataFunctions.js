@@ -138,9 +138,9 @@ class EmployeeDAO {
         "INSERT INTO employee ( " +
         pswColumn
         +
-          ") VALUES (?)" + " WHERE Id_employee= ?",
+          ") VALUES (?)" + " WHERE Id_employee= " + newEmployee.Id_employee,
         thePassword,
-        newEmployee.Id_employee
+        
       );
     } catch (error) {
       console.log("deu erro: " + error.message);
