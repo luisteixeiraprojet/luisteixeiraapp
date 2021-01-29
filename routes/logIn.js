@@ -7,3 +7,5 @@ const router = express.Router(); //the router that will be used in app.js
 const authenticationDao = require('../controlleur/authenticationDataFunctions.js');
 
 
+//export the router
+module.exports = router;
