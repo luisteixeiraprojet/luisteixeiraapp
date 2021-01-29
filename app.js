@@ -28,8 +28,10 @@ app.get('/', (req, res) => {
 });
 
 
+
+//________________________________________________________
 //Get All Employees
-app.get('/', (req, res) => {
+app.get('/',  (req, res) => {
   console.log("get: http://localhost:3000/");
   //get all employees
   res.send("OK");
