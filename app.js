@@ -15,7 +15,7 @@ const allTables = require('./models/tablesDB');
 //Middlewears - if a path is not defined by default it will be used in all of them 
 app.use(express.json()); //so we can hadle objects, ex. create a new user (always above the app.use modules)
 app.use('/employees', employees);  //path + router object: any routes started with /users use the router object imported inside the module users
-
+app.use('/logIn', logIn);
 
 
 app.get('/', (req, res) => {
