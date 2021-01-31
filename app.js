@@ -23,12 +23,6 @@ app.use('/login', login);
 
 
 
-
-
-
-
-
-
 //Create All Tables
 app.get('/createTables', function (req, res) {
   console.log("get: http://localhost:3000/createTables");
