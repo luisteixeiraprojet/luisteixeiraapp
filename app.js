@@ -21,21 +21,11 @@ app.use('/login', login);
 
 //______________________________________________________
 
-//Login 
-app.get('/', (req, res) => {
-  console.log("get: http://localhost:3000/login");
-  res.send("Login OK ");
-});
 
 
 
-//________________________________________________________
-//Get All Employees
-app.get('/',  (req, res) => {
-  console.log("get: http://localhost:3000/");
-  //get all employees
-  res.send("OK");
-});
+
+
 
 
 
