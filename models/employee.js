@@ -59,6 +59,8 @@ class Employee{
       cleanedUserDetails.typeContract= this.typeContract; 
       cleanedUserDetails.joinDate= this.joinDate;
       cleanedUserDetails.hourlyPrice= this.hourlyPrice;
+      cleanedUserDetails.userName=this.userName;
+      cleanedUserDetails.sessionId=this.sessionId;
       return cleanedUserDetails;
     }
 

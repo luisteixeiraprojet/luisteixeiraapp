@@ -4,6 +4,7 @@
 const fakeEmployees = require("../models/employeesFakeDB"); //all the content of employeeFakeDB is inside this variable
 const Employee = require("../models/employee");
 const poolConnectDB = require("../models/connectionDB");
+const md5 = require('md5');
 
 class EmployeeDAO {
 
@@ -61,7 +62,7 @@ class EmployeeDAO {
       for (let i = 0, n = characters.length; i < length; ++i) {
         psw += characters.charAt(Math.floor(Math.random() * n));
       }
-     // console.log("------ psw é: " + psw);
+     console.log("------ psw é: " + psw);
       return psw;
     }
   //___________________________________________________________________________
@@ -73,7 +74,7 @@ class EmployeeDAO {
     const newEmployee = new Employee();
     let queryResult;
     let pass = this.generatePsw();
-    //console.log("------------------logo no inicio da let pass = this.generatePsw();" + pass);
+    console.log("------------------logo no inicio da let pass = this.generatePsw();" + pass);
 
     let employeePassword = pass;
     //console.log(" --------------- em create let employeePassword = this.psw; " + employeePassword);
@@ -96,7 +97,7 @@ class EmployeeDAO {
     newEmployee.joinDate = employeeObject.joinDate;
     newEmployee.hourlyPrice = employeeObject.hourlyPrice;
     newEmployee.userName = employeeObject.email;
-    newEmployee.password = employeePassword;
+    newEmployee.password = md5(employeePassword);
     newEmployee.sessionId = employeeObject.sessionId;
 
     //query
@@ -143,10 +144,13 @@ class EmployeeDAO {
       return error.message;
     }
 
+    console.log("sem o md5 a pass é : " +  employeePassword);
+   console.log("com o md5 a pass é : " + md5( employeePassword));
     //get the id from the DB
     newEmployee.Id_employee=queryResult[0].insertId;
    // console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
    // console.log("-------------- ver se tem a pass" ,newEmployee);
+   
     return newEmployee.safeUserDetailed();
   }
 

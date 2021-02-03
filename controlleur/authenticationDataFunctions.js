@@ -1,31 +1,48 @@
 //Import other Modules
 
 const poolConnectDB = require("../models/connectionDB");
+const Employee = require("../models/employee");
+const jwt = require("jsonwebtoken");
+const md5 = require('md5');
 
 
 class AuthDao{
-    
-    
+
+  theEmployee = new Employee();
     
  async employeeExists(bodyValues){
+   let psw =  bodyValues.password;
+   let pswMd = md5(psw.toString());
     let rowsDb;
     try {
         rowsDb = await poolConnectDB.query(
             "SELECT * FROM employee WHERE userName= ? AND password= ?",
-            [bodyValues.userName, bodyValues.password]
+            [bodyValues.userName, pswMd]
         );
-           console.log("AuthenticationData employeeExists: rowsDb ",  rowsDb[0]);
       } catch (error) {
-        console.log("deu erro: " + error);
+        console.log("Error: " + error.message);
         return error.message;
       }
-
       if (rowsDb[0].length < 1) {
         throw new Error("Your userName and/or password are incorrects");
       }else{
-          return "welcome to your account";
+       // console.log("return de employeeExists authDATAFunction  rowsDb[0] ", rowsDb[0][0]);
+      
+       this.theEmployee.fillEmployeeInfo(rowsDb[0][0]);
+       this.theEmployee.sessionId = this.generateAccessToken({ username: bodyValues.userName});
+
+       console.log("!employee com token : ", this.theEmployee.sessionId);
+       return this.theEmployee.safeUserDetailed();
       };
     }
+
+   // username is in the form { username: "my cool username"}
+  generateAccessToken(username) {
+  return jwt.sign(username, "o meu segredo", { expiresIn: '30s' });
+}
+
+
+
 }//closes class
 
 //export to become accessible by other modules

@@ -18,9 +18,10 @@ router.post("/", async function (req, res) {
     return;
   }
   const employeeExists = await authenticationDao.employeeExists(req.body);
-  console.log("!!!!!!!!!!!!!!!!!!!! login o employee exists: " + employeeExists);
+  console.log("------------------- login o employee exists: ", employeeExists);
   res.send(employeeExists);
 });
+
 
 //validate inputs
 function validateLogIn(credentials) {
@@ -32,8 +33,13 @@ function validateLogIn(credentials) {
 }
 
 function verifyExistance(infos) {
-  let employeeLogging = authenticationDao.emplyeeExists();
+  let employeeLogging = authenticationDao.employeeExists();
   console.log("funçao verifyExistance em logIn ", employeeLogging);
 }
+
+
+
+
+
 //export the router
 module.exports = router;
