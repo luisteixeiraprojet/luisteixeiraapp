@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 
-//se precisar de usar esta conexao que deixou de funcionar dia 15/01/2021 mudar o nome do module para connectionDB
+//se precisar de usar esta conexao que deixou de funcionar dia 15/01/2021 mudar o nome do module para connectionDB p n ser o nome que tem agora
 //JAWS
 const pool = mysql.createPool({
   host: 'r6ze0q02l4me77k3.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',

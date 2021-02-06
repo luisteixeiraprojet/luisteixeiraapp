@@ -36,7 +36,7 @@ class AuthDao{
       };
     }
 
-   // username is in the form { username: "my cool username"}
+ 
   generateAccessToken(username) {
   return jwt.sign(username, "o meu segredo", { expiresIn: '30s' });
 }

@@ -1,5 +1,5 @@
 class Absence {
-    id;
+    Id_absence;
     justification;
     typeOfAbsence;
     requestDate;
@@ -7,4 +7,9 @@ class Absence {
     endDate;
     status;
     statusDate;
-}
+    Id_employee;
+
+    constructor(){ }
+
+}//closes class
+

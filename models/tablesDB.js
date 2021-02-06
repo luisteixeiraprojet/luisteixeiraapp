@@ -23,10 +23,9 @@ async createTables(){
       identityNumber VARCHAR(50),
       socialNumber VARCHAR(50),
       birthdayDate DATE,
-      
       iban VARCHAR(50),
       typeContract VARCHAR(50),
-      joinDate VARCHAR(50),
+      joinDate DATE,
       hourlyPrice decimal(15,2),
       userName VARCHAR(50),
       password VARCHAR(50),

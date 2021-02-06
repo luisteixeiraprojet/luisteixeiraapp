@@ -48,8 +48,6 @@ class EmployeeDAO {
     let employee = new Employee();
     employee.fillEmployeeInfo(rowsDb[0][0]);
 
-   // console.log("chamada funçao no servico byId e o employee é: ", employee);
-
     return employee;
   }
   
@@ -62,7 +60,7 @@ class EmployeeDAO {
       for (let i = 0, n = characters.length; i < length; ++i) {
         psw += characters.charAt(Math.floor(Math.random() * n));
       }
-     console.log("------ psw é: " + psw);
+     
       return psw;
     }
   //___________________________________________________________________________
@@ -145,7 +143,7 @@ class EmployeeDAO {
     }
 
     console.log("sem o md5 a pass é : " +  employeePassword);
-   console.log("com o md5 a pass é : " + md5( employeePassword));
+   console.log("com o md5 a pass é : " + md5(employeePassword));
     //get the id from the DB
     newEmployee.Id_employee=queryResult[0].insertId;
    // console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
