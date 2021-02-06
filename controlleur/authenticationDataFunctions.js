@@ -4,11 +4,18 @@ const poolConnectDB = require("../models/connectionDB");
 const Employee = require("../models/employee");
 const jwt = require("jsonwebtoken");
 const md5 = require('md5');
+const dotenv = require("dotenv");
 
 
 class AuthDao{
 
   theEmployee = new Employee();
+
+
+  //variables in doc.env
+  constructor(){
+    dotenv.config();
+  }
     
  async employeeExists(bodyValues){
    let psw =  bodyValues.password;
@@ -38,8 +45,12 @@ class AuthDao{
 
  
   generateAccessToken(username) {
-  return jwt.sign(username, "o meu segredo", { expiresIn: '30s' });
+ 
+
+  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '30s' });
 }
+
+
 
 
 
