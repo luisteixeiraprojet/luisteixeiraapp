@@ -5,6 +5,9 @@ const app = express();
 //Cors Problem
 app.use(cors());
 
+//token
+const jwt = require("jsonwebtoken");
+
 
 //Modules
 const employees = require('./routes/employees');
@@ -17,29 +20,37 @@ const dotenv = require("dotenv").config();
 
 //Middlewears - if a path is not defined by default it will be used in all of them 
 app.use(express.json()); //so we can hadle objects, ex. create a new user (always above the app.use modules)
-app.use('/employees', employees);  //path + router object: any routes started with /employees use the router object imported inside the module employees
+app.use('/employees', tokenMiddleWare, employees);  //path + router object: any routes started with /employees use the router object imported inside the module employees
 app.use('/login', login);
 
+//make sur thet the token is still valide at each request
+function tokenMiddleWare(req, res, next) {
+  console.log("testemiddleware", req.body);
 
-function testeMiddleWare(req, res, next) {
   // Gather the jwt access token from the request header
-  const authHeader = req.headers['authorization']
+  const authHeader = req.headers['authorization'];
   console.log("os authHeaders sao: ", JSON.stringify(authHeader));
  
   const token = authHeader && authHeader.split(' ')[1]
   console.log("o token com split ", token);
   if (token == null) return res.sendStatus(401) // if there isn't any token
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
     console.log(err)
     if (err) return res.sendStatus(403)
     req.user = user
-    next() // pass the execution off to whatever request the client intended
+    next() // execute  whatever request the client intended to
   })
 }
 
+//____________________________________________________
+//verify Token still valide 
+app.get("/tokenVerify", tokenMiddleWare, async function (req, res) {
+  console.log("GET: http://localhost:3000/tokenVerify");
 
-
+  let tokenStillValide = {result: "OK"}; //its  {result: "OK"} so it will make parse, works with objects
+  res.send(tokenStillValide);
+});
 
 //______________________________________________________
 
@@ -57,12 +68,7 @@ app.get('/deleteTables', function (req, res) {
   res.send(deleteTables);
 });
 
-//teste middleware
 
-app.get('/ola', testeMiddleWare, (req, res)=>{
-  console.log("a usar middle ware na route ola");
-  return "ola middleWare";
-})
 
 
 //Port

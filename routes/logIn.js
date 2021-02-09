@@ -32,11 +32,14 @@ function validateLogIn(credentials) {
   return schema.validate(credentials);
 }
 
+
+
+/*
 function verifyExistance(infos) {
   let employeeLogging = authenticationDao.employeeExists();
   console.log("funçao verifyExistance em logIn ", employeeLogging);
 }
-
+*/
 
 
 

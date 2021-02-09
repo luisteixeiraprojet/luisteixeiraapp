@@ -38,7 +38,7 @@ class Employee{
     cleanedUser.lastName = this.lastName;
     cleanedUser.mobilePhone = this.mobilePhone;
     return cleanedUser;
-    }
+    } 
 
     safeUserDetailed(){
       const cleanedUserDetails = new Employee();

@@ -136,19 +136,14 @@ class EmployeeDAO {
         newEmployeeInfos
       );
       // console.log(x[0].insertId);
-      //console.log("--------- o userName é " + newEmployee.userName);
+  
     } catch (error) {
       console.log("deu erro: " + error);
       return error.message;
     }
-
-    console.log("sem o md5 a pass é : " +  employeePassword);
-   console.log("com o md5 a pass é : " + md5(employeePassword));
     //get the id from the DB
     newEmployee.Id_employee=queryResult[0].insertId;
    // console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
-   // console.log("-------------- ver se tem a pass" ,newEmployee);
-   
     return newEmployee.safeUserDetailed();
   }
 

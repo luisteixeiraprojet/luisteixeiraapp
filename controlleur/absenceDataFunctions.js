@@ -1,7 +1,7 @@
 const Absence = require("../models/absence");
 const poolConnectDB = require("../models/connectionDB");
 
-class AbsenceDAO {
+class AbsenceDAO { 
 
     
 
