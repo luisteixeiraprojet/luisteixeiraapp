@@ -43,12 +43,15 @@ class AuthDao{
       };
     }
 
- 
+//_______________________________________________
   generateAccessToken(username) {
-  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '3500s' });
+  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '200s' });
 }
 
-
+//_______________________________________________
+createResponse(content, token){
+  return {content : content, newToken: token }
+}
 
 
 

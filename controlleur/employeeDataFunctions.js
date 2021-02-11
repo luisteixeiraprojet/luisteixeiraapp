@@ -13,7 +13,7 @@ class EmployeeDAO {
   async getAllEmployees() {
     try {
       const queryResult = await poolConnectDB.query("SELECT * from employee");
-     // console.log("dentro de getAll query request é: " + queryResult);
+    //  console.log("dentro de getAll query request é:  queryResult[0");
       let safeUserDetails = [];
 
       const rowsDB = queryResult[0];
@@ -37,6 +37,7 @@ class EmployeeDAO {
   //__________________________________________________________________________
   async getEmployeeById(id) {
     //search it in DB
+    console.log(":::::::::: 10 seguido ")
     const rowsDb = await poolConnectDB.query(
       "SELECT * from employee WHERE Id_employee= ?",
       [id]
@@ -66,16 +67,17 @@ class EmployeeDAO {
   //___________________________________________________________________________
 
   async createEmployee(employeeObject) {
+    console.log("::::::::::::::::12.employeeesDataFunction createEmployee - linha 69- dentro de  createdEmployee");
 
     //add to the fake db
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
     let queryResult;
     let pass = this.generatePsw();
-    console.log("------------------logo no inicio da let pass = this.generatePsw();" + pass);
+    console.log("::::::::::::::::13.logo no inicio da let pass = this.generatePsw();" + pass);
 
     let employeePassword = pass;
-    //console.log(" --------------- em create let employeePassword = this.psw; " + employeePassword);
+    console.log(" ::::::::::::::::14. create let employeePassword = this.psw; " + employeePassword);
 
     // newEmployee.id = id;
     newEmployee.firstName = employeeObject.firstName;
@@ -135,7 +137,7 @@ class EmployeeDAO {
           ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         newEmployeeInfos
       );
-      // console.log(x[0].insertId);
+     // console.log("::::::::::::::::12 x em linha 139 employeeDataFunction ", x[0].insertId);
   
     } catch (error) {
       console.log("deu erro: " + error);
@@ -143,7 +145,7 @@ class EmployeeDAO {
     }
     //get the id from the DB
     newEmployee.Id_employee=queryResult[0].insertId;
-   // console.log("-----------New employee all info: " + JSON.stringify(newEmployee));
+   console.log("::::::::::::::::13 New employee all info: " + JSON.stringify(newEmployee));
     return newEmployee.safeUserDetailed();
   }
 
@@ -222,9 +224,9 @@ class EmployeeDAO {
         if (error) throw error;
       }
     );
-    //console.log("query de delete é esta: " + queryResult , JSON.stringify(queryResult));
-    // console.log("funcao delete de api recebeu id : " + employeeId);
-    //console.log("depois de apagar retornara: " + deleteThisEmployee);
+    console.log("query de delete é esta: " + queryResult , JSON.stringify(queryResult));
+    console.log("funcao delete de api recebeu id : " + employeeId);
+    console.log("depois de apagar retornara: " + deleteThisEmployee);
     return deleteThisEmployee;
   }
 }

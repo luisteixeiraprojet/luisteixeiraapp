@@ -5,10 +5,28 @@ const router = express.Router(); //the router that will be used in app.js
 
 //Import  Modules
 const employeeDAO = require('../controlleur/employeeDataFunctions');
+const auth = require('../controlleur/authenticationDataFunctions');
 
  
 //CRUD Employees // API - interface
-//get employee by id 
+
+
+//READ - get all
+//async because there's a promisse
+router.get('/', async (req, res) => {
+  console.log("get: http://localhost:3000/employees");
+  //get all employees
+  const allEmployees = await employeeDAO.getAllEmployees();
+ 
+  //the client awaits a promise, so we need to send an object 
+  res.send(auth.createResponse(allEmployees, res.token));
+  //Add error sent in case of bad connection to the DB??
+}); 
+
+
+
+
+//READ-get employee by id 
 router.get('/:id', async (req, res) => {
     console.log("getById : http://localhost:3000/employees/1");
 
@@ -18,23 +36,14 @@ router.get('/:id', async (req, res) => {
       res.status(404).send("Cet utilisateur n'existe pas"); 
       return;
     }  
-    res.send(employeeExists.safeUserDetailed());
+    res.send(auth.createResponse(employeeExists.safeUserDetailed(), res.token));
   });
 
- 
-//READ - get all
-//async because there's a promisse
-router.get('/', async (req, res) => {
-    console.log("get: http://localhost:3000/employees");
-    //get all employees
-    const allEmployees = await employeeDAO.getAllEmployees();
-    res.send(allEmployees);
-    //Add error sent in case of bad connection to the DB??
-  });  
+
 
 //CREATE
 router.post('/', async function (req, res) {
-    console.log("post no servidor: http://localhost:3000/employees");
+    console.log("::::::::::::::::post no servidor: http://localhost:3000/employees");
     //validate inputs (JOi)
     const {error} = validateEmployee(req.body); //desconstructure to get error
     
@@ -43,7 +52,10 @@ router.post('/', async function (req, res) {
     return;
     } 
     const createdEmployee = await employeeDAO.createEmployee(req.body);
-    res.send(createdEmployee);
+    console.log("::::::::::::::::10.employeees.js post serveur - linha 55- pedido a employeeDAatFunction em createdEmployee ", createdEmployee );
+
+    console.log("::::::::::::::::11.employeees.js post serveur - linha 57-auth.createResponse(createdEmployee, res.token)", auth.createResponse(createdEmployee, res.token));
+    res.send(auth.createResponse(createdEmployee, res.token));
   });
 
 //UPDATE
@@ -70,7 +82,7 @@ router.put('/formUpdate/:id', async (req, res) => {
     return;
   }
     console.log("o employeeToChange e: " + JSON.stringify(employeeToChange));
-    res.send(employeeToChange);
+    res.send(auth.createResponse(employeeToChange, res.token));
   })
 
 //DELETE 
@@ -80,7 +92,7 @@ router.delete('/:id', async function (req, res) {
     console.log("delete: http://localhost:3000/employees/" + id);
     //delete
     const deletedEmployee = await employeeDAO.deleteEmployee(id);
-    res.send(deletedEmployee); //maybe return the list without the one deleted?
+    res.send(auth.createResponse(deletedEmployee,res.token)); //maybe return the list without the one deleted?
 });
 
 //validate inputs employee - used for create and update employees
