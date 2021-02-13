@@ -14,17 +14,19 @@ const jwt = require("jsonwebtoken");
 const employees = require('./routes/employees');
 const allTables = require('./models/tablesDB');
 const login = require('./routes/logIn');
+const absences = require('./routes/absences');
+const employeeDAO = require('./controlleur/employeeDataFunctions');
 
 const dotenv = require("dotenv").config();
 
 const auth = require('./controlleur/authenticationDataFunctions');
 
-
-
 //Middlewears - if a path is not defined by default it will be used in all of them 
 app.use(express.json()); //so we can hadle objects, ex. create a new user (always above the app.use modules)
 app.use('/employees', tokenMiddleWare, employees);  //path + router object: any routes started with /employees use the router object imported inside the module employees
 app.use('/login', login);
+app.use('/absences', absences);
+
 
 //_________________________________________________________________________________________
 //make sure that the token is still valide at each request
@@ -71,7 +73,8 @@ app.get("/tokenVerify", tokenMiddleWare, async function (req, res) {
   console.log("GET: http://localhost:3000/tokenVerify");
 
   let tokenStillValide = {result: "OK"}; //its  {result: "OK"} so it will make parse, works with objects
-  res.send(tokenStillValide);
+ // res.send(tokenStillValide);
+  res.send(auth.createResponse(tokenStillValide, res.token));
 });
 
 //______________________________________________________

@@ -37,8 +37,6 @@ class AuthDao{
       
        this.theEmployee.fillEmployeeInfo(rowsDb[0][0]);
        this.theEmployee.sessionId = this.generateAccessToken({ username: bodyValues.userName});
-
-       console.log("!employee com token : ", this.theEmployee.sessionId);
        return this.theEmployee.safeUserDetailed();
       };
     }

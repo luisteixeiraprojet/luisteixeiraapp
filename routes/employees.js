@@ -10,7 +10,6 @@ const auth = require('../controlleur/authenticationDataFunctions');
  
 //CRUD Employees // API - interface
 
-
 //READ - get all
 //async because there's a promisse
 router.get('/', async (req, res) => {
@@ -22,8 +21,6 @@ router.get('/', async (req, res) => {
   res.send(auth.createResponse(allEmployees, res.token));
   //Add error sent in case of bad connection to the DB??
 }); 
-
-
 
 
 //READ-get employee by id 
@@ -39,11 +36,10 @@ router.get('/:id', async (req, res) => {
     res.send(auth.createResponse(employeeExists.safeUserDetailed(), res.token));
   });
 
-
-
+//__________________________________________________
 //CREATE
 router.post('/', async function (req, res) {
-    console.log("::::::::::::::::post no servidor: http://localhost:3000/employees");
+    console.log("POST: http://localhost:3000/employees");
     //validate inputs (JOi)
     const {error} = validateEmployee(req.body); //desconstructure to get error
     
@@ -52,15 +48,12 @@ router.post('/', async function (req, res) {
     return;
     } 
     const createdEmployee = await employeeDAO.createEmployee(req.body);
-    console.log("::::::::::::::::10.employeees.js post serveur - linha 55- pedido a employeeDAatFunction em createdEmployee ", createdEmployee );
-
-    console.log("::::::::::::::::11.employeees.js post serveur - linha 57-auth.createResponse(createdEmployee, res.token)", auth.createResponse(createdEmployee, res.token));
     res.send(auth.createResponse(createdEmployee, res.token));
   });
 
+//_____________________________________________
 //UPDATE
 router.put('/formUpdate/:id', async (req, res) => {
-  console.log("UPDATE de routes employees chamada pelo employee.Service");
     console.log("UPDATE de routes employees put: http://localhost:3000/employees//formUpdate/" + parseInt(req.params.id));
  //1. validate changed inputs
    const {error} = validateEmployee(req.body); //deconstructure to get error
@@ -85,6 +78,7 @@ router.put('/formUpdate/:id', async (req, res) => {
     res.send(auth.createResponse(employeeToChange, res.token));
   })
 
+//_______________________________________
 //DELETE 
 router.delete('/:id', async function (req, res) {
     //Id to search it in DB

@@ -22,7 +22,7 @@ class EmployeeDAO {
       }
 
       rowsDB.forEach((row) => {
-     //  console.log("A row : ", row);
+    
         const employee = new Employee();
         employee.fillEmployeeInfo(row);
         safeUserDetails.push(employee.safeUserForList());
@@ -37,7 +37,7 @@ class EmployeeDAO {
   //__________________________________________________________________________
   async getEmployeeById(id) {
     //search it in DB
-    console.log(":::::::::: 10 seguido ")
+ 
     const rowsDb = await poolConnectDB.query(
       "SELECT * from employee WHERE Id_employee= ?",
       [id]
@@ -46,6 +46,7 @@ class EmployeeDAO {
     if (rowsDb[0].length < 1) {
       throw new Error("There is no employee with that id ");
     }
+    
     let employee = new Employee();
     employee.fillEmployeeInfo(rowsDb[0][0]);
 
@@ -67,17 +68,15 @@ class EmployeeDAO {
   //___________________________________________________________________________
 
   async createEmployee(employeeObject) {
-    console.log("::::::::::::::::12.employeeesDataFunction createEmployee - linha 69- dentro de  createdEmployee");
-
+    
     //add to the fake db
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
     let queryResult;
     let pass = this.generatePsw();
-    console.log("::::::::::::::::13.logo no inicio da let pass = this.generatePsw();" + pass);
+    console.log("****** linha77 -employeeDataFunc - password antes do md5 ", pass);
 
     let employeePassword = pass;
-    console.log(" ::::::::::::::::14. create let employeePassword = this.psw; " + employeePassword);
 
     // newEmployee.id = id;
     newEmployee.firstName = employeeObject.firstName;
@@ -137,22 +136,22 @@ class EmployeeDAO {
           ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         newEmployeeInfos
       );
-     // console.log("::::::::::::::::12 x em linha 139 employeeDataFunction ", x[0].insertId);
-  
+     // console.log("employeeDataFunction ", queryResult[0].insertId);
+        console.log("")
     } catch (error) {
-      console.log("deu erro: " + error);
+      console.log("An error: " + error);
       return error.message;
     }
     //get the id from the DB
     newEmployee.Id_employee=queryResult[0].insertId;
-   console.log("::::::::::::::::13 New employee all info: " + JSON.stringify(newEmployee));
+   //console.log(" all info: " + JSON.stringify(newEmployee));
     return newEmployee.safeUserDetailed();
   }
 
   //_________________________________________________________________
   async updateEmployee(id, bodyEmployee) {
-    //console.log("UPDATE servidor funcaço update de employeeDataFunction ");
-    console.log("UPdate",id,JSON.stringify(bodyEmployee));
+
+   // console.log("UPdate",id,JSON.stringify(bodyEmployee));
     //search by id in the DB
     let updateThisEmployee;
     try {
@@ -224,9 +223,6 @@ class EmployeeDAO {
         if (error) throw error;
       }
     );
-    console.log("query de delete é esta: " + queryResult , JSON.stringify(queryResult));
-    console.log("funcao delete de api recebeu id : " + employeeId);
-    console.log("depois de apagar retornara: " + deleteThisEmployee);
     return deleteThisEmployee;
   }
 }

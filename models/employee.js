@@ -10,7 +10,7 @@ class Employee{
     adressComplement;
     zipCode;
     nationality;
-    identityNumber;
+    identityNumber; 
     socialNumber;
     birthdayDate;
     iban;
@@ -18,7 +18,7 @@ class Employee{
     joinDate;
     hourlyPrice;
     userName;
-    password;
+    password; 
     sessionId;
 
     constructor(){ }
