@@ -5,7 +5,7 @@ class Absence {
     requestDate;
     startDate;
     endDate;
-    status;
+    status; 
     statusDate;
     Id_employee;
 
@@ -17,8 +17,8 @@ class Absence {
             if(info[key] != this[key]){
               this[key] = info[key];
             }
-            console.log("fim  de fillAbsnece");
       });
+      console.log("fim de fillAbsence");
     }
 
 }//closes class

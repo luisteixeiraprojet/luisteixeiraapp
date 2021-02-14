@@ -7,11 +7,13 @@ class AbsenceDAO {
 //Get All Absence
 
 async getAllAbsences() {
+ // console.log("++++++ 5. dentro de getAllAbsences em absencesDataFunction")
     try {
       const queryResult = await poolConnectDB.query("SELECT * from absence");
-        console.log("dentro de getAll query request é:", queryResult[0]);
+       // console.log("+++++ 5.1. dentro de getAll query request é:", queryResult[0]);
 
       let allAbsences = [];
+
       const rowsDB = queryResult[0];
       if (rowsDB.length < 1) {
         throw new Error("No absences were found");
@@ -21,11 +23,12 @@ async getAllAbsences() {
         let absence = new Absence();
         absence.fillAbsenceInfo(row);
         allAbsences.push(absence);
-      });       
+      });     
+     // console.log("+++++5.2. retorna allAbsences ", allAbsences);  
       return allAbsences;
       
     } catch (error) {
-      return "getAllAbsences " + error;
+      return "getAllAbsences " + error.message;
     }
   }
 
@@ -109,7 +112,6 @@ return newAbsence;
     console.log("2.Dentro de updateAbsence - absenceDataFunction");
      //search by id in the DB
      let updateThisAbsence;
-    
      console.log("absence id é ", id);
      try {
         console.log("2.1.UPdate id e body",id,JSON.stringify(bodyAbsence));
@@ -135,7 +137,7 @@ return newAbsence;
      let updateInfo;
      try {
        updateInfo = await poolConnectDB.query(
-         "UPDATE absence SET " + demandedInfos + "WHERE Id_absence= ?",
+        "UPDATE absence SET " + demandedInfos +  "WHERE Id_absence= ?",
          [
             updateThisAbsence.justification,
             updateThisAbsence.typeOfAbsence,
@@ -144,7 +146,8 @@ return newAbsence;
             updateThisAbsence.endDate,
             updateThisAbsence.status,
             updateThisAbsence.statusDate,
-            updateThisAbsence.Id_employee
+            updateThisAbsence.Id_employee,
+            updateThisAbsence.Id_absence
          ]
        );
      } catch (error) {

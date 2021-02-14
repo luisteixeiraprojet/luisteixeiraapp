@@ -5,16 +5,18 @@ const router = express.Router(); //the router that will be used in app.js
 
 //Import  Modules
 const absenceDAO = require('../controlleur/absenceDataFunctions');
- 
+const auth = require('../controlleur/authenticationDataFunctions'); 
 //READ ALL
 router.get('/', async (req, res) => {
-    console.log("GET: http://localhost:3000/absences");
+   // console.log("++++++ 4.GET: http://localhost:3000/absences");
    
-  //get all employees
+   // console.log("+++++ 4.1 agora vai p getAllAbsences de absenceDAataFunction")
+  //get all absences
   const allAbsences = await absenceDAO.getAllAbsences();
- 
+  
+ // console.log("fim get absences route send: allAbsences ", allAbsences);
   //the client awaits a promise, so we need to send an object 
-  res.send(allAbsences);
+  res.send(auth.createResponse(allAbsences, res.token));
   //Add error sent in case of bad connection to the DB??
 }); 
 //______________________________________________________
@@ -28,6 +30,7 @@ router.get('/:id', async (req, res) => {
       res.status(404).send("Cet absence n'existe pas"); 
       return;
     }  
+    
     res.send(absenceExists);
   });
 
@@ -42,7 +45,7 @@ router.post('/', async (req, res) => {
 
 //________________________________________________________
 //UPDATE   
-router.put('/requestAbsence/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     console.log("0. UPDATE Put - routes: http://localhost:3000/absences//requestAbsence/" + parseInt(req.params.id));
  
     //1. validate changed inputs
@@ -81,11 +84,7 @@ router.delete('/:id', async function (req, res) {
     const deletedAbsence = await absenceDAO.deleteAbsence(id);
     res.send(deletedAbsence); //maybe return the list without the one deleted?
 });
-
 //___________________________________________________________
-
-
-
 
 //export the router
 module.exports = router;
