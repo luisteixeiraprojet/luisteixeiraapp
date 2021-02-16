@@ -56,6 +56,8 @@ async getAbsenceById(id) {
 //_____________________________________________________________
 //Create Absence 
     async createAbsence(absenceObject){
+      console.log("/////2. dentro de crreateAbsence -absenceDataFunction ");
+      console.log("2.1. o que tem no body da chamada da funçao é ", absenceObject);
         const newAbsence = new Absence();
         let queryResult; 
 
@@ -68,7 +70,8 @@ async getAbsenceById(id) {
     newAbsence.status = absenceObject.status;
     newAbsence.statusDate = absenceObject.statusDate;
     newAbsence.Id_employee = absenceObject.Id_employee;
-
+    
+    console.log("//// 2.2. verificar qe esta bom newAbsence.typeOfAbsence = absenceObject.typeOfAbsence ",  newAbsence.typeOfAbsence )
      //query 
      const demandedInfos =
      "justification, typeOfAbsence," +
@@ -98,8 +101,10 @@ try {
     return error.message
     }
 
-console.log("linha 44 ID absenceDataFunction ", queryResult[0].insertId);
+console.log("//////3.linha 44 ID absenceDataFunction ", queryResult[0].insertId);
 newAbsence.Id_absence=queryResult[0].insertId;
+
+console.log("o id da nova absence é ", newAbsence.Id-absence);
 return newAbsence;
  } //closes create
 

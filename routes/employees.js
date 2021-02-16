@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
   res.send(auth.createResponse(allEmployees, res.token));
   //Add error sent in case of bad connection to the DB??
 }); 
-
+ 
 
 //READ-get employee by id 
 router.get('/:id', async (req, res) => {

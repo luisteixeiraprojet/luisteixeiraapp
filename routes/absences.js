@@ -38,9 +38,22 @@ router.get('/:id', async (req, res) => {
 //_______________________________________________________
 //CREATE 
 router.post('/', async (req, res) => {
-    console.log("POST: http://localhost:3000/absences");
+    console.log("///////////1. POST: http://localhost:3000/absences");
+  console.log("/////////////1.1.chamou post de create absence");
+      //validate inputs (JOi)
+      console.log("//////// 1.2.o que é enviado no body ", req.body);
+      const {error} = validateAbsence(req.body); //desconstructure to get error
+    
+      if(error){
+        console.log("////////1.3.dentro if se erro do post");
+        console.log( "erro no serveur em post de route absence ", error.details[0].message);
+      res.status(400).send(error.details[0].message);
+      return;
+      } 
+      console.log("///// 1.4.vai chamar a createAbsence de absenceDAO")
     const createdAbsence = await absenceDAO.createAbsence(req.body);
-    res.send(createdAbsence);
+    console.log("/////////1.5. resultado de createdAbsence-routes absences ", createdAbsence);
+    res.send(auth.createResponse(createdAbsence, res.token));
 }); 
 
 //________________________________________________________
@@ -85,6 +98,29 @@ router.delete('/:id', async function (req, res) {
     res.send(deletedAbsence); //maybe return the list without the one deleted?
 });
 //___________________________________________________________
+
+function validateAbsence(theAbsence){
+  const schema = Joi.object({
+    justification    : Joi.string().allow(null, ''),
+    typeOfAbsence    : Joi.string().required(),
+    requestDate      : Joi.date().iso().required(),
+    startDate        : Joi.date().iso().required(),
+    endDate          : Joi.date().iso().required(),
+    status           : Joi.string().allow(null, ''),
+    statusDate       : Joi.date().iso().allow(null, ''),
+    Id_employee      : Joi.number().required()
+  
+  });
+  return schema.validate(theAbsence);
+
+}
+
+
+
+
+
+
+
 
 //export the router
 module.exports = router;

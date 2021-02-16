@@ -25,7 +25,7 @@ const auth = require('./controlleur/authenticationDataFunctions');
 app.use(express.json()); //so we can hadle objects, ex. create a new user (always above the app.use modules)
 app.use('/employees', tokenMiddleWare, employees);  //path + router object: any routes started with /employees use the router object imported inside the module employees
 app.use('/login', login);
-app.use('/absences', tokenMiddleWare,absences);
+app.use('/absences', tokenMiddleWare, absences);
 
 
 //_________________________________________________________________________________________
