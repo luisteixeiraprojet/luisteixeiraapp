@@ -12,13 +12,13 @@ class Absence {
     constructor(){ }
 
     fillAbsenceInfo(info){
-      console.log("dentro de fillAbsnece");
+     
         Object.keys(info).forEach(key => {
             if(info[key] != this[key]){
               this[key] = info[key];
             }
       });
-      console.log("fim de fillAbsence");
+     
     }
 
 }//closes class

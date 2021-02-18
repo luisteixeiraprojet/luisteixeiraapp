@@ -11,7 +11,6 @@ class AuthDao{
 
   theEmployee = new Employee();
 
-
   //variables in doc.env
   constructor(){
     dotenv.config();

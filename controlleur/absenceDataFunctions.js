@@ -7,11 +7,10 @@ class AbsenceDAO {
 //Get All Absence
 
 async getAllAbsences() {
- // console.log("++++++ 5. dentro de getAllAbsences em absencesDataFunction")
     try {
-      const queryResult = await poolConnectDB.query("SELECT * from absence");
-       // console.log("+++++ 5.1. dentro de getAll query request é:", queryResult[0]);
-
+      const queryResult = await poolConnectDB.query(
+        "SELECT employee.firstName, employee.lastName, absence.Id_absence, absence.typeOfAbsence, absence.requestDate, absence.startDate, absence.endDate, absence.status, absence.statusDate FROM absence INNER JOIN employee ON absence.Id_employee=employee.Id_employee ORDER BY requestDate DESC");
+      
       let allAbsences = [];
 
       const rowsDB = queryResult[0];
@@ -24,7 +23,7 @@ async getAllAbsences() {
         absence.fillAbsenceInfo(row);
         allAbsences.push(absence);
       });     
-     // console.log("+++++5.2. retorna allAbsences ", allAbsences);  
+    
       return allAbsences;
       
     } catch (error) {
@@ -52,12 +51,38 @@ async getAbsenceById(id) {
     return absence;
   }
 
+//____________________________________________________________
 
+async getMyAbsences(idEmployee){
+  
+  try {
+    const queryResult = await poolConnectDB.query(
+      "SELECT * from absence WHERE Id_employee = ? ORDER BY Id_absence DESC",
+      [idEmployee]
+    );
+  
+    let allMyAbsences = [];
+    const rowsDb = queryResult[0];
+    if (rowsDb[0].length < 1) {
+      throw new Error("There are no absences for this employee");
+    }
+
+    rowsDb.forEach((row) => {
+      const absence = new Absence();
+      absence.fillAbsenceInfo(row);
+      allMyAbsences.push(absence);
+    });
+
+    return allMyAbsences;
+
+  } catch (error) {
+    console.log("Error getMyAbsences ", error.message);
+  }
+ 
+}
 //_____________________________________________________________
 //Create Absence 
     async createAbsence(absenceObject){
-      console.log("/////2. dentro de crreateAbsence -absenceDataFunction ");
-      console.log("2.1. o que tem no body da chamada da funçao é ", absenceObject);
         const newAbsence = new Absence();
         let queryResult; 
 
@@ -71,7 +96,6 @@ async getAbsenceById(id) {
     newAbsence.statusDate = absenceObject.statusDate;
     newAbsence.Id_employee = absenceObject.Id_employee;
     
-    console.log("//// 2.2. verificar qe esta bom newAbsence.typeOfAbsence = absenceObject.typeOfAbsence ",  newAbsence.typeOfAbsence )
      //query 
      const demandedInfos =
      "justification, typeOfAbsence," +
@@ -100,15 +124,12 @@ try {
     console.log(error.message);
     return error.message
     }
-
-console.log("//////3.linha 44 ID absenceDataFunction ", queryResult[0].insertId);
 newAbsence.Id_absence=queryResult[0].insertId;
 
-console.log("o id da nova absence é ", newAbsence.Id-absence);
 return newAbsence;
  } //closes create
 
-
+ 
  //_________________________________
  //UPDATE ABSENCE 
  
