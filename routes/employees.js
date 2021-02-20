@@ -92,6 +92,7 @@ router.delete('/:id', async function (req, res) {
 //validate inputs employee - used for create and update employees
 function validateEmployee(theEmployee){
   const schema = Joi.object({
+    Id_employee      : Joi.number().allow(null, ''),
     firstName        : Joi.string().min(2).required(),
     lastName         : Joi.string().min(2).required(),
     mobilePhone      : Joi.string().min(9).max(18).required(),
