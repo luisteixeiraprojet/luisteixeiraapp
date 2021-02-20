@@ -6,6 +6,7 @@ const router = express.Router(); //the router that will be used in app.js
 //Import  Modules
 const absenceDAO = require('../controlleur/absenceDataFunctions');
 const auth = require('../controlleur/authenticationDataFunctions'); 
+
 //READ ALL
 router.get('/', async (req, res) => {
  
@@ -31,8 +32,8 @@ router.get('/:id', async (req, res) => {
     res.send(absenceExists);
   });
 
-  //GET BY Employee ID
 
+//GET BY Employee ID
 router.get('/myAbsences/:idEmployee', async (req, res) => {
 let idEmpl = parseInt(req.params.idEmployee);
 const myAbsences = await absenceDAO.getMyAbsences(idEmpl);
@@ -57,20 +58,19 @@ router.post('/', async (req, res) => {
 
 //________________________________________________________
 //UPDATE   
-router.put('/absenceUpdate/:id', async (req, res) => {
-    console.log("UPDATE Put - routes: http://localhost:3000/absences//requestAbsence/" + parseInt(req.params.id));
- 
+router.put('/absenceUpdate', async (req, res) => {
+  
     //1. validate changed inputs
- /*const {error} = validateAbsence(req.body); //deconstructure to get error
+    const {error} = validateAbsence(req.body); //deconstructure to get error
     if(error) {
-      console.log("UPDATE servidor route: deu no VALIDATE " + error.details[0].message);
+      console.log("UPDATE error " + error.details[0].message);
       res.status(400).send(error.details[0].message);
       return;
-    } */
-    // 2. DB search employee by his id
+    } 
+    // 2. DB search absence by its id
    let absenceToChange;
     try {
-      absenceToChange = await absenceDAO.updateAbsence(parseInt(req.params.id), req.body); //false ou employee
+      absenceToChange = await absenceDAO.updateAbsence(req.body); //false ou employee
     } catch (error) {
       return error.message;
     }
@@ -78,7 +78,7 @@ router.put('/absenceUpdate/:id', async (req, res) => {
       res.status(404).send("1.2. Cet absence n'existe pas");
     return;
   }
-    res.send(absenceToChange);
+    res.send(auth.createResponse(absenceToChange, res.token));
   })
 
 //____________________________________________________________
@@ -90,12 +90,13 @@ router.delete('/:id', async function (req, res) {
 
     //delete
     const deletedAbsence = await absenceDAO.deleteAbsence(id);
-    res.send(deletedAbsence); //maybe return the list without the one deleted?
+    res.send(auth.createResponse(deletedAbsence, res.token)); //maybe return the list without the one deleted?
 });
 //___________________________________________________________
 
 function validateAbsence(theAbsence){
   const schema = Joi.object({
+    Id_absence       : Joi.number(),
     justification    : Joi.string().allow(null, ''),
     typeOfAbsence    : Joi.string().required(),
     requestDate      : Joi.date().iso().required(),

@@ -60,7 +60,7 @@ function tokenMiddleWare(req, res, next) {
      // console.log("------------8. newToken antes do res.Send", newToken);
       //include the newToken inside res so it can be send to employees.js requests 
       res.token = newToken; 
-      console.log("-------------9.app.js linha61  res.token é igual ao anterior? ", res.token);
+      //console.log("-------------9.app.js linha61  res.token é igual ao anterior? ", res.token);
     }
    
     next() // execute whatever request the client intended to

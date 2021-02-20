@@ -9,7 +9,7 @@ class AbsenceDAO {
 async getAllAbsences() {
     try {
       const queryResult = await poolConnectDB.query(
-        "SELECT employee.firstName, employee.lastName, absence.Id_absence, absence.typeOfAbsence, absence.requestDate, absence.startDate, absence.endDate, absence.status, absence.statusDate FROM absence INNER JOIN employee ON absence.Id_employee=employee.Id_employee ORDER BY requestDate DESC");
+        "SELECT employee.firstName, employee.lastName, absence.Id_absence, absence.typeOfAbsence, absence.requestDate, absence.startDate, absence.endDate, absence.status, absence.statusDate, absence.Id_employee FROM absence INNER JOIN employee ON absence.Id_employee=employee.Id_employee ORDER BY statusDate ASC");
       
       let allAbsences = [];
 
@@ -35,13 +35,12 @@ async getAllAbsences() {
 //get absence by Id
 
 async getAbsenceById(id) {
-    console.log("dentro de getById")
+
     //search it in DB
     const rowsDb = await poolConnectDB.query(
       "SELECT * from absence WHERE Id_absence= ?",
       [id]
     ); //all rows
-        console.log("resultado query byId ", rowsDb[0]);
     if (rowsDb[0].length < 1) {
       throw new Error("There is no absence with that id ");
     }
@@ -133,24 +132,22 @@ return newAbsence;
  //_________________________________
  //UPDATE ABSENCE 
  
- async updateAbsence(id, bodyAbsence) {
-    //falta fazer a verificaçao d econteudo de campos
-    console.log("2.Dentro de updateAbsence - absenceDataFunction");
+ async updateAbsence(bodyAbsence) {
+  
      //search by id in the DB
      let updateThisAbsence;
-     console.log("absence id é ", id);
+
      try {
-        console.log("2.1.UPdate id e body",id,JSON.stringify(bodyAbsence));
-        updateThisAbsence = await this.getAbsenceById(id); //object Absence
-        console.log("2.2. a updateThisAbsence é ", updateThisAbsence);
+        updateThisAbsence = await this.getAbsenceById(bodyAbsence.Id_absence); //object Absence
+
      } catch (error) {
-       console.log("2.3. Erro depois do getById - Could not find that absence with id:" + id);
+       console.log("6.5. Erro depois do getById - Could not find that absence with id ", bodyAbsence.Id_absence);
        return error.message;
      }
      if (!updateThisAbsence) return false;
  
      //fill the object absence with the new info
-     console.log("Antes de fill");
+
      updateThisAbsence.fillAbsenceInfo(bodyAbsence);
  
      //variables to use
@@ -162,6 +159,7 @@ return newAbsence;
      //update
      let updateInfo;
      try {
+       
        updateInfo = await poolConnectDB.query(
         "UPDATE absence SET " + demandedInfos +  "WHERE Id_absence= ?",
          [
@@ -179,6 +177,7 @@ return newAbsence;
      } catch (error) {
        return error.message;
      }
+     console.log("///1.updateThisAbsence ", updateThisAbsence);
      return updateThisAbsence;
    }
 //_____________________________________________
