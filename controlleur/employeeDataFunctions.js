@@ -5,6 +5,7 @@ const fakeEmployees = require("../models/employeesFakeDB"); //all the content of
 const Employee = require("../models/employee");
 const poolConnectDB = require("../models/connectionDB");
 const md5 = require('md5');
+const sendMailCont = require("../controlleur/sendMail");
 
 class EmployeeDAO {
 
@@ -20,15 +21,13 @@ class EmployeeDAO {
       if (rowsDB.length < 1) {
         throw new Error("No employees were found");
       }
-
       rowsDB.forEach((row) => {
-    
         const employee = new Employee();
         employee.fillEmployeeInfo(row);
         safeUserDetails.push(employee.safeUserForList());
       });
-
       return safeUserDetails;
+
     } catch (error) {
       return "getAllEmployees " + error.message;
     }
@@ -36,8 +35,8 @@ class EmployeeDAO {
 
   //__________________________________________________________________________
   async getEmployeeById(id) {
+
     //search it in DB
- 
     const rowsDb = await poolConnectDB.query(
       "SELECT * from employee WHERE Id_employee= ?",
       [id]
@@ -46,7 +45,6 @@ class EmployeeDAO {
     if (rowsDb[0].length < 1) {
       throw new Error("There is no employee with that id ");
     }
-    
     let employee = new Employee();
     employee.fillEmployeeInfo(rowsDb[0][0]);
 
@@ -77,27 +75,10 @@ class EmployeeDAO {
     console.log("****** linha77 -employeeDataFunc - password antes do md5 ", pass);
 
     let employeePassword = pass;
-
-    // newEmployee.id = id;
-    newEmployee.firstName = employeeObject.firstName;
-    newEmployee.lastName = employeeObject.lastName;
-    newEmployee.mobilePhone = employeeObject.mobilePhone;
-    newEmployee.homePhone = employeeObject.homePhone;
-    newEmployee.email = employeeObject.email;
-    newEmployee.address = employeeObject.address;
-    newEmployee.adressComplement = employeeObject.adressComplem;
-    newEmployee.zipCode = employeeObject.zipCode;
-    newEmployee.nationality = employeeObject.nationality;
-    newEmployee.identityNumber = employeeObject.identityNumber;
-    newEmployee.socialNumber = employeeObject.socialNumber;
-    newEmployee.birthdayDate = employeeObject.birthdayDate;
-    newEmployee.iban = employeeObject.iban;
-    newEmployee.typeContract = employeeObject.typeContract;
-    newEmployee.joinDate = employeeObject.joinDate;
-    newEmployee.hourlyPrice = employeeObject.hourlyPrice;
-    newEmployee.userName = employeeObject.email;
+    
+    //fill with the infos from the form, employeeObject
+    newEmployee.fillEmployeeInfo(employeeObject);
     newEmployee.password = md5(employeePassword);
-    newEmployee.sessionId = employeeObject.sessionId;
 
     //query
     const demandedInfos =
@@ -136,22 +117,36 @@ class EmployeeDAO {
           ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         newEmployeeInfos
       );
-     // console.log("employeeDataFunction ", queryResult[0].insertId);
-        console.log("")
+      //get the id from the DB
+      newEmployee.Id_employee=queryResult[0].insertId;
+
+      console.log("ppppppppppppppppppp 1. newEmployee passado ", newEmployee);
+      console.log("ppppppppppppppppppp 2.. newEmployee.lastName ", newEmployee.lastName);
+      console.log("-------------------3. tipo de newEmployee ", typeof newEmployee);
+
+      try {
+           //send Mail with pass
+      sendMailCont(newEmployee, employeePassword);
+      
+        
+      } catch (error) {
+        console.log("eeeeeee error when calling sendMail error.message ", error.message);
+        console.log("eeeeeee error when calling sendMail so erro ", error.message);
+      }
+
+      return newEmployee.safeUserDetailed();
+ 
     } catch (error) {
       console.log("An error: " + error);
       return error.message;
     }
-    //get the id from the DB
-    newEmployee.Id_employee=queryResult[0].insertId;
-   //console.log(" all info: " + JSON.stringify(newEmployee));
-    return newEmployee.safeUserDetailed();
+
+ 
   }
 
   //_________________________________________________________________
   async updateEmployee(id, bodyEmployee) {
- 
-   // console.log("UPdate",id,JSON.stringify(bodyEmployee));
+
     //search by id in the DB
     let updateThisEmployee;
     try {
@@ -173,6 +168,7 @@ class EmployeeDAO {
       "nationality=?, identityNumber=?, socialNumber=?," +
       "birthdayDate=?, iban=?, typeContract=?, joinDate=?, hourlyPrice=?, " +
       "userName=?, password=?, sessionId=?";
+
     //update
     let updateInfo;
     try {

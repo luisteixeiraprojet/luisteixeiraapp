@@ -6,7 +6,7 @@ class Employee{
     mobilePhone;
     homePhone; //facultativo 
     email; //facultativo 
-    address; //model
+    address; //model 
     adressComplement;
     zipCode;
     nationality;
@@ -30,6 +30,9 @@ class Employee{
             }
       });
     }
+
+    
+
 
     safeUserForList(){
     const cleanedUser = new Employee();
