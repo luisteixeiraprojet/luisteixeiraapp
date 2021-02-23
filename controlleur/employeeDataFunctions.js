@@ -1,4 +1,3 @@
-//tipo controlador, camada intermedia
 
 //Import other Modules
 const fakeEmployees = require("../models/employeesFakeDB"); //all the content of employeeFakeDB is inside this variable
@@ -32,8 +31,7 @@ class EmployeeDAO {
       return "getAllEmployees " + error.message;
     }
   }
-
-  //__________________________________________________________________________
+//__________________________________________________________________________
   async getEmployeeById(id) {
 
     //search it in DB
@@ -51,7 +49,7 @@ class EmployeeDAO {
     return employee;
   }
   
-  //__________________________________________________________________________
+//__________________________________________________________________________
     //create password when creating an employee
     generatePsw() {
         let length = 10,
@@ -59,11 +57,10 @@ class EmployeeDAO {
         let psw = "";
       for (let i = 0, n = characters.length; i < length; ++i) {
         psw += characters.charAt(Math.floor(Math.random() * n));
-      }
-     
+      }  
       return psw;
     }
-  //___________________________________________________________________________
+//___________________________________________________________________________
 
   async createEmployee(employeeObject) {
     
@@ -72,7 +69,6 @@ class EmployeeDAO {
     const newEmployee = new Employee();
     let queryResult;
     let pass = this.generatePsw();
-    console.log("****** linha77 -employeeDataFunc - password antes do md5 ", pass);
 
     let employeePassword = pass;
     
@@ -120,28 +116,14 @@ class EmployeeDAO {
       //get the id from the DB
       newEmployee.Id_employee=queryResult[0].insertId;
 
-      console.log("ppppppppppppppppppp 1. newEmployee passado ", newEmployee);
-      console.log("ppppppppppppppppppp 2.. newEmployee.lastName ", newEmployee.lastName);
-      console.log("-------------------3. tipo de newEmployee ", typeof newEmployee);
-
-      try {
-           //send Mail with pass
+      //send Mail with pass
       sendMailCont(newEmployee, employeePassword);
-      
-        
-      } catch (error) {
-        console.log("eeeeeee error when calling sendMail error.message ", error.message);
-        console.log("eeeeeee error when calling sendMail so erro ", error.message);
-      }
 
       return newEmployee.safeUserDetailed();
- 
     } catch (error) {
       console.log("An error: " + error);
       return error.message;
     }
-
- 
   }
 
   //_________________________________________________________________

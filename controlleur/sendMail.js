@@ -2,11 +2,9 @@ const sgMail = require('@sendgrid/mail');
 const dotenv = require("dotenv").config();
 
 async function sendMail(theEmployee, secretPsw){
-    console.log("ppppppppppppppppppp 3. sendmail c  employee e pass ", theEmployee, secretPsw);
-
+   
     sgMail.setApiKey(process.env.MY_ID_SEND_GRID);
-    console.log("ver se tem a boa key ", sgMail);
-  
+
     const msg = {
       to: theEmployee.email,
       from: 'luisteixeiraprojet@gmail.com',
@@ -21,10 +19,9 @@ async function sendMail(theEmployee, secretPsw){
             '<p> Restant à votre disposition pour tout renseignement complémentaire. </p>'+
             '<p> Cordialement, </p>' +
             '<p> Luis Teixeira </p>'
-
     };
   
-    //ES8
+    //ES8 with await
   (async () => {
     try {
      let x = await sgMail.send(msg);

@@ -1,17 +1,12 @@
-class Absence {
-    Id_absence;
-    justification;
-    typeOfAbsence;
-    requestDate;
+class Activity {
+    Id_activity;
+    name;
     startDate;
     endDate;
-    status; 
-    statusDate;
-    Id_employee;
 
     constructor(){ }
 
-    fillAbsenceInfo(info){
+    fillActivityInfo(info){
  
         Object.keys(info).forEach(key => {
             if(info[key] != this[key]){
@@ -24,4 +19,4 @@ class Absence {
 }//closes class
 
  //export so other modules can access it
-module.exports = Absence;
+module.exports = Activity;

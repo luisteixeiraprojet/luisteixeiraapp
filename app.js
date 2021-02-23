@@ -18,45 +18,20 @@ const absences = require('./routes/absences');
 const employeeDAO = require('./controlleur/employeeDataFunctions');
 const dotenv = require("dotenv").config();
 const auth = require('./controlleur/authenticationDataFunctions');
-const sgMail = require('@sendgrid/mail');
+const timeSheets = require('./routes/timeSheets');
+const activities = require('./routes/activities');
+const materials = require('./routes/material');
+
 
 //Middlewears - if a path is not defined by default it will be used in all of them 
 app.use(express.json()); //so we can hadle objects, ex. create a new user (always above the app.use modules)
 app.use('/employees', tokenMiddleWare, employees);  //path + router object: any routes started with /employees use the router object imported inside the module employees
 app.use('/login', login);
 app.use('/absences', tokenMiddleWare, absences);
+app.use('/timesheets', tokenMiddleWare, timeSheets);
+app.use('/activities',tokenMiddleWare, activities);
+app.use('/materials', materials);
 
-
-
-app.get("/testeSendGrid", async function (req, res) {
-  console.log("GET: http://localhost:3000/testeSendGrid");
-
-  sgMail.setApiKey(process.env.MY_ID_SEND_GRID);
-
-  const msg = {
-    to: 'luisteixeiraprojet@gmail.com',
-    from: 'luisteixeiraprojet@gmail.com', // Use the email address or domain you verified above
-    subject: 'Sending with Twilio SendGrid is Fun',
-   text: '---------- and easy to do anywhere, even with Node.js',
-   // html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-  };
-
-  //ES8
-(async () => {
-  try {
-   let x = await sgMail.send(msg);
- 
-  } catch (error) {
-    console.error(error);
-
-    if (error.response) {
-      console.error(error.response.body)
-    }
-  }
-})();
-
-  
-});
 
 //_________________________________________________________________________________________
 //make sure that the token is still valide at each request
@@ -68,7 +43,7 @@ function tokenMiddleWare(req, res, next) {
   //verify first if the token exixts in the header
   //split 'cause of the 'bearer ' - seen in postman 
   let token = authHeader && authHeader.split(' ')[1]
-//  console.log("---------------3.o token passado do angular e  com split ", token);
+
   if (token == null) return res.sendStatus(401) // if there isn't a token
  
   jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
@@ -85,8 +60,7 @@ function tokenMiddleWare(req, res, next) {
       //include the newToken inside res so it can be send to employees.js requests 
       res.token = newToken; 
     }
-   
-    next() // execute whatever request the client intended to
+    next() // pour executer whatever request the client intend to
   })
 }
 
