@@ -161,7 +161,7 @@ return newAbsence;
      try {
        
        updateInfo = await poolConnectDB.query(
-        "UPDATE absence SET " + demandedInfos +  "WHERE Id_absence= ?",
+        "UPDATE absence SET " + demandedInfos +  " WHERE Id_absence=?",
          [
             updateThisAbsence.justification,
             updateThisAbsence.typeOfAbsence,

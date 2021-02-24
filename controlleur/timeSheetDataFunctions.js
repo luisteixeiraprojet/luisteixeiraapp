@@ -41,23 +41,30 @@ async getAllTimeSheets() {
 
 //_________________________________________________________
 //get absence by Id
-/*
-async getAbsenceById(id) {
 
-    //search it in DB
-    const rowsDb = await poolConnectDB.query(
-      "SELECT * from absence WHERE Id_absence= ?",
-      [id]
-    ); //all rows
-    if (rowsDb[0].length < 1) {
-      throw new Error("There is no absence with that id ");
-    }
-    let absence = new Absence();
-    absence.fillAbsenceInfo(rowsDb[0][0]);
+async getTSById(id) {
+try {
 
-    return absence;
+   //search it in DB
+   const rowsDb = await poolConnectDB.query(
+    "SELECT * FROM timesheet WHERE Id_timeSheet= ?",
+    [id]
+  ); //all rows
+
+  if (rowsDb[0].length < 1) {
+    throw new Error("There is no timeSheet with that id ");
   }
-*/
+  let timeSheet = new TimeSheet();
+  timeSheet.fillInfoTS(rowsDb[0][0]);
+
+  return timeSheet;
+  
+} catch (error) {
+  console.log("Error getTSById ", error.message);
+
+}
+}
+
 //____________________________________________________________
 /*
 async getMyAbsences(idEmployee){
@@ -90,34 +97,37 @@ async getMyAbsences(idEmployee){
 //_____________________________________________________________
 //Create Absence 
     async createTimeSheet(tSObject){
+
         const newTimeSheet = new TimeSheet();
         let queryResult; 
 
     //Id_timeSheet;
-    newTimeSheet.startAt = tSObject.startAt;
-    newTimeSheet.finishAt = tSObject.finishAt;
+    newTimeSheet.beginningDate = tSObject.beginningDate;
+    newTimeSheet.finishDate = tSObject.finishDate;
     newTimeSheet.priceHour = tSObject.priceHour;
+    newTimeSheet.totalHours = tSObject.totalHours;
     newTimeSheet.Id_activity = tSObject.Id_activity;
     newTimeSheet.Id_employee = tSObject.Id_employee;
     
      //query 
      const demandedInfos =
-     "startAt,finishAt," +
+     "beginningDate,finishDate,totalHours," +
      "priceHour,Id_activity,Id_employee";     
      
      const newTSInfos = [
-        newTimeSheet.startAt,
-        newTimeSheet.finishAt,
+        newTimeSheet.beginningDate,
+        newTimeSheet.finishDate,
         newTimeSheet.priceHour,
+        newTimeSheet.totalHours,
         newTimeSheet.Id_activity,
         newTimeSheet.Id_employee
      ];
-     
+
 try {
         queryResult = await poolConnectDB.query(
         "INSERT INTO timesheet ( " +
           demandedInfos +
-          ") VALUES (?,?,?,?,?)",
+          ") VALUES (?,?,?,?,?,?)",
           newTSInfos
       );
     } catch (error) {
@@ -125,7 +135,7 @@ try {
     return error.message
     }
 newTimeSheet.Id_timeSheet=queryResult[0].insertId;
-console.log("---------- o Id_timeSheet is: ", newTimeSheet.Id_timeSheet);
+
 
 return newTimeSheet;
  } //closes create
@@ -134,87 +144,79 @@ return newTimeSheet;
  //_________________________________
  //UPDATE ABSENCE 
  
- async updateAbsence(bodyAbsence) {
-  
+ async updateTS(bodyTS) {
+
+
      //search by id in the DB
-     let updateThisAbsence;
+     let updateThisTS;
 
      try {
-        updateThisAbsence = await this.getAbsenceById(bodyAbsence.Id_absence); //object Absence
-
+    
+        updateThisTS = await this.getTSById(bodyTS.Id_timeSheet); //object Absence
+      
      } catch (error) {
-       console.log("6.5. Erro depois do getById - Could not find that absence with id ", bodyAbsence.Id_absence);
+       console.log("Error -Could not find that TS with id ", bodyTS.Id_timeSheet);
        return error.message;
      }
-     if (!updateThisAbsence) return false;
+     if (!updateThisTS) return false;
  
      //fill the object absence with the new info
 
-     updateThisAbsence.fillAbsenceInfo(bodyAbsence);
+     updateThisTS.fillInfoTS(bodyTS);
  
      //variables to use
      const demandedInfos =
-     "justification=?, typeOfAbsence=?," +
-     "requestDate=?, startDate=?, endDate=?," +
-     "status=?, statusDate=?, Id_employee=? ";   
+     "beginningDate=?,finishDate=?," +
+     "totalHours=?,priceHour=?,Id_activity=?," +
+     "Id_employee=?";   
 
      //update
      let updateInfo;
      try {
-       
        updateInfo = await poolConnectDB.query(
-        "UPDATE absence SET " + demandedInfos +  "WHERE Id_absence= ?",
+        "UPDATE timesheet SET " + demandedInfos +  " WHERE Id_timeSheet=?",
          [
-            updateThisAbsence.justification,
-            updateThisAbsence.typeOfAbsence,
-            updateThisAbsence.requestDate,
-            updateThisAbsence.startDate,
-            updateThisAbsence.endDate,
-            updateThisAbsence.status,
-            updateThisAbsence.statusDate,
-            updateThisAbsence.Id_employee,
-            updateThisAbsence.Id_absence
+            updateThisTS.beginningDate,
+            updateThisTS.finishDate,
+            updateThisTS.totalHours,
+            updateThisTS.priceHour,
+            updateThisTS.Id_activity,
+            updateThisTS.Id_employee, 
+            updateThisTS.Id_timeSheet
          ]
        );
      } catch (error) {
+       console.log("Error Update TS ", error.message);
        return error.message;
      }
-     console.log("///1.updateThisAbsence ", updateThisAbsence);
-     return updateThisAbsence;
+     return updateThisTS;
    }
 //_____________________________________________
 //DELETE 
-async deleteAbsence(id) {
 
+async deleteTS(id) {
+  
     let queryResult;
 
     //search by id in the DB
-    const deleteThisAbsence = this.getAbsenceById(id);
-   
-    if (!deleteThisAbsence) return false;
+    const deleteThisTS = this.getTSById(id);
+  
+    if (!deleteThisTS) return false;
 
-    let absenceId = id;
+    let tSId = id;
     queryResult = await poolConnectDB.query(
-      "DELETE FROM absence WHERE Id_absence= ?",
-      absenceId,
+      "DELETE FROM timesheet WHERE Id_timeSheet=?",
+      tSId,
       function (error, results, fields) {
         if (error) throw error;
       }
       
     );
-    return deleteThisAbsence;
+
+
+    return deleteThisTS;
   
 }
-
-    
-
-
-
-
-
-
-
-
 
 
 

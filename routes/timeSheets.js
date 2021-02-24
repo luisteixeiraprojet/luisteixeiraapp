@@ -16,27 +16,25 @@ router.get('/', async (req, res) => {
   const allTimeSheets = await timeSheetDAO.getAllTimeSheets();
   
   //the client awaits a promise, so we need to send an object 
-
  res.send(auth.createResponse(allTimeSheets, res.token));
   //Add error sent in case of bad connection to the DB??
 }); 
 
 //______________________________________________________
-//GET BY Absnece ID
-/*
+//GET BY  ID
+
 router.get('/:id', async (req, res) => {
-    console.log("getById : http://localhost:3000/absences/1");
+    console.log("getById : http://localhost:3000/timesheets/1");
 
     //verify absence existance searching it by his id
-    const absenceExists = await absenceDAO.getAbsenceById(parseInt(req.params.id)); //false ou employee
-    if(!absenceExists) {
-      res.status(404).send("Cet absence n'existe pas"); 
+    const tSExists = await timeSheetDAO.getTSById(parseInt(req.params.id)); //false ou ts
+    if(!tSExists) {
+      res.status(404).send("Cet TimeSheet n'existe pas"); 
       return;
     }  
     
-    res.send(absenceExists);
+    res.send(tSExists);
   });
-*/
 
 /*
 //GET BY Employee ID
@@ -65,50 +63,57 @@ router.post('/', async (req, res) => {
 
 //________________________________________________________
 //UPDATE  
-/* 
-router.put('/absenceUpdate', async (req, res) => {
-  
+
+router.put('/tsUpdate', async (req, res) => {
+ // console.log("****** 4. servidor::ts.routes- 69- dentro put/tsUpdate");
     //1. validate changed inputs
-    const {error} = validateAbsence(req.body); //deconstructure to get error
+    const {error} = validateTimeSheet(req.body); //deconstructure to get error
     if(error) {
       console.log("UPDATE error " + error.details[0].message);
       res.status(400).send(error.details[0].message);
       return;
     } 
-    // 2. DB search absence by its id
-   let absenceToChange;
+    // 2. DB search ts by its id
+   let tsToChange;
     try {
-      absenceToChange = await absenceDAO.updateAbsence(req.body); //false ou employee
+     // console.log("****** 4.1 -80- dentro try do depois do caso erro put/tsUpdate");
+     // console.log("****** 4.1.1 -80- req.body ", req.body);
+      tsToChange = await timeSheetDAO.updateTS(req.body); //false ou employee
+      console.log("****** 4.2. -82 - resultado de updateTs tsToChange ", tsToChange);
     } catch (error) {
       return error.message;
     }
-    if(!absenceToChange) {
+    if(!tsToChange) {
+      console.log("****** 4.3. -87 - dentro d if !tsToChange");
       res.status(404).send("1.2. Cet absence n'existe pas");
     return;
   }
-    res.send(auth.createResponse(absenceToChange, res.token));
+  console.log("****** 4.5.- 91 -Fim funçao com tsToChange ", tsToChange);
+    res.send(auth.createResponse(tsToChange, res.token));
   })
-*/
+
 //____________________________________________________________
 //DELETE
-/*
+
 router.delete('/:id', async function (req, res) {
     //Id to search it in DB
    
     const id = parseInt(req.params.id);
+    console.log('////// 3.. Route TimeSheet -102-delete c id  ', id );
 
     //delete
-    const deletedAbsence = await absenceDAO.deleteAbsence(id);
-    res.send(auth.createResponse(deletedAbsence, res.token)); //maybe return the list without the one deleted?
+    const deletedTS = await timeSheetDAO.deleteTS(id);
+    console.log('////// 3.1. Route TimeSheet -106- deletedTS  ', deletedTS);
+    res.send(auth.createResponse(deletedTS, res.token)); //maybe return the list without the one deleted?
 });
-*/
+
 //___________________________________________________________
 
 function validateTimeSheet(theTS){
   const schema = Joi.object({
     Id_timeSheet : Joi.number(),
-    startAt    : Joi.date().iso().required(),
-    finishAt   : Joi.date().iso().required(),
+    beginningDate : Joi.date().iso().required(),
+    finishDate   : Joi.date().iso().required(),
     totalHours  :Joi.number().required(),
     priceHour  : Joi.number().required(),
     Id_activity: Joi.number().allow(null, ''),
