@@ -106,7 +106,7 @@ try {
         queryResult = await poolConnectDB.query(
         "INSERT INTO activity ( " +
           demandedInfos +
-          ") VALUES (?,?,?)",
+          ") VALUES ( ?,?,?)",
           newActivityInfos
       );
     } catch (error) {
@@ -128,17 +128,16 @@ return newActivity;
      let updateThisActivity;
 
      try {
-      
-        updateThisActivity = await this.getActivityById(bodyActivity.Id_activity); //object Absence
-
-     } catch (error) {
+        
+      updateThisActivity = await this.getActivityById(bodyActivity.Id_activity); //object Activity
+     
+      } catch (error) {
        console.log("Could not find an activity with that id ", bodyActivity.Id_activity);
        return error.message;
      }
      if (!updateThisActivity) return false;
  
      //fill the object activity with the new info
-
      updateThisActivity.fillActivityInfo(bodyActivity);
  
      //variables to use
@@ -150,7 +149,7 @@ return newActivity;
      try {
       // update activity SET name, startDate, endDate WHERE Id_activity
        updateInfo = await poolConnectDB.query(
-        "UPDATE activity SET " + demandedInfos +  "WHERE Id_activity= ?",
+        "UPDATE activity SET " + demandedInfos +  " WHERE Id_activity=?",
          [  
             updateThisActivity.name,
             updateThisActivity.startDate,

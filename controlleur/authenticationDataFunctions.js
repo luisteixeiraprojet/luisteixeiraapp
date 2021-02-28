@@ -17,14 +17,17 @@ class AuthDao{
   }
     
  async employeeExists(bodyValues){
+
    let psw =  bodyValues.password;
    let pswMd = md5(psw.toString());
+
     let rowsDb;
     try {
         rowsDb = await poolConnectDB.query(
             "SELECT * FROM employee WHERE userName= ? AND password= ?",
             [bodyValues.userName, pswMd]
         );
+       
       } catch (error) {
         console.log("Error: " + error.message);
         return error.message;

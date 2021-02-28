@@ -66,34 +66,35 @@ try {
 }
 
 //____________________________________________________________
-/*
-async getMyAbsences(idEmployee){
+
+async getMyTS(idEmployee){
+  console.log("o id é passado? ")
   
   try {
     const queryResult = await poolConnectDB.query(
-      "SELECT * from absence WHERE Id_employee = ? ORDER BY Id_absence DESC",
+      "SELECT * FROM timesheet WHERE Id_employee = ? ORDER BY Id_timeSheet DESC",
       [idEmployee]
     );
-  
-    let allMyAbsences = [];
+      console.log("***** queryResult ",queryResult[0]);
+    let allMyTimeShts = [];
     const rowsDb = queryResult[0];
     if (rowsDb[0].length < 1) {
       throw new Error("There are no absences for this employee");
     }
 
     rowsDb.forEach((row) => {
-      const absence = new Absence();
-      absence.fillAbsenceInfo(row);
-      allMyAbsences.push(absence);
+      const timesheet = new TimeSheet();
+      timesheet.fillInfoTS(row);
+      allMyTimeShts.push(timesheet);
     });
 
-    return allMyAbsences;
+    return allMyTimeShts;
 
   } catch (error) {
-    console.log("Error getMyAbsences ", error.message);
+    console.log("Error getMyTS tsDAO ", error.message);
   }
  
-}*/
+}
 //_____________________________________________________________
 //Create Absence 
     async createTimeSheet(tSObject){
@@ -111,8 +112,8 @@ async getMyAbsences(idEmployee){
     
      //query 
      const demandedInfos =
-     "beginningDate,finishDate,totalHours," +
-     "priceHour,Id_activity,Id_employee";     
+     "beginningDate,finishDate,priceHour," +
+     "totalHours, Id_activity,Id_employee";     
      
      const newTSInfos = [
         newTimeSheet.beginningDate,

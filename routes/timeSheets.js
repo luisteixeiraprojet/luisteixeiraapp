@@ -32,18 +32,17 @@ router.get('/:id', async (req, res) => {
       res.status(404).send("Cet TimeSheet n'existe pas"); 
       return;
     }  
-    
     res.send(tSExists);
   });
 
-/*
+//_________________________________________________
 //GET BY Employee ID
-router.get('/myAbsences/:idEmployee', async (req, res) => {
+router.get('/myTimesheets/:idEmployee', async (req, res) => {
 let idEmpl = parseInt(req.params.idEmployee);
-const myAbsences = await absenceDAO.getMyAbsences(idEmpl);
-res.send(auth.createResponse(myAbsences, res.token));
+const myTimesheets = await timeSheetDAO.getMyTS(idEmpl);
+res.send(auth.createResponse(myTimesheets, res.token));
 });
-*/
+
 
 
 //_______________________________________________________

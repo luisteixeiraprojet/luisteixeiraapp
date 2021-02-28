@@ -69,12 +69,14 @@ class EmployeeDAO {
     const newEmployee = new Employee();
     let queryResult;
     let pass = this.generatePsw();
+ 
 
     let employeePassword = pass;
     
     //fill with the infos from the form, employeeObject
     newEmployee.fillEmployeeInfo(employeeObject);
     newEmployee.password = md5(employeePassword);
+    newEmployee.userName = employeeObject.email;
 
     //query
     const demandedInfos =
@@ -185,7 +187,54 @@ class EmployeeDAO {
     return updateThisEmployee;
   }
 
-  //_________________________________________________________________
+//________________________________________________________________
+async updateProfil(id, bodyProfil){
+
+    //search by id in the DB
+    let updateThisEmplProfil;
+    try {
+      updateThisEmplProfil = await this.getEmployeeById(id); //object Employee
+    } catch (error) {
+      console.log("Could not find this user by id:" + id);
+      return error.message;
+    }
+    if (!updateThisEmplProfil) return false;
+
+    //fill the object employee with the new info
+    updateThisEmplProfil.fillEmployeeInfo(bodyProfil);
+
+    updateThisEmplProfil.password = md5(bodyProfil.password);
+    //updateThisEmplProfil.email = bodyProfil.email;
+    updateThisEmplProfil.userName = updateThisEmplProfil.email;
+
+    //variables to use
+    const demandedInfos =
+      "email=?,userName=?,password=?";
+
+    //update
+    let updateInfo;
+    try {
+      updateInfo = await poolConnectDB.query(
+        "UPDATE employee SET " + demandedInfos + " WHERE Id_employee= ?",
+        [
+          updateThisEmplProfil.email,
+          updateThisEmplProfil.userName,
+          updateThisEmplProfil.password,
+          updateThisEmplProfil.Id_employee
+
+        ]
+        );
+
+    } catch (error) {
+      console.log("Error Update Profil ", error.message);
+      return error.message;
+    }
+    return updateThisEmplProfil;
+  }
+
+  
+
+//_________________________________________________________________
   async deleteEmployee(id) {
     let queryResult;
 

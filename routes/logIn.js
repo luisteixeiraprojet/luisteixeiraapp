@@ -10,18 +10,22 @@ const authenticationDao = require("../controlleur/authenticationDataFunctions");
 
 //LogIn
 router.post("/", async function (req, res) {
-  console.log(">>>>>>>>>4. servidor-login.js");
-  //console.log("post no servidor para login: http://localhost:3000/");
-  //validate inputs (JOi)
+
   const { error } = validateLogIn(req.body); //desconstructure to get error
   if (error) {
+   
     res.status(400).send(error.details[0].message);
     return;
   }
-  const employeeExists = await authenticationDao.employeeExists(req.body);
-  console.log(">>>>>>>>>4.1.servidor-login.js -employeeExists da chamada authenticationDao.employeeExists ", employeeExists);
- // console.log("------------------- login o employee exists: ", employeeExists);
-  res.send(employeeExists);
+  try {
+    const employeeExists = await authenticationDao.employeeExists(req.body);
+    res.send(employeeExists);
+    
+  } catch (error) {
+    console.log("error logIn ", error.message);
+    return error;
+  }
+
 });
 
 

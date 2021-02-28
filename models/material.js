@@ -1,15 +1,16 @@
 class Material {
-    Id_materiale;
+    Id_material;
     purchaseDate;
     name;
     quantity;
     unitaryPrice;
     supplier;
-    
+    //materialUsedInActivity
+    activities;
 
     constructor(){ }
 
-    fillActivityInfo(info){
+    fillMaterialInfo(info){
  
         Object.keys(info).forEach(key => {
             if(info[key] != this[key]){

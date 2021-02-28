@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
   //the client awaits a promise, so we need to send an object 
   res.send(auth.createResponse(allActivities, res.token));
-  
+  //res.send(allActivities);
   //Add error sent in case of bad connection to the DB??
 }); 
 //______________________________________________________
@@ -28,10 +28,11 @@ router.get('/:id', async (req, res) => {
     //verify absence existance searching it by his id
     const activityExists = await activityDAO.getActivityById(parseInt(req.params.id)); //false ou employee
     if(!activityExists) {
-      res.status(404).send("Cet activity n'existe pas"); 
+      res.status(404).send("Cet activité n'existe pas"); 
       return;
     }  
-    res.send(activityExists);
+    res.send(auth.createResponse(activityExists, res.token));
+    //res.send(activityExists);
   });
 
 
@@ -87,7 +88,6 @@ router.put('/activityUpdate', async (req, res) => {
       res.status(404).send("Cet activity n'existe pas");
     return;
   }
-  
    res.send(auth.createResponse(actvtToChange, res.token));
   });
 
@@ -111,7 +111,6 @@ function validateActivity(theActivity){
     endDate           : Joi.date().iso().allow(null, ''),
   });
   return schema.validate(theActivity);
-
 }
 
 //export the router

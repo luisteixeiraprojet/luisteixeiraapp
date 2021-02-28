@@ -78,6 +78,33 @@ router.put('/formUpdate/:id', async (req, res) => {
     res.send(auth.createResponse(employeeToChange, res.token));
   })
 
+//__________________________________________
+router.put('/updateProfil/:id', async (req, res) => {
+  console.log("PUT: http://localhost:3000/employees//updateProfil/" + parseInt(req.params.id));
+//1. validate changed inputs
+ const {error} = validateProfil(req.body); //deconstructure to get error
+  if(error) {
+    console.log("UPDATE Profil - error Joi" + error.details[0].message);
+    res.status(400).send(error.details[0].message);
+    return;
+  } 
+  // 2. DB search employee by his id
+  let profilToChange;
+  try {
+    profilToChange = await employeeDAO.updateProfil(parseInt(req.params.id), req.body); //false ou employee
+  } catch (error) {
+    console.log("profilToChange error -96 ", error.message);
+    return error.message;
+  }
+  if(!profilToChange) {
+    res.status(404).send("Cet utilisateur n'existe pas");
+  return;
+}
+  console.log("o employeeToChange e: " + JSON.stringify(profilToChange));
+  res.send(auth.createResponse(profilToChange, res.token));
+})
+
+
 //_______________________________________
 //DELETE 
 router.delete('/:id', async function (req, res) {
@@ -89,6 +116,7 @@ router.delete('/:id', async function (req, res) {
     res.send(auth.createResponse(deletedEmployee,res.token)); //maybe return the list without the one deleted?
 });
 
+//_______________________________________________________
 //validate inputs employee - used for create and update employees
 function validateEmployee(theEmployee){
   const schema = Joi.object({
@@ -116,6 +144,16 @@ function validateEmployee(theEmployee){
   return schema.validate(theEmployee);
 }
 
+//__________________________________________________________
+function validateProfil(theEmployee){
+  const schema = Joi.object({
+    Id_employee      : Joi.number().allow(null, ''),
+    email            : Joi.string().email().required(),
+    password         : Joi.string().required()
+
+  });
+  return schema.validate(theEmployee);
+}
 
 //export the router
 module.exports = router;
