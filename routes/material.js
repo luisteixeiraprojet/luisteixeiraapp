@@ -65,7 +65,7 @@ router.post('/', async (req, res) => {
 //UPDATE   
 
 router.put('/materialUpdate', async (req, res) => {
-  
+  console.log("++++++++servidor!!! 0..dentro de updateMat: matobj tem: ",req.body)
     //1. validate changed inputs
     const {error} = validateMaterial(req.body); //deconstructure to get error
     if(error) {
@@ -100,6 +100,15 @@ router.delete('/:id', async function (req, res) {
     //res.send(deleteMaterial);
     res.send(auth.createResponse(deleteMaterial, res.token)); //maybe return the list without the one deleted?
 });
+//________________________________________________________
+
+//GET selected Activities BY material ID
+router.get('/previouslySelectedAct/:idMaterial', async (req, res) => {
+let idMaterial = parseInt(req.params.idMaterial);
+const previouslyActiv = await materialDAO.getPrevSelectedAct(idMaterial);
+res.send(auth.createResponse(previouslyActiv, res.token));
+});
+
 
 //___________________________________________________________
 
@@ -111,7 +120,7 @@ function validateMaterial(theMaterial){
     quantity          : Joi.number().required(),
     unitaryPrice      : Joi.number().required(),
     supplier          : Joi.string().allow(null, ''),
-    activities        : Joi.array().allow(null,'')
+    activities        : Joi.array().items(Joi.string()).allow(null,'')
   });
   return schema.validate(theMaterial);
 }

@@ -34,39 +34,69 @@ class MaterialDAO {
   //get absence by Id
 
   async getMatById(id) {
-    console.log("----------- update c id ", id);
+    let material;
     //search it in DB
-    const rowsDb = await poolConnectDB.query(
-      "SELECT * from material WHERE Id_material= ?",
-      [id]
-    ); //all rows
-    if (rowsDb[0].length < 1) {
-      throw new Error("There is no material with that id ");
-    }
-    let material = new Material();
-    material.fillMaterialInfo(rowsDb[0][0]);
+    try {
+      const rowsDb = await poolConnectDB.query(
+        "SELECT * from material WHERE Id_material= ?",
+        [id]
+      ); //all rows
+      if (rowsDb[0].length < 1) {
+        throw new Error("There is no material with that id ");
+      }
+      material = new Material();
+      material.fillMaterialInfo(rowsDb[0][0]);
 
+    } catch (error) {
+      console.log("Error getMaterialById ", error.message);
+    }
+    console.log("mmmmmmmmmmmmmmmmmmm ---- 222222 material ", material);
     return material;
+  }
+//______________________________________
+  async getPrevSelectedAct(matId){
+     //info actpreviouslyselected
+     let previouslySelectAct = [];
+     try {
+      console.log("gggggg matId ", matId);
+
+      const rowsDb = await poolConnectDB.query(
+        "SELECT * FROM materialusedinactivity WHERE Id_material= ?",
+        [matId]
+      ); 
+
+      console.log("gggggg 1. result select ", rowsDb[0]);
+
+      if (rowsDb[0].length < 1) {
+        throw new Error("There is no material with that id ");
+      }
+
+      previouslySelectAct = rowsDb[0];
+      console.log("gggggg 2. result select ", previouslySelectAct);
+    } catch (error) {
+      console.log("Error getMaterialById ", error.message);
+    }
+    console.log("vai retornar previouslySelectAct", previouslySelectAct);
+    return previouslySelectAct
   }
 
   //_____________________________________________________________
   //Create Absence
 
   async createMaterial(matObject) {
-    const newMaterial = new Material();
-    let queryResult;
 
-    //complete new material with infos from the sent material format object
+    console.log("cccc 0. dentro de createMaterial ");
+    console.log("cccc 0.1.dentro de createMaterial c matObject ", matObject);
+    console.log("cccc 0.2.matObject c activities", matObject.activities);
+    const newMaterial = new Material();
+
+//complete new material with infos from the sent material format object
     newMaterial.fillMaterialInfo(matObject);
 
-    //Id_absence;
-    //materialUsedInActivity
+//materialUsedInActivity
     newMaterial.activities = matObject.activities;
-
-    //_____query 1 - complete material table
-    const demandedInfos =
-      "purchaseDate, name," + "quantity,unitaryPrice, supplier";
-
+  let queryResult;
+//_____query 1 - complete material table
     const newMatInfos = [
       newMaterial.purchaseDate,
       newMaterial.name,
@@ -76,7 +106,9 @@ class MaterialDAO {
     ];
 
     try {
-      queryResult = await poolConnectDB.query(
+      const demandedInfos =
+      "purchaseDate, name," + "quantity,unitaryPrice, supplier";
+       queryResult = await poolConnectDB.query(
         "INSERT INTO material ( " + demandedInfos + ") VALUES (?,?,?,?,?)",
         newMatInfos
       );
@@ -86,23 +118,34 @@ class MaterialDAO {
     }
     newMaterial.Id_material = queryResult[0].insertId;
 
-    //_____query 2 - complete materialUsedInActivity table
-    const materialAndActivitiesId = "Id_material, Id_activity";
-
-    const newMatInfosMatAct = [newMaterial.Id_material, newMaterial.activities];
+//_____query 2 - complete materialUsedInActivity table
+    let idMAterial =  newMaterial.Id_material;
+    let idActivities = matObject.activities;
+    console.log("ccccc 0. dentro de create-93- idMaterial do novo material ", idMAterial );
+    console.log("ccccc 1. dentro de create-95- verifIfNewIdAct ",idActivities );
 
     try {
-      queryResult = await poolConnectDB.query(
-        "INSERT INTO materialusedinactivity ( " +
-        materialAndActivitiesId +
-        ") VALUES (?,?)",
-        newMatInfosMatAct
-      );
+      //to be simple: delete all in materialusedinactivity table - there will never be a big amount of data so its more practical like this otherwise i would have compare line by line
+      //query insert inside the for because we never know how many activities will be selected so it'll correpsond to the length of idActivities 
+      for (let index = 0; index < idActivities.length; index++) {
+        const element = idActivities[index];
+        console.log("cccc 2. element no for: ", element );
+        const newIds = [idMAterial, element];
+        console.log("cccc 2.1. newIds no for: ", newIds );
+        //query to insert
+        try {
+          await poolConnectDB.query(
+            "INSERT INTO materialusedinactivity ( Id_material, Id_activity) VALUES (?,?)",
+            newIds
+          );
+        } catch (error) {
+          console.log("Error Update insert new infos matAndAct", error.message);
+          return error.message;
+        }
+      }
     } catch (error) {
-      console.log(error.message);
-      return error.message;
+      console.log("Error Update Material ", error.message);
     }
-
     return newMaterial;
   } //closes create
 
@@ -116,13 +159,12 @@ class MaterialDAO {
     let verifIfNewIdAct;
 
     try {
+      console.log("mmmm 0.bodyMaterial.Id_material ", bodyMaterial.Id_material);
       updateThisMaterial = await this.getMatById(bodyMaterial.Id_material); //object Absence
-      console.log(
-        "------------o updateThisMaterial antes de fill tem ",
-        updateThisMaterial
-      );
+     
+     
     } catch (error) {
-      console.log("Error updateMaterial ", error.message);
+      console.log("Error updateMaterial 11111 ", error.message);
       return error.message;
     }
     if (!updateThisMaterial) return false;
@@ -185,7 +227,7 @@ class MaterialDAO {
         }
       }
     } catch (error) {
-      console.log("Error Update Material ", error.message);
+      console.log("Error Update Material 22222222  ", error.message);
     }
     return updateThisMaterial;
   }

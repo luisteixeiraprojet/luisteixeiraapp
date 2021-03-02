@@ -29,10 +29,9 @@ app.use('/employees', tokenMiddleWare, employees);  //path + router object: any 
 app.use('/login', login);
 app.use('/absences', tokenMiddleWare, absences);
 app.use('/timesheets', tokenMiddleWare, timeSheets);
-app.use('/activities',tokenMiddleWare, activities);
-app.use('/materials', materials);
-
-
+app.use('/activities', tokenMiddleWare, activities);
+app.use('/materials',tokenMiddleWare,  materials);
+ 
 //_________________________________________________________________________________________
 //make sure that the token is still valide at each request
 function tokenMiddleWare(req, res, next) {
