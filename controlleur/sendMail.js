@@ -2,7 +2,7 @@ const sgMail = require('@sendgrid/mail');
 const dotenv = require("dotenv").config();
 
 async function sendMail(theEmployee, secretPsw){
-   
+ 
     sgMail.setApiKey(process.env.MY_ID_SEND_GRID);
 
     const msg = {

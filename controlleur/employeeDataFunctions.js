@@ -13,7 +13,7 @@ class EmployeeDAO {
   async getAllEmployees() {
     try {
       const queryResult = await poolConnectDB.query("SELECT * from employee");
-    //  console.log("dentro de getAll query request é:  queryResult[0");
+
       let safeUserDetails = [];
 
       const rowsDB = queryResult[0];
@@ -58,21 +58,22 @@ class EmployeeDAO {
       for (let i = 0, n = characters.length; i < length; ++i) {
         psw += characters.charAt(Math.floor(Math.random() * n));
       }  
+      console.log("pppp 3. - employeeDAO 61- generatePsw a psw é ", psw);
       return psw;
     }
 //___________________________________________________________________________
 
   async createEmployee(employeeObject) {
     
+
+
     //add to the fake db
     //let id = fakeEmployees.length +1;
     const newEmployee = new Employee();
     let queryResult;
     let pass = this.generatePsw();
- 
 
     let employeePassword = pass;
-    
     //fill with the infos from the form, employeeObject
     newEmployee.fillEmployeeInfo(employeeObject);
     newEmployee.password = md5(employeePassword);
@@ -190,10 +191,16 @@ class EmployeeDAO {
 //________________________________________________________________
 async updateProfil(id, bodyProfil){
 
+  //console.log("pppp 3. - employeeDAO-193- dentro updateProfil ");
+  //console.log("pppp 3.1 - employeeDAO-193- dc id ", id);
+ // console.log("pppp 3.2 - employeeDAO-193- c bodyProfil ", bodyProfil);
+
     //search by id in the DB
     let updateThisEmplProfil;
     try {
       updateThisEmplProfil = await this.getEmployeeById(id); //object Employee
+     
+   
     } catch (error) {
       console.log("Could not find this user by id:" + id);
       return error.message;
@@ -221,7 +228,6 @@ async updateProfil(id, bodyProfil){
           updateThisEmplProfil.userName,
           updateThisEmplProfil.password,
           updateThisEmplProfil.Id_employee
-
         ]
         );
 
@@ -229,10 +235,48 @@ async updateProfil(id, bodyProfil){
       console.log("Error Update Profil ", error.message);
       return error.message;
     }
+    console.log("---------- ver se assume a nova pass c md5 ", updateThisEmplProfil);
     return updateThisEmplProfil;
   }
 
-  
+//_______________________________________________________________
+async updatePassword(idEmpl,emplObj){
+
+ // console.log("pswwwww 2.4. authDAO 245-  dentro updatePassword c emplObj VER SE IGUAL AO ANTERIOR  ", emplObj);
+
+  //search by id in the DB
+  let updateThisEmplPsw;
+  try {
+    console.log("pswwwww §§§§ inicio:  2.5. authDAO 250-  vai chamar getEmployeeById  ");
+    updateThisEmplPsw = await this.getEmployeeById(idEmpl); //object Employee
+    console.log("pswwwww  2.7. authDAO 252-  result de  getEmployeeById  ", updateThisEmplPsw[0][0]);
+
+  } catch (error) {
+    return error.message;
+  }
+  if (!updateThisEmplPsw) return false;
+
+  console.log("pswwwww  2.7.1. authDAO 261-  vai fazer fill do anterior com eplObj ", emplObj );
+  updateThisEmplPsw.fillEmployeeInfo(emplObj);
+  console.log("pswwwww  2.8. authDAO 259-  depois de fill updateThisEmplPsw IGUAL AO ANTERIOR? ",updateThisEmplPsw);
+  updateThisEmplPsw.password = md5(emplObj.password);
+  console.log("pswwwww  2.9. authDAO 261-  depois do md5 PASS COM EFEITO MD5?? ",updateThisEmplPsw);
+
+  //update
+  let updateInfo;
+  try {
+    updateInfo = await poolConnectDB.query(
+      "UPDATE employee SET password=? WHERE Id_employee= ?",
+      [ 
+        updateThisEmplPsw.password,
+        updateThisEmplPsw.Id_employee
+      ]);
+  } catch (error) {
+    console.log("Error Update Profil ", error.message);
+    return error.message;
+  }
+  return updateThisEmplPsw;
+}
 
 //_________________________________________________________________
   async deleteEmployee(id) {
