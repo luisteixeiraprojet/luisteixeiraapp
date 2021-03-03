@@ -48,7 +48,10 @@ router.post('/', async function (req, res) {
     return;
     } 
     const createdEmployee = await employeeDAO.createEmployee(req.body);
+
     res.send(auth.createResponse(createdEmployee, res.token));
+  
+ 
   });
 
 //_____________________________________________
@@ -139,7 +142,8 @@ function validateEmployee(theEmployee){
     hourlyPrice      : Joi.number().allow(null, ''),
     userName         : Joi.string().allow(null, ''),
     password         : Joi.string().allow(null, ''),
-    sessionId        : Joi.string().allow(null, '')
+    sessionId        : Joi.string().allow(null, ''),
+    role             : Joi.string().required()
   });
   return schema.validate(theEmployee);
 }

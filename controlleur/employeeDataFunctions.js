@@ -9,7 +9,7 @@ const sendMailCont = require("../controlleur/sendMail");
 class EmployeeDAO {
 
   psw;
-  
+
   async getAllEmployees() {
     try {
       const queryResult = await poolConnectDB.query("SELECT * from employee");
@@ -31,10 +31,12 @@ class EmployeeDAO {
       return "getAllEmployees " + error.message;
     }
   }
-//__________________________________________________________________________
+  //__________________________________________________________________________
   async getEmployeeById(id) {
 
-    //search it in DB
+    try {
+      console.log("========= id ", id);
+       //search it in DB
     const rowsDb = await poolConnectDB.query(
       "SELECT * from employee WHERE Id_employee= ?",
       [id]
@@ -47,87 +49,121 @@ class EmployeeDAO {
     employee.fillEmployeeInfo(rowsDb[0][0]);
 
     return employee;
-  }
-  
-//__________________________________________________________________________
-    //create password when creating an employee
-    generatePsw() {
-        let length = 10,
-        characters ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        let psw = "";
-      for (let i = 0, n = characters.length; i < length; ++i) {
-        psw += characters.charAt(Math.floor(Math.random() * n));
-      }  
-      console.log("pppp 3. - employeeDAO 61- generatePsw a psw é ", psw);
-      return psw;
-    }
-//___________________________________________________________________________
-
-  async createEmployee(employeeObject) {
-    
-
-
-    //add to the fake db
-    //let id = fakeEmployees.length +1;
-    const newEmployee = new Employee();
-    let queryResult;
-    let pass = this.generatePsw();
-
-    let employeePassword = pass;
-    //fill with the infos from the form, employeeObject
-    newEmployee.fillEmployeeInfo(employeeObject);
-    newEmployee.password = md5(employeePassword);
-    newEmployee.userName = employeeObject.email;
-
-    //query
-    const demandedInfos =
-      "firstName, lastName," +
-      "mobilePhone,homePhone, email," +
-      "address, addressComplement, zipCode," +
-      "nationality, identityNumber, socialNumber," +
-      "birthdayDate, iban, typeContract, joinDate," +
-      "hourlyPrice, userName, password, sessionId";
-
-    const newEmployeeInfos = [
-      newEmployee.firstName,
-      newEmployee.lastName,
-      newEmployee.mobilePhone,
-      newEmployee.homePhone,
-      newEmployee.email,
-      newEmployee.address,
-      newEmployee.adressComplement,
-      newEmployee.zipCode,
-      newEmployee.nationality,
-      newEmployee.identityNumber,
-      newEmployee.socialNumber,
-      newEmployee.birthdayDate,
-      newEmployee.iban,
-      newEmployee.typeContract,
-      newEmployee.joinDate,
-      newEmployee.hourlyPrice,
-      newEmployee.userName,
-      newEmployee.password,
-      newEmployee.sessionId,
-    ];
-    try {
-      queryResult = await poolConnectDB.query(
-        "INSERT INTO employee ( " +
-          demandedInfos +
-          ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-        newEmployeeInfos
-      );
-      //get the id from the DB
-      newEmployee.Id_employee=queryResult[0].insertId;
-
-      //send Mail with pass
-      sendMailCont(newEmployee, employeePassword);
-
-      return newEmployee.safeUserDetailed();
+      
     } catch (error) {
-      console.log("An error: " + error);
-      return error.message;
+      console.log("Error getEmployeeById ", error.message);
+    }
+   
+  }
+
+  //__________________________________________________________________________
+  //create password when creating an employee
+  generatePsw() {
+    let length = 10,
+      characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let psw = "";
+    for (let i = 0, n = characters.length; i < length; ++i) {
+      psw += characters.charAt(Math.floor(Math.random() * n));
+    }
+    console.log("pppp 3. - employeeDAO 61- generatePsw a psw é ", psw);
+    return psw;
+  }
+  //___________________________________________________________________________
+
+  async emailAlreadyExists(email) {
+
+    //search it in DB
+    try {
+      const rowsDb = await poolConnectDB.query(
+        "SELECT * from employee WHERE email= ?",
+        [email]
+      );
+      console.log("0.============ rows[0].length ", rowsDb[0].length);
+      return rowsDb[0]; //all rows
+
+    } catch (error) {
+      console.log("Error emailAlreadyExists() ", error.message);
     }
   }
+
+  //______________________________________
+  async createEmployee(employeeObject) {
+
+    //first of all veify if the email is unique
+    let email = employeeObject.email;
+    let emailExists = await this.emailAlreadyExists(email);
+
+    if (emailExists.length > 0) {
+
+     return ({error : "ko", message : "That email already exists "});
+    }
+    else {
+
+      //add to the fake db
+      //let id = fakeEmployees.length +1;
+      const newEmployee = new Employee();
+      let queryResult;
+      let pass = this.generatePsw();
+
+      let employeePassword = pass;
+      //fill with the infos from the form, employeeObject
+      newEmployee.fillEmployeeInfo(employeeObject);
+      newEmployee.password = md5(employeePassword);
+      newEmployee.userName = employeeObject.email;
+
+      //query
+      const demandedInfos =
+        "firstName, lastName," +
+        "mobilePhone,homePhone, email," +
+        "address, addressComplement, zipCode," +
+        "nationality, identityNumber, socialNumber," +
+        "birthdayDate, iban, typeContract, joinDate," +
+        "hourlyPrice, userName, password, sessionId, role";
+
+      const newEmployeeInfos = [
+        newEmployee.firstName,
+        newEmployee.lastName,
+        newEmployee.mobilePhone,
+        newEmployee.homePhone,
+        newEmployee.email,
+        newEmployee.address,
+        newEmployee.adressComplement,
+        newEmployee.zipCode,
+        newEmployee.nationality,
+        newEmployee.identityNumber,
+        newEmployee.socialNumber,
+        newEmployee.birthdayDate,
+        newEmployee.iban,
+        newEmployee.typeContract,
+        newEmployee.joinDate,
+        newEmployee.hourlyPrice,
+        newEmployee.userName,
+        newEmployee.password,
+        newEmployee.sessionId,
+        newEmployee.role
+      ];
+      try {
+        queryResult = await poolConnectDB.query(
+          "INSERT INTO employee ( " +
+          demandedInfos +
+          ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+          newEmployeeInfos
+        );
+        //get the id from the DB
+        newEmployee.Id_employee = queryResult[0].insertId;
+
+        //send Mail with pass
+        sendMailCont(newEmployee, employeePassword);
+
+        return newEmployee.safeUserDetailed();
+      } catch (error) {
+        console.log("An error: " + error);
+        return error.message;
+      }
+    }//ends if 
+
+
+  }//ends function create
 
   //_________________________________________________________________
   async updateEmployee(id, bodyEmployee) {
@@ -152,7 +188,7 @@ class EmployeeDAO {
       "address=?, addressComplement=?, zipCode=?," +
       "nationality=?, identityNumber=?, socialNumber=?," +
       "birthdayDate=?, iban=?, typeContract=?, joinDate=?, hourlyPrice=?, " +
-      "userName=?, password=?, sessionId=?";
+      "userName=?, password=?, sessionId=?, role=?";
 
     //update
     let updateInfo;
@@ -179,7 +215,9 @@ class EmployeeDAO {
           updateThisEmployee.userName,
           updateThisEmployee.password,
           updateThisEmployee.sessionId,
+          updateThisEmployee.role,
           updateThisEmployee.Id_employee,
+
         ]
       );
     } catch (error) {
@@ -188,19 +226,19 @@ class EmployeeDAO {
     return updateThisEmployee;
   }
 
-//________________________________________________________________
-async updateProfil(id, bodyProfil){
+  //________________________________________________________________
+  async updateProfil(id, bodyProfil) {
 
-  //console.log("pppp 3. - employeeDAO-193- dentro updateProfil ");
-  //console.log("pppp 3.1 - employeeDAO-193- dc id ", id);
- // console.log("pppp 3.2 - employeeDAO-193- c bodyProfil ", bodyProfil);
+    //console.log("pppp 3. - employeeDAO-193- dentro updateProfil ");
+    //console.log("pppp 3.1 - employeeDAO-193- dc id ", id);
+    // console.log("pppp 3.2 - employeeDAO-193- c bodyProfil ", bodyProfil);
 
     //search by id in the DB
     let updateThisEmplProfil;
     try {
       updateThisEmplProfil = await this.getEmployeeById(id); //object Employee
-     
-   
+
+
     } catch (error) {
       console.log("Could not find this user by id:" + id);
       return error.message;
@@ -229,7 +267,7 @@ async updateProfil(id, bodyProfil){
           updateThisEmplProfil.password,
           updateThisEmplProfil.Id_employee
         ]
-        );
+      );
 
     } catch (error) {
       console.log("Error Update Profil ", error.message);
@@ -239,46 +277,46 @@ async updateProfil(id, bodyProfil){
     return updateThisEmplProfil;
   }
 
-//_______________________________________________________________
-async updatePassword(idEmpl,emplObj){
+  //_______________________________________________________________
+  async updatePassword(idEmpl, emplObj) {
 
- // console.log("pswwwww 2.4. authDAO 245-  dentro updatePassword c emplObj VER SE IGUAL AO ANTERIOR  ", emplObj);
+    // console.log("pswwwww 2.4. authDAO 245-  dentro updatePassword c emplObj VER SE IGUAL AO ANTERIOR  ", emplObj);
 
-  //search by id in the DB
-  let updateThisEmplPsw;
-  try {
-    console.log("pswwwww §§§§ inicio:  2.5. authDAO 250-  vai chamar getEmployeeById  ");
-    updateThisEmplPsw = await this.getEmployeeById(idEmpl); //object Employee
-    console.log("pswwwww  2.7. authDAO 252-  result de  getEmployeeById  ", updateThisEmplPsw[0][0]);
+    //search by id in the DB
+    let updateThisEmplPsw;
+    try {
+      console.log("pswwwww §§§§ inicio:  2.5. authDAO 250-  vai chamar getEmployeeById  ");
+      updateThisEmplPsw = await this.getEmployeeById(idEmpl); //object Employee
+      console.log("pswwwww  2.7. authDAO 252-  result de  getEmployeeById  ", updateThisEmplPsw[0][0]);
 
-  } catch (error) {
-    return error.message;
+    } catch (error) {
+      return error.message;
+    }
+    if (!updateThisEmplPsw) return false;
+
+    console.log("pswwwww  2.7.1. authDAO 261-  vai fazer fill do anterior com eplObj ", emplObj);
+    updateThisEmplPsw.fillEmployeeInfo(emplObj);
+    console.log("pswwwww  2.8. authDAO 259-  depois de fill updateThisEmplPsw IGUAL AO ANTERIOR? ", updateThisEmplPsw);
+    updateThisEmplPsw.password = md5(emplObj.password);
+    console.log("pswwwww  2.9. authDAO 261-  depois do md5 PASS COM EFEITO MD5?? ", updateThisEmplPsw);
+
+    //update
+    let updateInfo;
+    try {
+      updateInfo = await poolConnectDB.query(
+        "UPDATE employee SET password=? WHERE Id_employee= ?",
+        [
+          updateThisEmplPsw.password,
+          updateThisEmplPsw.Id_employee
+        ]);
+    } catch (error) {
+      console.log("Error Update Profil ", error.message);
+      return error.message;
+    }
+    return updateThisEmplPsw;
   }
-  if (!updateThisEmplPsw) return false;
 
-  console.log("pswwwww  2.7.1. authDAO 261-  vai fazer fill do anterior com eplObj ", emplObj );
-  updateThisEmplPsw.fillEmployeeInfo(emplObj);
-  console.log("pswwwww  2.8. authDAO 259-  depois de fill updateThisEmplPsw IGUAL AO ANTERIOR? ",updateThisEmplPsw);
-  updateThisEmplPsw.password = md5(emplObj.password);
-  console.log("pswwwww  2.9. authDAO 261-  depois do md5 PASS COM EFEITO MD5?? ",updateThisEmplPsw);
-
-  //update
-  let updateInfo;
-  try {
-    updateInfo = await poolConnectDB.query(
-      "UPDATE employee SET password=? WHERE Id_employee= ?",
-      [ 
-        updateThisEmplPsw.password,
-        updateThisEmplPsw.Id_employee
-      ]);
-  } catch (error) {
-    console.log("Error Update Profil ", error.message);
-    return error.message;
-  }
-  return updateThisEmplPsw;
-}
-
-//_________________________________________________________________
+  //_________________________________________________________________
   async deleteEmployee(id) {
     let queryResult;
 

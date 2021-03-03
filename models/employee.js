@@ -20,6 +20,7 @@ class Employee{
     userName;
     password; 
     sessionId;
+    role;
 
     constructor(){ }
     
