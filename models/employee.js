@@ -65,6 +65,7 @@ class Employee{
       cleanedUserDetails.hourlyPrice= this.hourlyPrice;
       cleanedUserDetails.userName=this.userName;
       cleanedUserDetails.sessionId=this.sessionId;
+      cleanedUserDetails.role=this.role;
       return cleanedUserDetails;
     }
 

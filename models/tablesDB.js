@@ -44,7 +44,7 @@ async createTables(){
       statusDate DATETIME,
       Id_employee INT NOT NULL,
       PRIMARY KEY(Id_absence),
-      FOREIGN KEY(Id_employee) REFERENCES employee(Id_employee)
+      FOREIGN KEY(Id_employee) REFERENCES employee(Id_employee) ON DELETE CASCADE
    );  `
    
    let activityTable = `CREATE TABLE activity(
@@ -74,7 +74,7 @@ async createTables(){
       Id_employee INT NOT NULL,
       PRIMARY KEY(Id_timeSheet),
       FOREIGN KEY(Id_activity) REFERENCES activity(Id_activity),
-      FOREIGN KEY(Id_employee) REFERENCES employee(Id_employee)
+      FOREIGN KEY(Id_employee) REFERENCES employee(Id_employee) ON DELETE CASCADE
    ); `
    
    let materialUsedInActivity = `CREATE TABLE materialUsedInActivity(
