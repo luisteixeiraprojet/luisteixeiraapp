@@ -41,6 +41,7 @@ class Employee{
     cleanedUser.firstName = this.firstName;
     cleanedUser.lastName = this.lastName;
     cleanedUser.mobilePhone = this.mobilePhone;
+    cleanedUser.email = this.email;
     return cleanedUser;
     } 
 

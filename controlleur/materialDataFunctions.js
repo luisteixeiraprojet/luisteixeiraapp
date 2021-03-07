@@ -103,7 +103,7 @@ class MaterialDAO {
       newMaterial.quantity,
       newMaterial.unitaryPrice,
       newMaterial.supplier,
-    ];
+    ]; 
 
     try {
       const demandedInfos =

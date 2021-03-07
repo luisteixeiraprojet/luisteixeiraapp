@@ -42,6 +42,7 @@ function tokenMiddleWare(req, res, next) {
   //verify first if the token exixts in the header
   //split 'cause of the 'bearer ' - seen in postman 
   let token = authHeader && authHeader.split(' ')[1]
+  console.log("ver se  true or false ", token);
 
   if (token == null) return res.sendStatus(401) // if there isn't a token
  
@@ -61,8 +62,7 @@ function tokenMiddleWare(req, res, next) {
     }
     next() // pour executer whatever request the client intend to
   })
-}
-
+} 
 //_____________________________________________________________________________
 //verify Token still valide 
 app.get("/tokenVerify", tokenMiddleWare, async function (req, res) {

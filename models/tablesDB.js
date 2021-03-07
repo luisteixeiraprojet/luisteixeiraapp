@@ -82,8 +82,8 @@ async createTables(){
       Id_material INT,
       Id_activity INT,
       PRIMARY KEY(Id_use),
-      FOREIGN KEY(Id_material) REFERENCES material(Id_material),
-      FOREIGN KEY(Id_activity) REFERENCES activity(Id_activity)
+      FOREIGN KEY(Id_material) REFERENCES material(Id_material) ON DELETE CASCADE,
+      FOREIGN KEY(Id_activity) REFERENCES activity(Id_activity) ON DELETE CASCADE
    ); `
     
   //conexao DB
