@@ -78,9 +78,7 @@ class EmployeeDAO {
         "SELECT * from employee WHERE email= ?",
         [email]
       );
-      console.log("0.============ rows[0].length ", rowsDb[0].length);
       return rowsDb[0]; //all rows
-
     } catch (error) {
       console.log("Error emailAlreadyExists() ", error.message);
     }

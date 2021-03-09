@@ -5,10 +5,9 @@ const employees = require('./employeesFakeDB');
 
 class Table{ 
 
-//CREATE TABLE EMPLOYEES
-async createTables(){
- console.log("dentro da create all tables");
 
+async createTables(){
+ 
     let employeeTable = `  CREATE TABLE employee(
       Id_employee INT AUTO_INCREMENT NOT NULL,
       firstName VARCHAR(50) NOT NULL,
@@ -104,18 +103,19 @@ async createTables(){
 deleteAllTables(){
   let deleteTables = 
   "DROP TABLE IF EXISTS material, materialUsedInActivity, activity, timeSheet, absence,employee";
-
-  /* or like this: 
-  "SET foreign_key_checks = 0;"+
-  "DROP TABLE IF EXISTS employees,absence,workingHours, activity, materialUsedInActivity, material;"+
-  "SET foreign_key_checks = 1;"*/
-  
   try {
     connectionDB.query(deleteTables);
   } catch (error) {
     console.log(error.message);
   }
   }
+
+
+  /* or like this: 
+  "SET foreign_key_checks = 0;"+
+  "DROP TABLE IF EXISTS employees,absence,workingHours, activity, materialUsedInActivity, material;"+
+  "SET foreign_key_checks = 1;"*/
+  
 
 }
 //export to be use par other modules

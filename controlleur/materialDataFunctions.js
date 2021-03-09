@@ -46,11 +46,9 @@ class MaterialDAO {
       }
       material = new Material();
       material.fillMaterialInfo(rowsDb[0][0]);
-
     } catch (error) {
       console.log("Error getMaterialById ", error.message);
     }
-    console.log("mmmmmmmmmmmmmmmmmmm ---- 222222 material ", material);
     return material;
   }
 //______________________________________
@@ -58,25 +56,18 @@ class MaterialDAO {
      //info actpreviouslyselected
      let previouslySelectAct = [];
      try {
-      console.log("gggggg matId ", matId);
-
       const rowsDb = await poolConnectDB.query(
         "SELECT * FROM materialusedinactivity WHERE Id_material= ?",
         [matId]
       ); 
 
-      console.log("gggggg 1. result select ", rowsDb[0]);
-
       if (rowsDb[0].length < 1) {
         throw new Error("There is no material with that id ");
       }
-
       previouslySelectAct = rowsDb[0];
-      console.log("gggggg 2. result select ", previouslySelectAct);
     } catch (error) {
       console.log("Error getMaterialById ", error.message);
     }
-    console.log("vai retornar previouslySelectAct", previouslySelectAct);
     return previouslySelectAct
   }
 
@@ -85,9 +76,6 @@ class MaterialDAO {
 
   async createMaterial(matObject) {
 
-    console.log("cccc 0. dentro de createMaterial ");
-    console.log("cccc 0.1.dentro de createMaterial c matObject ", matObject);
-    console.log("cccc 0.2.matObject c activities", matObject.activities);
     const newMaterial = new Material();
 
 //complete new material with infos from the sent material format object
@@ -121,23 +109,21 @@ class MaterialDAO {
 //_____query 2 - complete materialUsedInActivity table
     let idMAterial =  newMaterial.Id_material;
     let idActivities = matObject.activities;
-    console.log("ccccc 0. dentro de create-93- idMaterial do novo material ", idMAterial );
-    console.log("ccccc 1. dentro de create-95- verifIfNewIdAct ",idActivities );
+    
 
     try {
       //to be simple: delete all in materialusedinactivity table - there will never be a big amount of data so its more practical like this otherwise i would have compare line by line
       //query insert inside the for because we never know how many activities will be selected so it'll correpsond to the length of idActivities 
       for (let index = 0; index < idActivities.length; index++) {
         const element = idActivities[index];
-        console.log("cccc 2. element no for: ", element );
         const newIds = [idMAterial, element];
-        console.log("cccc 2.1. newIds no for: ", newIds );
+      
         //query to insert
         try {
           await poolConnectDB.query(
             "INSERT INTO materialusedinactivity ( Id_material, Id_activity) VALUES (?,?)",
-            newIds
-          );
+            newIds);
+
         } catch (error) {
           console.log("Error Update insert new infos matAndAct", error.message);
           return error.message;
@@ -161,8 +147,7 @@ class MaterialDAO {
     try {
       console.log("mmmm 0.bodyMaterial.Id_material ", bodyMaterial.Id_material);
       updateThisMaterial = await this.getMatById(bodyMaterial.Id_material); //object Absence
-     
-     
+
     } catch (error) {
       console.log("Error updateMaterial 11111 ", error.message);
       return error.message;

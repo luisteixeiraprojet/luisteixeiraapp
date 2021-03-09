@@ -192,14 +192,14 @@ async deleteAbsence(id) {
     if (!deleteThisAbsence) return false;
 
     let absenceId = id;
+
+
     queryResult = await poolConnectDB.query(
       "DELETE FROM absence WHERE Id_absence= ?",
       absenceId,
       function (error, results, fields) {
         if (error) throw error;
-      }
-      
-    );
+      });
     return deleteThisAbsence;
   
 }
