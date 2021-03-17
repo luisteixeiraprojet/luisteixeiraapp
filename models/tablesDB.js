@@ -5,7 +5,6 @@ const employees = require('./employeesFakeDB');
 
 class Table{ 
 
-
 async createTables(){
  
     let employeeTable = `  CREATE TABLE employee(
@@ -32,15 +31,15 @@ async createTables(){
       PRIMARY KEY(Id_employee)
    ); `
 
-    let absenceTable = `  CREATE TABLE absence(
+    let absenceTable = `CREATE TABLE absence(
       Id_absence INT AUTO_INCREMENT NOT NULL,
       justification VARCHAR(50),
       typeOfAbsence VARCHAR(50) NOT NULL,
       requestDate VARCHAR(50) NOT NULL,
-      startDate DATETIME NOT NULL,
-      endDate DATETIME NOT NULL,
+      startDate DATE NOT NULL,
+      endDate DATE NOT NULL,
       status BOOLEAN,
-      statusDate DATETIME,
+      statusDate DATE,
       Id_employee INT NOT NULL,
       PRIMARY KEY(Id_absence),
       FOREIGN KEY(Id_employee) REFERENCES employee(Id_employee) ON DELETE CASCADE
@@ -76,14 +75,13 @@ async createTables(){
       FOREIGN KEY(Id_employee) REFERENCES employee(Id_employee) ON DELETE CASCADE
    ); `
    
-   let materialUsedInActivity = `CREATE TABLE materialUsedInActivity(
-      Id_use INT AUTO_INCREMENT NOT NULL,
-      Id_material INT,
-      Id_activity INT,
-      PRIMARY KEY(Id_use),
-      FOREIGN KEY(Id_material) REFERENCES material(Id_material) ON DELETE CASCADE,
-      FOREIGN KEY(Id_activity) REFERENCES activity(Id_activity) ON DELETE CASCADE
-   ); `
+   let materialUsedInActivity = `CREATE TABLE materialandactivity(
+    Id_material INT,
+    Id_activity INT,
+    PRIMARY KEY(Id_material,Id_activity),
+    FOREIGN KEY(Id_material) REFERENCES material(Id_material) ON DELETE CASCADE,
+    FOREIGN KEY(Id_activity) REFERENCES activity(Id_activity) ON DELETE CASCADE
+   );`
     
   //conexao DB
   try {
@@ -99,6 +97,8 @@ async createTables(){
     console.log(error.message);
   }
 }
+
+
 
 deleteAllTables(){
   let deleteTables = 

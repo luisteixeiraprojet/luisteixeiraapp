@@ -32,9 +32,6 @@ class Employee{
       });
     }
 
-    
-
-
     safeUserForList(){
     const cleanedUser = new Employee();
     cleanedUser.Id_employee = this.Id_employee;

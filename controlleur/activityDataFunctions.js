@@ -91,22 +91,13 @@ async getActivityById(id) {
 //_____________________________________________________________
 //Create Activity
 
-    async createActivity(activityObject){
-
-    //  console.log("ccccc 0. dentro de create-93- c activityObject ", activityObject );
-    //  console.log("ccccc 0.1 o id de materials: ", activityObject.materials );
+    async createActivity(activityObject){  
       const newActivity = new Activity();
       let queryResult; 
-
     //Id_activity;
     newActivity.name = activityObject.name;
-  //  console.log("0.2.newActivity.name ", newActivity.name);
     newActivity.startDate = activityObject.startDate;
- //   console.log("0.3. newActivity.startDate ",  newActivity.startDate);
     newActivity.endDate = activityObject.endDate;
-  //  console.log("0.4. newActivity.endDate",  newActivity.endDate);
-
-    
  //query 1    
 try {
   const demandedInfos =
@@ -128,22 +119,16 @@ try {
     return error.message
     }
   newActivity.Id_activity=queryResult[0].insertId;
-  console.log("ccccc 0.1 o id da atividade criada: ", newActivity.Id_activity);
 
     //_____query 2 - complete materialUsedInActivity table
     let idActivity =  newActivity.Id_activity;
     let idMaterials = activityObject.materials;
-    console.log("ccccc 0. dentro de create-93- idMaterial do novo material ", idActivity );
-    console.log("ccccc 1. id de materials dessa atividade ",idMaterials );
-
+   
     try {
       //query insert inside the for because we never know how many activities will be selected so it'll correpsond to the length of idActivities 
       for (let index = 0; index < idMaterials.length; index++) {
-      console.log("cccc 2. idMaterials.length: ", idMaterials.length);
         const element = idMaterials[index];
-      console.log("cccc 2.1 element no for: ", element );
         const newIds = [idActivity, element];
-      console.log("cccc 2.2. newIds no for: ", newIds );
         //query to insert
         try {
           await poolConnectDB.query(
@@ -171,18 +156,14 @@ return newActivity;
      let verifIfNewIdMat;
    
      try {
-   
       updateThisActivity = await this.getActivityById(bodyActivity.Id_activity); //object Activity
-     
       } catch (error) {
        console.log("Could not find an activity with that id ", bodyActivity.Id_activity, " ", error.message);
-       
        return error.message;
      }
      if (!updateThisActivity) return false;
  
      //fill the object activity with the new info
-
      updateThisActivity.fillActivityInfo(bodyActivity);
  
      //variables to use

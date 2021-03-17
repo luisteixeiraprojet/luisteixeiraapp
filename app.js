@@ -8,8 +8,6 @@ app.use(cors());
 //token
 const jwt = require("jsonwebtoken");
 
-
-
 //Modules
 const employees = require('./routes/employees');
 const allTables = require('./models/tablesDB');

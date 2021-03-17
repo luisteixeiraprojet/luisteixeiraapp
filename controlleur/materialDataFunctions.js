@@ -145,7 +145,7 @@ class MaterialDAO {
     let verifIfNewIdAct;
 
     try {
-      console.log("mmmm 0.bodyMaterial.Id_material ", bodyMaterial.Id_material);
+     
       updateThisMaterial = await this.getMatById(bodyMaterial.Id_material); //object Absence
 
     } catch (error) {
@@ -212,7 +212,7 @@ class MaterialDAO {
         }
       }
     } catch (error) {
-      console.log("Error Update Material 22222222  ", error.message);
+      console.log("Error Update Material ", error.message);
     }
     return updateThisMaterial;
   }

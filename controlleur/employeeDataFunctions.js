@@ -159,8 +159,6 @@ class EmployeeDAO {
         return error.message;
       }
     }//ends if 
-
-
   }//ends function create
 
   //_________________________________________________________________
@@ -223,19 +221,13 @@ class EmployeeDAO {
     }
     return updateThisEmployee;
   }
-
   //________________________________________________________________
   async updateProfil(id, bodyProfil) {
-
-    //console.log("pppp 3. - employeeDAO-193- dentro updateProfil ");
-    //console.log("pppp 3.1 - employeeDAO-193- dc id ", id);
-    // console.log("pppp 3.2 - employeeDAO-193- c bodyProfil ", bodyProfil);
 
     //search by id in the DB
     let updateThisEmplProfil;
     try {
       updateThisEmplProfil = await this.getEmployeeById(id); //object Employee
-
 
     } catch (error) {
       console.log("Could not find this user by id:" + id);
@@ -245,8 +237,8 @@ class EmployeeDAO {
 
     //fill the object employee with the new info
     updateThisEmplProfil.fillEmployeeInfo(bodyProfil);
-
     updateThisEmplProfil.password = md5(bodyProfil.password);
+    
     //updateThisEmplProfil.email = bodyProfil.email;
     updateThisEmplProfil.userName = updateThisEmplProfil.email;
 
@@ -266,37 +258,27 @@ class EmployeeDAO {
           updateThisEmplProfil.Id_employee
         ]
       );
-
     } catch (error) {
       console.log("Error Update Profil ", error.message);
       return error.message;
     }
-    console.log("---------- ver se assume a nova pass c md5 ", updateThisEmplProfil);
     return updateThisEmplProfil;
   }
 
   //_______________________________________________________________
   async updatePassword(idEmpl, emplObj) {
 
-    // console.log("pswwwww 2.4. authDAO 245-  dentro updatePassword c emplObj VER SE IGUAL AO ANTERIOR  ", emplObj);
-
     //search by id in the DB
     let updateThisEmplPsw;
     try {
-      console.log("pswwwww §§§§ inicio:  2.5. authDAO 250-  vai chamar getEmployeeById  ");
       updateThisEmplPsw = await this.getEmployeeById(idEmpl); //object Employee
-      console.log("pswwwww  2.7. authDAO 252-  result de  getEmployeeById  ", updateThisEmplPsw[0][0]);
-
     } catch (error) {
       return error.message;
     }
     if (!updateThisEmplPsw) return false;
 
-    console.log("pswwwww  2.7.1. authDAO 261-  vai fazer fill do anterior com eplObj ", emplObj);
     updateThisEmplPsw.fillEmployeeInfo(emplObj);
-    console.log("pswwwww  2.8. authDAO 259-  depois de fill updateThisEmplPsw IGUAL AO ANTERIOR? ", updateThisEmplPsw);
     updateThisEmplPsw.password = md5(emplObj.password);
-    console.log("pswwwww  2.9. authDAO 261-  depois do md5 PASS COM EFEITO MD5?? ", updateThisEmplPsw);
 
     //update
     let updateInfo;
@@ -333,6 +315,5 @@ class EmployeeDAO {
     return deleteThisEmployee;
   }
 }
-
 //export to become accessible by other modules
 module.exports = new EmployeeDAO();
